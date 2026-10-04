@@ -1,5 +1,7 @@
 import { ContentError, loadAtlas } from "./content/atlas";
 import { h } from "./lib/dom";
+import { renderExperiment } from "./pages/experiment";
+import { renderExperiments } from "./pages/experiments";
 import { renderGame } from "./pages/game";
 import { renderAbout } from "./pages/about";
 import { closeGameCard, openGameCard } from "./pages/game-card";
@@ -25,6 +27,8 @@ export function renderRoute(root: HTMLElement, hash: string): () => void {
   if (route.page === "note") return renderNote(root);
   if (route.page === "about") return renderAbout(root);
   if (route.page === "notfound") return renderNotFound(root, `Nothing lives at ${route.path}.`);
+  if (route.page === "experiment") return renderExperiment(root, route.slug);
+  if (route.page === "experiments") return renderExperiments(root);
   let atlas;
   try {
     atlas = loadAtlas();
