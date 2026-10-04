@@ -19,3 +19,8 @@ describe("parseRoute", () => {
     expect(parseRoute("#/elsewhere")).toEqual({ page: "notfound", path: "/elsewhere" });
   });
 });
+
+it("recognizes shareable game URLs and rejects malformed slugs", () => {
+  expect(parseRoute("#/g/halo")).toEqual({ page: "game", slug: "halo" });
+  for (const path of ["/g/Halo", "/g/halo/extra", "/g/"]) expect(parseRoute(`#${path}`)).toEqual({ page: "notfound", path });
+});

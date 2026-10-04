@@ -1,5 +1,6 @@
 import { ContentError, loadAtlas } from "./content/atlas";
 import { h } from "./lib/dom";
+import { renderGame } from "./pages/game";
 import { renderAbout } from "./pages/about";
 import { closeGameCard, openGameCard } from "./pages/game-card";
 import { renderMotivator } from "./pages/motivator";
@@ -31,6 +32,7 @@ export function renderRoute(root: HTMLElement, hash: string): () => void {
     if (err instanceof ContentError) return renderContentError(root, err);
     throw err;
   }
+  if (route.page === "game") return renderGame(root, atlas, route.slug);
   if (route.page === "motivator") return renderMotivator(root, atlas, route.slug);
   return renderOverview(root, atlas, (slug) => openGameCard(slug, atlas));
 }

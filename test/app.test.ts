@@ -40,3 +40,13 @@ describe("renderRoute", () => {
     expect(r.textContent).toContain("Not on the map");
   });
 });
+
+it("dispatches known and unknown games", () => {
+  const root = document.createElement("div");
+  const cleanup = renderRoute(root, "#/g/halo");
+  expect(root.querySelector("h1")?.textContent).toBe("Halo");
+  cleanup();
+  expect(root.childElementCount).toBe(0);
+  renderRoute(root, "#/g/unknown");
+  expect(root.textContent).toContain("Not on the map");
+});

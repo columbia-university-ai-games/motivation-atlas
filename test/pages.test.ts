@@ -82,3 +82,18 @@ describe("mountSafely", () => {
     expect(el.childNodes.length).toBe(0);
   });
 });
+
+it("renders game evidence and untrusted text on a shareable page", async () => {
+  const { renderGame } = await import("../src/pages/game");
+  const root = document.createElement("div");
+  const cleanup = renderGame(root, atlas, "dice");
+  expect(root.querySelectorAll("h1")).toHaveLength(1);
+  expect(root.querySelector("h1")?.textContent).toBe("Dice");
+  expect(root.textContent).toContain("Caillois");
+  expect(root.textContent).toContain("student reading by student");
+  expect(root.textContent).toContain(evil);
+  expect(root.querySelector("img[src=x]")).toBeNull();
+  expect(root.querySelector('a[href="#/"]')).not.toBeNull();
+  cleanup();
+  expect(root.childElementCount).toBe(0);
+});
