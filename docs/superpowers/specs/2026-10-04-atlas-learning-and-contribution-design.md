@@ -3,7 +3,7 @@
 AI-use disclosure: Drafted with Codex from the existing Atlas, course materials, and instructor decisions; instructor review is pending.
 
 Date: 2026-10-04
-Status: Draft for instructor review; not implementation approval
+Status: Approved by the instructor in conversation; implementation plans require separate review
 Scope: Local-first evolution of the Atlas across classroom demonstration, student contribution, and students' own game design
 
 ## 1. Purpose and decisions
