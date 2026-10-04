@@ -18,6 +18,11 @@ describe("AGENTS.md", () => {
     expect(doc).toContain("gh auth login");
     expect(doc).not.toContain("--fill");
   });
+  it("explains how to share a dev server with classmates", () => {
+    expect(pkg.scripts["dev:share"]).toBe("vite --host");
+    expect(doc).toContain("npm run dev:share");
+    expect(doc).toContain("gh pr checkout");
+  });
   it("uses no em dashes", () => {
     expect(doc).not.toContain("—");
   });

@@ -43,11 +43,36 @@ reloads when you save a file.
 | Command | What it does |
 | --- | --- |
 | `npm run dev` | Serves the site on localhost while you work |
+| `npm run dev:share` | Serves it to other computers on your network too, so classmates can play what you are building |
 | `npm test` | Runs every check: content, pages, minigames, Pig |
 | `npm run typecheck` | Checks the TypeScript |
 | `npm run check-videos` | Asks YouTube whether every video exists and embeds (needs the internet) |
 | `npm run build` | Builds the site into `dist/`; fails if a content file has a problem |
 | `npm run e2e` | Opens the built site in a real browser; run `npx playwright install chromium` once first |
+
+## Play what your classmates are building
+
+**On the same network.** Run `npm run dev:share` instead of `npm run dev`.
+It prints a second address, labeled Network, such as
+`http://192.168.1.23:5173/`. A classmate on the same Wi-Fi opens that
+address, adds `#/m/` and the motivator (for example
+`http://192.168.1.23:5173/#/m/chance`), and plays your minigame as you
+change it. Stop the server with Ctrl+C when you are done; anyone on the
+network can reach it while it runs. Some networks, including many campus and
+public Wi-Fi networks, block one laptop from reaching another. If the
+address does not load for your classmate, use the next option.
+
+**From a pull request.** Any open pull request can run on your own machine:
+
+```bash
+gh pr list
+gh pr checkout 12
+npm install
+npm run dev
+```
+
+Replace `12` with the number from `gh pr list`. Return to your own work
+with `git switch -` (or `git switch your-github-username/short-topic`).
 
 ## Map of the repo
 
