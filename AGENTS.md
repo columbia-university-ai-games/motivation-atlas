@@ -128,9 +128,12 @@ code, its rules engine and its README.
 2. In `src/minigames/<your-slug>/index.ts`, rename the export, set
    `slug` to the folder name, set `title`, `motivators` and `author`, and
    build your game inside `mount`.
-3. Fill in `src/minigames/<your-slug>/README.md`: **Mechanic**,
+3. Fill in `src/minigames/<your-slug>/README.md`. The site shows your
+   **Mechanic** section above the game as "How to play", so write it for a
+   player: the goal, the controls, the rules, and what your toggle changes.
    **Dynamic**, **Aesthetic** and **Sources** (the note's items your game
-   demonstrates, quoted with their citations).
+   demonstrates, quoted with their citations) appear below the game under
+   "What it demonstrates".
 4. Add one line to `src/minigames/registry.ts`: import your game and add
    it to the `minigames` list.
 5. Run `npm test`, then play it on its motivator's page.

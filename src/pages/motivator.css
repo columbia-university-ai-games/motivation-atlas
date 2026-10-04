@@ -41,3 +41,9 @@
 .card-links { padding-left: 18px; }
 .card-links .proposed { margin-top: 6px; }
 .card-reading { display: block; color: var(--muted); }
+.minigame-howto { border-left: 4px solid var(--accent); background: var(--bg); padding: 10px 16px; margin-bottom: 16px; border-radius: 0 6px 6px 0; }
+.minigame-howto h4, .minigame-about h4 { margin: 0 0 4px; font-size: 1rem; }
+.minigame-howto p, .minigame-howto ul { margin: 0.4em 0; }
+.minigame-about { margin-top: 16px; border-top: 1px solid var(--line); padding-top: 10px; }
+.minigame-about summary { cursor: pointer; font-weight: 600; }
+.minigame-about h4 { margin-top: 12px; }

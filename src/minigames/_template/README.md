@@ -4,11 +4,14 @@ Motivator: which one or ones. Author: your GitHub username.
 
 ## Mechanic
 
-The rules you built, and the toggle that changes one of them.
+How to play, written for the player: the goal, what each control does, and
+the rules. Then the toggle, and which rule it changes. The site shows this
+section above your game as "How to play".
 
 ## Dynamic
 
-What emerges in play when the rules run, with the toggle on and off.
+The site shows this section and the two after it below your game, under
+"What it demonstrates". What emerges in play when the rules run, with the toggle on and off.
 
 ## Aesthetic
 

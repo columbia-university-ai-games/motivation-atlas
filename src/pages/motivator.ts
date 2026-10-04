@@ -1,7 +1,8 @@
 import type { Atlas, NoteItem } from "../content/types";
 import { h } from "../lib/dom";
-import { inline } from "../lib/markdown";
+import { inline, safeBlock } from "../lib/markdown";
 import { mountSafely } from "../minigames/mount-safe";
+import { readmeFor } from "../minigames/readme";
 import { minigamesFor } from "../minigames/registry";
 import { renderNotFound } from "./not-found";
 import { renderVideo } from "./video";
@@ -54,10 +55,24 @@ export function renderMotivator(root: HTMLElement, atlas: Atlas, slug: string): 
   } else {
     for (const game of found) {
       const host = h("div", { class: "minigame-host" });
+      const readme = readmeFor(game.slug);
+      const howTo = h("div", { class: "minigame-howto" }, h("h4", {}, "How to play"));
+      const rules = h("div", {});
+      rules.innerHTML = safeBlock(readme.Mechanic ?? "This minigame's README has no Mechanic section yet.");
+      howTo.append(rules);
+      const about = h("details", { class: "minigame-about" }, h("summary", {}, "What it demonstrates"));
+      for (const name of ["Dynamic", "Aesthetic", "Sources"]) {
+        if (!readme[name]) continue;
+        const body = h("div", {});
+        body.innerHTML = safeBlock(readme[name]); // student README: raw HTML is escaped
+        about.append(h("h4", {}, name), body);
+      }
       minigameSlot.append(h("section", { class: "minigame" },
         h("h3", {}, game.title),
         game.author ? h("p", { class: "tag" }, `by ${game.author}`) : null,
+        howTo,
         host,
+        about,
       ));
       cleanups.push(mountSafely(host, game));
     }
