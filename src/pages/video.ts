@@ -5,7 +5,7 @@ export function renderVideo(video: Video): HTMLElement {
   const thumb = h("img", { src: `https://i.ytimg.com/vi/${video.youtubeId}/hqdefault.jpg`, alt: "", loading: "lazy" });
   const play = h("button", { type: "button", class: "video-play", "aria-label": `Play: ${video.title}` }, thumb, h("span", { class: "video-play-icon" }, "Play"));
   const frame = h("div", { class: "video-frame" }, play);
-  thumb.addEventListener("error", () => frame.replaceChildren(h("p", { class: "video-missing" }, "This video is unavailable.")));
+  thumb.addEventListener("error", () => frame.replaceChildren(h("p", { class: "video-missing" }, "The preview could not load. Watch on YouTube using the link below.")));
   play.addEventListener("click", () => {
     const start = video.start ? `?start=${video.start}&autoplay=1` : "?autoplay=1";
     frame.replaceChildren(h("iframe", {
@@ -18,6 +18,7 @@ export function renderVideo(video: Video): HTMLElement {
     h("figcaption", {},
       h("span", { class: "video-title" }, video.title),
       h("span", { class: "video-channel" }, video.channel),
+      h("a", { href: `https://www.youtube.com/watch?v=${video.youtubeId}${video.start ? `&t=${video.start}s` : ""}` }, "Watch on YouTube"),
       video.watchFor ? h("span", { class: "video-watch" }, `Watch for: ${video.watchFor}`) : null,
     ),
   );

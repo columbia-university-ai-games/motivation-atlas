@@ -97,3 +97,23 @@ it("renders game evidence and untrusted text on a shareable page", async () => {
   cleanup();
   expect(root.childElementCount).toBe(0);
 });
+
+it.each([[30, "&t=30s"], [0, ""], [undefined, ""]])("keeps an external video link for start %s", (start, suffix) => {
+  const slot = renderVideo({ ...atlas.games[0].videos[0], start });
+  const href = `https://www.youtube.com/watch?v=abcdefghijk${suffix}`;
+  expect(slot.querySelector('a')?.getAttribute("href")).toBe(href);
+  expect(slot.querySelector("iframe")).toBeNull();
+  slot.querySelector("button")!.click();
+  expect(slot.querySelector("iframe")).not.toBeNull();
+  expect(slot.querySelector('a')?.getAttribute("href")).toBe(href);
+});
+it("keeps metadata, observation and external link when the thumbnail fails", () => {
+  const slot = renderVideo(atlas.games[0].videos[0]);
+  slot.querySelector("img")!.dispatchEvent(new Event("error"));
+  expect(slot.textContent).toContain("preview could not load");
+  expect(slot.querySelector(".video-title")?.textContent).toBe(evil);
+  expect(slot.querySelector(".video-channel")?.textContent).toBe("C");
+  expect(slot.querySelector(".video-watch")?.textContent).toContain(evil);
+  expect(slot.querySelector("a")?.textContent).toBe("Watch on YouTube");
+  expect(slot.querySelector("iframe")).toBeNull();
+});
