@@ -22,7 +22,7 @@ export function renderOverview(root: HTMLElement, atlas: Atlas, hash = location.
   const videos = h("input", { id: "videos-filter", type: "checkbox" });
   const reset = h("button", { type: "button", "data-reset": "" }, "Reset filters");
   const clear = h("button", { type: "button" }, "Clear motivator");
-  const openMotivator = h("a", { "data-open-motivator": "" }, "Open motivator");
+  const openMotivator = h("a", { id: "open-motivator", "data-open-motivator": "" }, "Open motivator");
   const results = h("ul", { class: "catalog-results" });
   const viewButtons = (["map", "list"] as const).map(view => {
     const button = h("button", { type: "button", "data-view": view }, view === "map" ? "Map" : "List");
@@ -155,8 +155,8 @@ export function renderOverview(root: HTMLElement, atlas: Atlas, hash = location.
     results.replaceChildren(...selected.map(game => h("li", {},
       h("a", { href: `#/g/${game.slug}`, id: `result-${game.slug}` }, game.title),
       h("p", { class: "tag" }, `${game.kind} · ${game.videos.length ? "Video available" : "No video yet"}`),
-      h("ul", {}, ...game.links.filter(link => eligibleLink(link, state)).map(link => h("li", {},
-        h("a", { href: `#/m/${link.motivator}` }, hubBySlug.get(link.motivator)?.shortName ?? link.motivator),
+      h("ul", {}, ...game.links.filter(link => eligibleLink(link, state)).map((link, index) => h("li", {},
+        h("a", { id: `result-${game.slug}-motivator-${index}`, href: `#/m/${link.motivator}` }, hubBySlug.get(link.motivator)?.shortName ?? link.motivator),
         link.kind === "sourced" ? " — sourced " : " — student reading ",
         ...(link.kind === "sourced" ? evidenceTags(link.cite) : []),
       ))),

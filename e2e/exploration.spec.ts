@@ -88,3 +88,19 @@ for (const colorScheme of ["light", "dark"] as const) test(`${colorScheme} theme
     expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(0);
   }
 });
+
+test("Back restores the map Open motivator action and a result's motivator link", async ({ page }) => {
+  await page.goto("/#/?view=map");
+  const hub = page.getByRole("button", { name: "Select Chance", exact: true });
+  await hub.focus(); await hub.press("Enter");
+  const open = page.getByRole("link", { name: "Open motivator", exact: true });
+  await open.focus(); await open.press("Enter"); await page.goBack();
+  await expect(open).toBeFocused();
+});
+
+test("Back restores a catalog result motivator link", async ({ page }) => {
+  await page.goto("/#/?view=list&q=Halo");
+  const motivator = page.locator('.catalog-results a[href^="#/m/"]').first();
+  await motivator.focus(); await motivator.press("Enter"); await page.goBack();
+  await expect(motivator).toBeFocused();
+});
