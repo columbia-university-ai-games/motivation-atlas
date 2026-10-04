@@ -1,4 +1,6 @@
+import type { BibEntry } from "../content/bibliography";
 import type { Atlas, NoteItem } from "../content/types";
+import { linkCitations, splitCitation } from "../lib/citations";
 import { h } from "../lib/dom";
 import { inline, safeBlock } from "../lib/markdown";
 import { mountSafely } from "../minigames/mount-safe";
@@ -8,26 +10,55 @@ import { renderNotFound } from "./not-found";
 import { renderVideo } from "./video";
 import "./motivator.css";
 
-function station(layer: "mechanics" | "dynamics" | "aesthetic", item: NoteItem): HTMLElement {
-  const li = h("li", { class: `station ${layer}${item.caution ? " caution" : ""}`, "data-layer": layer });
-  li.innerHTML = inline(item.text); // course note text only
+const linked = (el: HTMLElement, bib: BibEntry[]) => { linkCitations(el, bib); return el; };
+
+type Layer = "mechanics" | "dynamics" | "aesthetic";
+
+/** A note item with its trailing citation on its own line; every citation links to its source. */
+function station(layer: Layer, item: NoteItem, bib: BibEntry[]): HTMLElement {
+  const { claim, cite } = splitCitation(item.text);
+  const claimEl = h("span", { class: "claim" });
+  claimEl.innerHTML = inline(claim.replace(/^A caution:\s*/, "")); // course note text only
+  if (item.caution) claimEl.prepend(h("strong", { class: "caution-label" }, "Caution: "));
+  const li = h("li", { class: `station ${layer}${item.caution ? " caution" : ""}`, "data-layer": layer },
+    claimEl,
+    cite ? h("span", { class: "cite" }, cite) : null,
+  );
+  linkCitations(li, bib);
   return li;
+}
+
+function band(layer: Layer, title: string, sub: string, ...body: Node[]): HTMLElement {
+  return h("section", { class: `band ${layer}` }, h("h2", {}, title), h("p", { class: "band-sub" }, sub), ...body);
 }
 
 export function renderMotivator(root: HTMLElement, atlas: Atlas, slug: string): () => void {
   const m = atlas.motivators.find((x) => x.slug === slug);
   if (!m) return renderNotFound(root, `No motivator called “${slug}”. The map shows all eleven.`);
+  const bib = atlas.bibliography ?? [];
 
   const namedBy = h("p", { class: "named-by" });
   namedBy.innerHTML = `<strong>Named by:</strong> ${inline(m.namedBy)}`;
+  linkCitations(namedBy, bib);
 
-  const line = h("ol", { class: "transit" },
-    h("li", { class: "layer-label" }, "Mechanics: the rules a designer builds"),
-    ...m.mechanics.map((item) => station("mechanics", item)),
-    h("li", { class: "layer-label" }, "Dynamics: what emerges while the rules run"),
-    ...m.dynamics.map((item) => station("dynamics", item)),
-    h("li", { class: "layer-label" }, "Aesthetic: what the player feels"),
-    station("aesthetic", { text: m.aesthetic, caution: false }),
+  const aesthetic = splitCitation(m.aesthetic);
+  const feelingName = h("div", { class: "feeling-name" });
+  feelingName.innerHTML = inline(aesthetic.claim);
+  const feeling = h("div", { class: "feeling station", "data-layer": "aesthetic" },
+    h("p", { class: "feeling-label" }, "In MDA's terms"),
+    feelingName,
+    aesthetic.cite ? h("span", { class: "cite" }, aesthetic.cite) : null,
+  );
+  linkCitations(feeling, bib);
+
+  const line = h("div", { class: "bands" },
+    band("mechanics", "Mechanics", "The rules a designer builds.",
+      h("ul", {}, ...m.mechanics.map((item) => station("mechanics", item, bib)))),
+    h("p", { class: "band-arrow" }, "which, while the game runs, produce"),
+    band("dynamics", "Dynamics", "What emerges when players meet those rules.",
+      h("ul", {}, ...m.dynamics.map((item) => station("dynamics", item, bib)))),
+    h("p", { class: "band-arrow" }, "which players feel as"),
+    band("aesthetic", "Aesthetic", "What the player feels.", feeling),
   );
 
   const games = atlas.games.filter((g) => g.links.some((l) => l.kind === "sourced" && l.motivator === slug));
@@ -41,7 +72,7 @@ export function renderMotivator(root: HTMLElement, atlas: Atlas, slug: string): 
         .map((l) => l.kind === "sourced" ? `${l.asNamed} (${l.cite})` : "").join("; ");
       return h("li", { class: "example-game" },
         h("h3", {}, g.title),
-        h("p", { class: "cite" }, cites),
+        linked(h("p", { class: "cite" }, cites), bib),
         g.videos.length ? h("div", { class: "videos" }, ...g.videos.map(renderVideo)) : h("p", { class: "muted" }, "No playthrough yet."),
       );
     }),
@@ -83,7 +114,6 @@ export function renderMotivator(root: HTMLElement, atlas: Atlas, slug: string): 
     h("h1", {}, m.name),
     m.gloss ? h("p", { class: "gloss" }, m.gloss) : null,
     namedBy,
-    h("h2", {}, "From mechanics to feeling"),
     line,
     h("h2", {}, "Play with it"),
     minigameSlot,

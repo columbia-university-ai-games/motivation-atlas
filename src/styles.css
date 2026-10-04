@@ -8,6 +8,9 @@
   --accent: #2a78d6;
   --accent-soft: #d6e6f8;
   --warn: #a5560b;
+  --mech: #3b5ba9; --mech-soft: #e3e9f6;
+  --dyn: #127a5a; --dyn-soft: #dcefe7;
+  --aes: #b0560f; --aes-soft: #f8e7d6;
   --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
   --body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
@@ -23,6 +26,9 @@
     --accent: #5aa0f0;
     --accent-soft: #1d3550;
     --warn: #e7a35a;
+    --mech: #8aa6ee; --mech-soft: #1f2a44;
+    --dyn: #5cc9a3; --dyn-soft: #15302a;
+    --aes: #f0a463; --aes-soft: #3a2614;
     color-scheme: dark;
   }
 }

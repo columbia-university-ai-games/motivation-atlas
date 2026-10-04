@@ -1,4 +1,5 @@
 import type { Atlas, AtlasGame } from "../content/types";
+import { linkCitations } from "../lib/citations";
 import { h } from "../lib/dom";
 import { renderVideo } from "./video";
 
@@ -13,6 +14,7 @@ export function renderGameCard(game: AtlasGame, atlas: Atlas): HTMLElement {
           h("span", { class: "card-reading" }, `Mechanic: ${link.mechanic}`),
           h("span", { class: "card-reading" }, `Dynamic: ${link.dynamic}`))),
   );
+  linkCitations(links, atlas.bibliography ?? []);
   return h("article", { class: "game-card" },
     h("p", { class: "tag" }, game.kind),
     h("h2", {}, game.title),

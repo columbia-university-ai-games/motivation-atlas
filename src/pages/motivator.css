@@ -1,20 +1,32 @@
 .motivator h1 { font-size: clamp(1.8rem, 4vw, 2.4rem); margin: 4px 0 8px; }
 .motivator .gloss { font-size: 1.1rem; margin: 0 0 8px; }
 .motivator .named-by { color: var(--muted); font-size: 0.95rem; }
-.motivator h2 { margin-top: 40px; font-size: 1.4rem; }
+.motivator > h2 { margin-top: 40px; font-size: 1.5rem; }
 .muted { color: var(--muted); }
-.transit { list-style: none; margin: 0; padding: 0 0 0 28px; position: relative; display: grid; gap: 10px; }
-.transit::before { content: ""; position: absolute; left: 9px; top: 6px; bottom: 6px; width: 6px; border-radius: 3px; background: var(--accent); }
-.transit .layer-label { font: 500 0.75rem var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-top: 12px; }
-.station { position: relative; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 10px 14px; }
-.station::before {
-  content: ""; position: absolute; left: -26px; top: 14px; width: 12px; height: 12px; border-radius: 50%;
-  background: var(--surface); border: 3px solid var(--ink);
-}
-.station.caution { border-color: var(--warn); }
-.station.caution::before { border-color: var(--warn); }
-.station.aesthetic { font-weight: 600; border-width: 2px; border-color: var(--accent); }
-.station.aesthetic::before { width: 18px; height: 18px; left: -29px; top: 11px; border-color: var(--accent); }
+.motivator { max-width: 860px; }
+.motivator .gloss { font-size: 1.3rem; }
+.bands { display: grid; margin-top: 28px; }
+.band { border-radius: 10px; padding-inline: 22px; padding-block: 22px; }
+.band h2 { font: 800 clamp(1.6rem, 4vw, 2rem)/1.1 var(--display); margin: 0; }
+.band-sub { font-size: 1.1rem; margin: 4px 0 16px; }
+.band.mechanics { background: var(--mech-soft); } .band.mechanics h2 { color: var(--mech); }
+.band.dynamics { background: var(--dyn-soft); } .band.dynamics h2 { color: var(--dyn); }
+.band.aesthetic { background: var(--aes-soft); } .band.aesthetic h2 { color: var(--aes); }
+.band ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.station { background: var(--surface); border-radius: 8px; padding: 12px 16px; font-size: 1.08rem; border-left: 4px solid transparent; }
+.band.mechanics .station { border-left-color: var(--mech); }
+.band.dynamics .station { border-left-color: var(--dyn); }
+.station .claim { display: block; }
+.station .cite, .feeling .cite { display: block; color: var(--muted); font-size: 0.9rem; margin-top: 4px; }
+.station.caution { border-left-color: var(--warn) !important; }
+.caution-label { color: var(--warn); }
+.band-arrow { text-align: center; color: var(--muted); font: 600 1rem var(--display); margin: 0; padding-block: 10px; }
+.band-arrow::before { content: "↓"; display: block; font-size: 1.6rem; line-height: 1; color: var(--ink); }
+.feeling { padding: 16px 18px; border-left: none; }
+.feeling-label { margin: 0 0 4px; font: 500 0.8rem var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.feeling-name { font: 800 1.5rem/1.25 var(--display); }
+a.cite-link { color: inherit; text-decoration: underline; text-decoration-color: var(--accent); text-underline-offset: 2px; }
+a.cite-link:hover, a.cite-link:focus-visible { color: var(--accent); }
 .example-games, .readings { list-style: none; padding: 0; display: grid; gap: 20px; }
 .example-game h3 { margin: 0; font-size: 1.15rem; }
 .example-game .cite { margin: 2px 0 8px; color: var(--muted); font-size: 0.9rem; }

@@ -2,6 +2,7 @@ import gamesFile from "../../content/games.json";
 import proposals from "../../content/proposals.json";
 import videos from "../../content/videos.json";
 import note from "../../content/player-motivations.md?raw";
+import { parseBibliography } from "./bibliography";
 import { buildAtlas } from "./build-atlas";
 import { parseNote } from "./parse-note";
 import type { Atlas, GamesFile, Proposal, Video } from "./types";
@@ -34,6 +35,6 @@ export function loadAtlas(): Atlas {
   }
   const errors = validateContent(input);
   if (errors.length) throw new ContentError(errors);
-  cached = buildAtlas(input);
+  cached = { ...buildAtlas(input), bibliography: parseBibliography(note) };
   return cached;
 }

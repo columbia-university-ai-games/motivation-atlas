@@ -13,4 +13,5 @@ export type Link =
   | { kind: "sourced"; motivator: string; asNamed: string; cite: string }
   | { kind: "proposed"; motivator: string; mechanic: string; dynamic: string; github: string };
 export interface AtlasGame extends Game { links: Link[]; videos: Video[] }
-export interface Atlas { motivators: Motivator[]; games: AtlasGame[] }
+import type { BibEntry } from "./bibliography";
+export interface Atlas { motivators: Motivator[]; games: AtlasGame[]; bibliography?: BibEntry[] }
