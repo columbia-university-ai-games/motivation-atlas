@@ -7,6 +7,7 @@ import { mountSafely } from "../minigames/mount-safe";
 import { readmeFor } from "../minigames/readme";
 import { minigamesFor } from "../minigames/registry";
 import { renderNotFound } from "./not-found";
+import { evidenceTags } from "./evidence-tags";
 import { renderVideo } from "./video";
 import "./motivator.css";
 
@@ -77,7 +78,7 @@ export function renderMotivator(root: HTMLElement, atlas: Atlas, slug: string): 
         .map((l) => l.kind === "sourced" ? `${l.asNamed} (${l.cite})` : "").join("; ");
       return h("li", { class: "example-game" },
         h("h3", {}, g.title),
-        linked(h("p", { class: "cite" }, cites), bib),
+        linked(h("p", { class: "cite" }, cites, " ", ...evidenceTags(cites)), bib),
         g.videos.length ? h("div", { class: "videos" }, ...g.videos.map(renderVideo)) : h("p", { class: "muted" }, "No playthrough yet."),
       );
     }),

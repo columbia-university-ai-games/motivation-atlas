@@ -19,3 +19,6 @@
 .pig-lead-line { fill: none; stroke: var(--accent); stroke-width: 2; }
 .pig-lead { margin: 4px 0; font-size: 0.9rem; color: var(--muted); }
 .pig-dynamics { padding-left: 18px; font-size: 0.95rem; }
+.pig-reflect { border-left: 4px solid var(--aes, var(--accent)); padding: 8px 16px; background: var(--bg); border-radius: 0 6px 6px 0; }
+.pig-reflect h4 { margin: 0 0 4px; }
+.pig-reflect ul { margin: 0; padding-left: 18px; }

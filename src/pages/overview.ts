@@ -113,7 +113,7 @@ export function renderOverview(root: HTMLElement, atlas: Atlas, openGame: (slug:
   const page = h("section", { class: "overview" },
     h("div", { class: "overview-intro" },
       h("h1", {}, "Why people play"),
-      h("p", {}, "Eleven motivators from the course note, and the games its sources tie to each. A game linked to several motivators sits between them. Hover a motivator to light up its games; open it to see how its mechanics produce its dynamics and aesthetic."),
+      h("p", {}, "Eleven motivators, the course note's own synthesis of many frameworks, and the games its sources tie to each. The groups overlap: one game can serve several motivators, and one player can want different things on different days. A game linked to several motivators sits between them. Hover or tap a motivator to light up its games; open it to see how its mechanics produce its dynamics and aesthetic."),
     ),
     h("div", { class: "overview-tools" },
       search,

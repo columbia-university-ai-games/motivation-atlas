@@ -46,8 +46,16 @@ function mount(el: HTMLElement): () => void {
       newBtn,
     ),
     h("section", { class: "pig-panel" },
-      h("h4", {}, "What emerges"),
+      h("h4", {}, "What the sources say emerges"),
       spark, leadText, dynamics,
+    ),
+    h("section", { class: "pig-reflect" },
+      h("h4", {}, "Then check it against your own play"),
+      h("ul", {},
+        h("li", {}, "What did you feel on your last roll, and on the bot's?"),
+        h("li", {}, "Change one mechanic, play again, and notice what changed: in what you did, and in how it felt."),
+        h("li", {}, "Did your experience match what the sources say emerges? Where did it differ?"),
+      ),
     ),
   );
   el.append(root);

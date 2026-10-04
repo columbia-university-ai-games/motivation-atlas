@@ -202,6 +202,10 @@ code, its rules engine and its README.
   right to use. Credit anything you did not make in your README.
 - It never scores what a player knows. This course has no quizzes; a
   minigame is a game.
+- End by asking the player what they felt and whether changing a mechanic
+  changed it. Pig's "Then check it against your own play" box is the
+  example. The sources say what tends to emerge; the player's own account is
+  the evidence that tests it.
 - Put the rules in their own file with no DOM code (Pig's is
   `src/minigames/pig/game.ts`) and test them, so your agent can change
   the rules without breaking the page.

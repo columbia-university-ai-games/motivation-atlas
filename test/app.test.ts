@@ -25,6 +25,15 @@ describe("renderRoute", () => {
     expect(links).toContain("#/m/chance");
   });
 
+  it("says the eleven are the note's synthesis and that motives mix", () => {
+    const r = root();
+    renderRoute(r, "#/");
+    expect(r.querySelector(".overview-intro")!.textContent).toMatch(/synthesis/);
+    renderRoute(r, "#/about");
+    expect(r.textContent).toMatch(/favored by high scorers/);
+    expect(r.textContent).toMatch(/does not tell you why any one player/);
+  });
+
   it("renders not found for an unknown path", () => {
     const r = root();
     renderRoute(r, "#/elsewhere");

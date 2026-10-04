@@ -1,13 +1,14 @@
 import type { Atlas, AtlasGame } from "../content/types";
 import { linkCitations } from "../lib/citations";
 import { h } from "../lib/dom";
+import { evidenceTags } from "./evidence-tags";
 import { renderVideo } from "./video";
 
 export function renderGameCard(game: AtlasGame, atlas: Atlas): HTMLElement {
   const name = (slug: string) => atlas.motivators.find((m) => m.slug === slug)?.shortName ?? slug;
   const links = h("ul", { class: "card-links" },
     ...game.links.map((link) => link.kind === "sourced"
-      ? h("li", {}, h("a", { href: `#/m/${link.motivator}` }, name(link.motivator)), ` as ${link.asNamed} (${link.cite})`)
+      ? h("li", {}, h("a", { href: `#/m/${link.motivator}` }, name(link.motivator)), ` as ${link.asNamed} (${link.cite}) `, ...evidenceTags(link.cite))
       : h("li", { class: "proposed" },
           h("a", { href: `#/m/${link.motivator}` }, name(link.motivator)),
           h("span", { class: "tag" }, " student reading by ", link.github),

@@ -40,6 +40,14 @@ describe("Pig on the page", () => {
     expect(el.childNodes.length).toBe(0);
   });
 
+  it("asks the player to reflect, and frames the panel as the sources' claims", () => {
+    const { q, unmount } = setup();
+    expect(q(".pig-reflect")!.textContent).toContain("What did you feel");
+    expect(q(".pig-reflect")!.querySelector("input, textarea, select")).toBeNull();
+    expect(q(".pig-panel h4")!.textContent).toBe("What the sources say emerges");
+    unmount();
+  });
+
   it("applies mechanic toggles on New game", () => {
     vi.spyOn(Math, "random").mockReturnValue(0.99); // die 6
     const { q, unmount } = setup();

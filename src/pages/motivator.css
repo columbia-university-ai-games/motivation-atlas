@@ -62,3 +62,5 @@ a.cite-link:hover, a.cite-link:focus-visible { color: var(--accent); }
 .other-names { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line); }
 .other-names h3 { font: 700 1.1rem var(--display); margin: 0 0 6px; color: var(--aes); }
 .other-names p { margin: 0; font-size: 1.08rem; }
+.evidence { display: inline-block; font: 500 0.72rem var(--mono); letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 1px 8px; margin-left: 4px; cursor: help; white-space: nowrap; }
+.evidence.statistic { border-style: dashed; }

@@ -43,6 +43,14 @@ describe("student text is shown as text", () => {
   });
 });
 
+describe("evidence labels", () => {
+  it("say how the source chose each game, in the game card", () => {
+    const card = renderGameCard({ ...atlas.games[0], links: [{ kind: "sourced", motivator: "chance", asNamed: "Dice", cite: "Yee 2015" }] }, atlas);
+    expect(card.querySelector(".evidence")!.textContent).toBe("favored by high scorers");
+    expect(card.querySelector(".evidence")!.getAttribute("title")).toMatch(/not why/);
+  });
+});
+
 describe("renderMotivator", () => {
   it("draws the line from mechanics to the aesthetic and flags cautions", () => {
     const root = document.createElement("div");
