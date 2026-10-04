@@ -49,6 +49,11 @@ export function renderMotivator(root: HTMLElement, atlas: Atlas, slug: string): 
     feelingName,
     aesthetic.cite ? h("span", { class: "cite" }, aesthetic.cite) : null,
   );
+  if (m.otherNames) {
+    const text = h("p", {});
+    text.innerHTML = inline(m.otherNames); // course note text only
+    feeling.append(h("div", { class: "other-names" }, h("h3", {}, "Other names for the feeling"), text));
+  }
   linkCitations(feeling, bib);
 
   const line = h("div", { class: "bands" },

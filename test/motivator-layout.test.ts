@@ -42,4 +42,11 @@ describe("a motivator page in three bands", () => {
     expect(card.querySelector(".feeling-name")!.textContent).toBe('Challenge, "game as obstacle course".');
     expect(card.querySelector(".cite a")!.textContent).toBe("Hunicke et al. 2004");
   });
+
+  it("gives other frameworks' names for the feeling, with linked citations", () => {
+    const other = page("challenge").querySelector(".band.aesthetic .other-names")!;
+    expect(other.querySelector("h3")!.textContent).toBe("Other names for the feeling");
+    expect(other.textContent).toContain("fiero");
+    expect([...other.querySelectorAll("a.cite-link")].map((a) => a.textContent)).toContain("Lazzaro 2004a");
+  });
 });

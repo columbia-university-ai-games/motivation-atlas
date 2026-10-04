@@ -76,6 +76,7 @@ describe("parseNote", () => {
       expect(m.dynamics.length, m.slug).toBeGreaterThan(0);
       expect(m.mechanics.length, m.slug).toBeGreaterThan(0);
       expect(m.exampleLine, m.slug).not.toBe("");
+      expect(m.otherNames, m.slug).toMatch(/\(/);
     }
   });
 });

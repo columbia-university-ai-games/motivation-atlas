@@ -10,7 +10,7 @@ const evil = "<img src=x onerror=alert(1)>";
 const atlas: Atlas = {
   motivators: [{
     slug: "chance", shortName: "Chance", name: "Chance", gloss: "", namedBy: "Caillois 1961 *alea*.",
-    aesthetic: "None of MDA's eight.", dynamics: [{ text: "Surprise.", caution: false }],
+    aesthetic: "None of MDA's eight.", otherNames: "", dynamics: [{ text: "Surprise.", caution: false }],
     mechanics: [{ text: "Dice.", caution: false }, { text: "A caution: luck annoys strategists.", caution: true }],
     exampleLine: "Dice (Caillois).",
   }],

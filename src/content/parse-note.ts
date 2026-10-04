@@ -20,7 +20,7 @@ export function parseNote(markdown: string): Motivator[] {
       const name = heading[1].trim();
       const shortName = name.split(/[ ,]/)[0];
       current = {
-        slug: shortName.toLowerCase(), shortName, name, gloss: "", namedBy: "", aesthetic: "",
+        slug: shortName.toLowerCase(), shortName, name, gloss: "", namedBy: "", aesthetic: "", otherNames: "",
         dynamics: [], mechanics: [], exampleLine: "",
       };
       motivators.push(current);
@@ -37,6 +37,7 @@ export function parseNote(markdown: string): Motivator[] {
       list = null;
       if (label === "Named by") current.namedBy = rest.trim();
       else if (label === "Aesthetic") current.aesthetic = rest.trim();
+      else if (label === "Other names for the feeling") current.otherNames = rest.trim();
       else if (label === "Dynamics") list = "dynamics";
       else if (label === "Mechanics") list = "mechanics";
       else if (label === "Example games") current.exampleLine = rest.trim();

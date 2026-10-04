@@ -3,7 +3,7 @@ import { citeKey, validateContent, type ContentInput } from "../src/content/vali
 import type { Motivator } from "../src/content/types";
 
 const motivator = (slug: string, exampleLine: string): Motivator => ({
-  slug, shortName: slug[0].toUpperCase() + slug.slice(1), name: slug, gloss: "", namedBy: "", aesthetic: "x",
+  slug, shortName: slug[0].toUpperCase() + slug.slice(1), name: slug, gloss: "", namedBy: "", aesthetic: "x", otherNames: "",
   dynamics: [], mechanics: [], exampleLine,
 });
 

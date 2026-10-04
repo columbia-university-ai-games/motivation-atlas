@@ -1,7 +1,7 @@
 export interface NoteItem { text: string; caution: boolean }
 export interface Motivator {
   slug: string; shortName: string; name: string; gloss: string;
-  namedBy: string; aesthetic: string; dynamics: NoteItem[]; mechanics: NoteItem[]; exampleLine: string;
+  namedBy: string; aesthetic: string; otherNames: string; dynamics: NoteItem[]; mechanics: NoteItem[]; exampleLine: string;
 }
 export type GameKind = "video game" | "tabletop" | "activity";
 export interface Game { slug: string; title: string; kind: GameKind }

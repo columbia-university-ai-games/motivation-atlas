@@ -27,7 +27,8 @@ the rest of the note shows where each piece comes from.
 
 Each motivator below is described in the three layers of the MDA framework
 (Hunicke et al. 2004). The **aesthetic** is what the player feels, named in
-LeBlanc's terms where one exists. **Dynamics** are the patterns that emerge
+LeBlanc's terms where one exists, and the bullet after it gives the names
+other frameworks use for the same feeling. **Dynamics** are the patterns that emerge
 while the rules run. **Mechanics** are the rules and features a designer
 builds. The MDA paper draws the line between the last two with card games:
 shuffling, trick-taking, and betting are mechanics, and the bluffing that
@@ -41,6 +42,7 @@ The fiero of triumph over adversity; Koster's "learning is the drug."
 
 - **Named by:** LeBlanc *Challenge* (Hunicke et al. 2004); Bartle 1996 *Achiever*; Lazzaro 2004a *Hard Fun*; self-determination theory's *competence* (Ryan et al. 2006); Quantic Foundry *Mastery*; Koster 2013, the book's thesis (p. 40); McGonigal 2011, satisfying work and the hope of success (ch. 2); Caillois 1961 *agôn*.
 - **Aesthetic:** Challenge, "game as obstacle course" (Hunicke et al. 2004, p. 2).
+- **Other names for the feeling:** *fiero*, "personal triumph" (Lazzaro 2004a, p. 3), which Schell glosses as triumph over adversity (Schell 2019, p. 137) and McGonigal as "what we feel after we triumph over adversity" (McGonigal 2011, ch. 1); and *fun* in Koster's narrow sense, "the act of mastering a problem mentally" (Koster 2013, p. 90).
 - **Dynamics:**
   - Time pressure and opponent play (Hunicke et al. 2004, p. 3).
   - Difficulty that rises as the player's ability grows (Malone 1980, p. 54) or as the player progresses through the game (Przybylski et al. 2010, p. 155).
@@ -64,6 +66,7 @@ The fiero of triumph over adversity; Koster's "learning is the drug."
 
 - **Named by:** Bartle 1996 *Killer*; Yee 2006 *Competition*; Quantic Foundry *Competition*; Caillois 1961 *agôn*; Schell 2019, delight in another's misfortune (p. 136) and competition, the first of five reasons to play with others (p. 439).
 - **Aesthetic:** MDA has no separate aesthetic for competition, though the paper lists it among Quake's aesthetics (Hunicke et al. 2004, p. 2).
+- **Other names for the feeling:** *schadenfreude*, delight in another's misfortune, which Schell calls "an important aspect of competitive games" (Schell 2019, p. 136) and Lazzaro ties to beating "a long-term rival" (Lazzaro 2004a, p. 6).
 - **Dynamics:**
   - Adversarial play with "clear feedback about who is winning," and a winning condition every player can still believe in (Hunicke et al. 2004, p. 3).
   - Catch-up dynamics that keep trailing players in the game: subsidies for poor players and taxes on rich ones (Hunicke et al. 2004, p. 4), a negative feedback loop "that punishes the lead player" (Salen and Zimmerman 2003, ch. 24, "The Role of the Goal"), or a feedback loop that keeps racers in a "dense cluster," jockeying for position (ch. 18, "Racing Loops").
@@ -83,6 +86,7 @@ Collecting, leveling, rewards.
 
 - **Named by:** Yee 2006 *Advancement*; Quantic Foundry *Completion* and *Power*; Schell 2019 *Completion* (p. 136); the Hallfords' four reward types, glory, sustenance, access, and facility, as given in Salen and Zimmerman 2003 (ch. 24, "Rewards and Schedules"); Marczewski 2015 *Player*.
 - **Aesthetic:** None of MDA's eight.
+- **Other names for the feeling:** *completion*: "It feels good to finish something" (Schell 2019, p. 136); and McGonigal's *blissful productivity*, "the sense of being deeply immersed in work that produces immediate and obvious results," which she finds in World of Warcraft's leveling (McGonigal 2011, ch. 3).
 - **Dynamics:**
   - Goals within goals: short-term goals "generate pleasure through both of these functions: making plans as well as achieving them" (Salen and Zimmerman 2003, ch. 24, "Goals Within Goals").
   - Reward schedules: rewards that arrive after a fixed or variable number of actions, or after a fixed or variable stretch of time (Salen and Zimmerman 2003, ch. 24, "Rewards and Schedules").
@@ -104,6 +108,7 @@ Collecting, leveling, rewards.
 
 - **Named by:** LeBlanc *Discovery* (Hunicke et al. 2004); Bartle 1996 *Explorer*; Lazzaro 2004a *Easy Fun*; Schell 2019, Lens of Curiosity (p. 41) and Lens of Novelty (pp. 160 to 161); Malone 1980 *curiosity*; Quantic Foundry *Discovery*.
 - **Aesthetic:** Discovery, "game as uncharted territory" (Hunicke et al. 2004, p. 2).
+- **Other names for the feeling:** *wonder* and *mystery*, two of the emotions Lazzaro gives Easy Fun (Lazzaro 2004a, p. 4). Wonder is the response to "curious items" that amaze players with their improbability (Lazzaro 2004a, p. 6); mystery "causes the player to ask, 'what's going on?'" (Lazzaro 2004b, sec. 3a).
 - **Dynamics:**
   - Hidden information revealed bit by bit, which "seems to provoke curiosity" (Malone 1980, p. 67), as in scouting through the fog of war, where "the strategic unveiling of hidden information adds suspense and tension" (Salen and Zimmerman 2003, ch. 17, "Hiding and Revealing Systems").
   - A "rhythm of discovery" as collected coins unlock new worlds and powers in Super Mario 64 (same section).
@@ -124,6 +129,7 @@ Collecting, leveling, rewards.
 
 - **Named by:** LeBlanc *Fantasy* and *Narrative* (Hunicke et al. 2004); Caillois 1961 *mimicry*; Yee 2006 *Role-Playing*; Malone 1980 *fantasy*; Quantic Foundry *Fantasy* and *Story*; Koster 2013 *storytelling* (p. 100).
 - **Aesthetic:** Fantasy, "game as make-believe," and Narrative, "game as drama" (Hunicke et al. 2004, p. 2).
+- **Other names for the feeling:** Apter's *fiction and narrative*, in Salen and Zimmerman's paraphrase "emotional arousal from character identification" (Salen and Zimmerman 2003, ch. 24, "Typologies of Pleasure").
 - **Dynamics:**
   - Dramatic tension, from "a rising tension, a release, and a denouement" (Hunicke et al. 2004, p. 3).
   - Intrinsic fantasy, where the skill being practiced belongs to the fiction; Malone proposed that such fantasies are "both (a) more interesting and (b) more instructional" than fantasies laid on top (Malone 1980, p. 58).
@@ -142,6 +148,7 @@ Collecting, leveling, rewards.
 
 - **Named by:** LeBlanc *Expression* (Hunicke et al. 2004); Yee 2006 *Customization*; Quantic Foundry *Design*; Radoff 2021, creating order out of chaos and customizing virtual worlds; Malone and Lepper 1987 *control*; Marczewski 2015 *Free Spirit*; self-determination theory's *autonomy* (Ryan et al. 2006), which runs across several rows (see the crosswalk).
 - **Aesthetic:** Expression, "game as self-discovery" (Hunicke et al. 2004, p. 2).
+- **Other names for the feeling:** the "glowing pleasure or pride" players take in their "creations," which Lazzaro reports "even for cities and roller coasters" (Lazzaro 2004b, sec. 4d).
 - **Dynamics:**
   - Leaving a mark: expression "comes from dynamics that encourage individual users to leave their mark" (Hunicke et al. 2004, p. 3).
   - Goals the players write themselves, as in Ultima Online, where "players can author their own experiences" (Salen and Zimmerman 2003, ch. 24, "Goals Within Goals").
@@ -161,6 +168,7 @@ Collecting, leveling, rewards.
 
 - **Named by:** LeBlanc *Fellowship* (Hunicke et al. 2004); Bartle 1996 *Socialiser*; Lazzaro 2004a *The People Factor*; self-determination theory's *relatedness* (Ryan et al. 2006); McGonigal 2011, social connection (ch. 2); Yee 2006 *Social*; Quantic Foundry *Community*; Schell 2019, collaboration and meeting up (p. 439).
 - **Aesthetic:** Fellowship, "game as social framework" (Hunicke et al. 2004, p. 2).
+- **Other names for the feeling:** *naches*, "the feeling you get when someone you mentor succeeds," and *kvell*, "the emotion you feel when bragging about someone you mentor" (Koster 2013, p. 92; Lazzaro 2004a, p. 6), which McGonigal calls "vicarious pride" (McGonigal 2011, ch. 5); and *amusement*, since "people in groups laugh more than when playing alone" (Lazzaro 2004b, sec. 4a).
 - **Dynamics:**
   - Information shared within a team, and winning conditions "more difficult to achieve alone" (Hunicke et al. 2004, p. 3); tasks no one can do alone, since "collaborating and succeeding as a team is a special pleasure that can create lasting social bonds" (Schell 2019, p. 229).
   - Interdependence: classes or professions that need one another (Lazzaro 2004b, sec. 4c), or healing that works only on other players, as in Toontown (Schell 2019, p. 129).
@@ -182,6 +190,7 @@ Collecting, leveling, rewards.
 
 - **Named by:** LeBlanc *Sensation* (Hunicke et al. 2004); Caillois 1961 *ilinx*; Schell 2019 *Thrill*, "fear minus death equals fun" (p. 137); Koster 2013 *visceral reactions* (p. 90); Apter's *facing danger*, as given in Salen and Zimmerman 2003 (ch. 24, "Typologies of Pleasure"); Quantic Foundry *Excitement* and *Destruction*.
 - **Aesthetic:** Sensation, "game as sense-pleasure" (Hunicke et al. 2004, p. 2); the paper names no dynamics for it.
+- **Other names for the feeling:** *vertigo*, which Caillois describes as "a kind of voluptuous panic upon an otherwise lucid mind" (Salen and Zimmerman 2003, ch. 22, "Ludic Activities"); and Apter's *exposure to arousing stimulation*, "intense and overwhelming sensation" (Salen and Zimmerman 2003, ch. 24, "Typologies of Pleasure").
 - **Dynamics:**
   - Escalation: invaders that speed up as you destroy them (Schell 2019, p. 56), or missiles raining down until you lose (Salen and Zimmerman 2003, ch. 24, "The Role of the Goal").
   - Threat on an unpredictable schedule, as in Half-Life, where "deadly threats seem to lurk in every dark shadow" (Salen and Zimmerman 2003, ch. 24, "Rewards and Schedules").
@@ -201,6 +210,7 @@ Collecting, leveling, rewards.
 
 - **Named by:** Caillois 1961 *alea*; variable-ratio reward schedules in Salen and Zimmerman 2003 (ch. 24, "Rewards and Schedules"); randomness as a way to make the outcome uncertain (Malone 1980).
 - **Aesthetic:** None of MDA's eight, though the paper charts the odds of two six-sided dice to show how a mechanic shapes chance (Hunicke et al. 2004, p. 3).
+- **Other names for the feeling:** *surprise*, one of Schell's pleasures (Schell 2019, p. 136), which he ties to chance: "chance means uncertainty, and uncertainty means surprises" (p. 193); and hope, since in a game of chance the player need only "await, in hope and trembling, the cast of the die" (Caillois, quoted in Salen and Zimmerman 2003, ch. 15, "Chance and Game Play").
 - **Dynamics:**
   - Surprise: "chance means uncertainty, and uncertainty means surprises" (Schell 2019, p. 193).
   - Variable-ratio reinforcement, the slot machine's schedule: "The repeat play of gamblers is strong evidence of the power of variable reinforcement" (Salen and Zimmerman 2003, ch. 24, "Rewards and Schedules").
@@ -218,6 +228,7 @@ Collecting, leveling, rewards.
 
 - **Named by:** LeBlanc *Submission*, "game as pastime" in Hunicke et al. 2004 and "game as masochism" in Salen and Zimmerman 2003; Lazzaro 2004a *Altered States*; Koster 2013 *comfort* and *meditation* (p. 100); Yee 2006 *Escapism*; the recovery studies (Reinecke 2009; Koçak et al. 2024).
 - **Aesthetic:** Submission, "game as pastime" (Hunicke et al. 2004, p. 2); the paper names no dynamics for it.
+- **Other names for the feeling:** *relief*, which players seek "from emotions and thoughts prior to playing" (Lazzaro 2004b, sec. 1a); and the "hypnotic pleasure" of Bejeweled or Solitaire, Salen and Zimmerman's reading of Submission (Salen and Zimmerman 2003, ch. 24, "Typologies of Pleasure").
 - **Dynamics:**
   - Rhythmic repetition, "the meditative patterns of Tetris" (Salen and Zimmerman 2003, ch. 24, "Patterns of Pleasure").
   - The ritual of rule-based play, as in Bejeweled and Solitaire (Salen and Zimmerman 2003, ch. 24, "Typologies of Pleasure").
@@ -235,6 +246,7 @@ Collecting, leveling, rewards.
 
 - **Named by:** McGonigal 2011 *meaning* (ch. 2); Schell 2019 *Wonder* (p. 137); Marczewski 2015 *Philanthropist*.
 - **Aesthetic:** None of MDA's eight.
+- **Other names for the feeling:** *awe*, "what we feel when we recognize that we're in the presence of something bigger than ourselves" (McGonigal 2011, ch. 6), and the wonder McGonigal pairs with it, "curiosity, awe, and wonder about things that unfold on epic scales" (McGonigal 2011, ch. 2).
 - **Dynamics:**
   - Collective progress toward a vast goal: "pursuing a massive goal alongside millions of other people feels good. It feels meaningful" (McGonigal 2011, ch. 6).
   - Visible impact, as when World of Warcraft changes the world after a player's quests, so that "your actions are having a significant impact on the world" (McGonigal 2011, ch. 3).
