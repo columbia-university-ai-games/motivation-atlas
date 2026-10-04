@@ -14,9 +14,9 @@ The Atlas helps a student connect a rule to behavior observed during play and to
 
 The map and course note remain ways into that loop. Students can also enter through a short experiment, a particular gameplay moment, or a project question.
 
-The instructor requested a design covering all seven improvements from the project review: a playable entrance, annotated videos, comparison across runs, searchable game lists, contextual contribution tools, three contrasting minigames, and project hypotheses. The instructor also selected local-first operation, personal notes, and student check-ins with GitHub Actions and instructor/TA approval. Hosting comes later.
+The instructor requested a design covering all seven improvements from the project review: a playable entrance, annotated videos, comparison across runs, searchable game lists, contextual contribution tools, three contrasting minigames, and project hypotheses. The instructor also selected local-first operation, personal notes, and student commits with GitHub Actions and instructor/TA approval for merging contributions. Hosting comes later.
 
-The meaning of student check-ins is being clarified separately: ordinary content/code contributions, selected project notes, or a small structured progress record. Section 10 defines the common review boundary; no submission of personal notes is assumed.
+The instructor clarified that “check-ins” meant commits: students must be able to contribute code and content to this repository. Student reflections remain on CourseWorks. Optional local notes support exploration and project planning; they are not repository submissions or a replacement reflection workflow. Section 10 defines the contribution and review boundary.
 
 ### Three uses
 
@@ -157,7 +157,7 @@ Use the short prompt:
 
 After a playtest, allow actual observations, the player's reported experience, a design decision, and a build/PR reference. Keep expected and actual results separate. A hypothesis can be untested, tested, or revised, explicitly selected by the student. Preserve the earlier hypothesis when revising so the observation is not retrofitted to a new prediction.
 
-Export a concise Markdown record that can be used in the student's existing project/GDD/playtest workflow. Include a field for the student's AI-use disclosure, consistent with the published syllabus; do not invent the disclosure on their behalf. The Atlas does not replace course playtest consent, grading, Asana coordination, or the required project evidence.
+Export a concise Markdown record that can be used in the student's existing project/GDD/playtest workflow. Include a field for the student's AI-use disclosure, consistent with the published syllabus; do not invent the disclosure on their behalf. Student reflections are submitted on CourseWorks. The Atlas provides no reflection submission, review, grading, or CourseWorks synchronization. It does not replace course playtest consent, Asana coordination, or the required project evidence.
 
 ## 7. Contextual contributions
 
@@ -228,9 +228,11 @@ Content flows from repository files through build-time validation into the catal
 
 Keep rendering helpers and stylesheet tokens. Use semantic controls, visible focus, and text equivalents for graphs. The comparison host isolates failures in optional reporting so a malformed report cannot erase notes or crash the surrounding page. Unmounting must remove timers and global listeners.
 
-## 10. Student check-ins and GitHub approval
+## 10. Student commits and GitHub approval
 
 All shared changes arrive by PR. GitHub Actions provides evidence; the instructor or a designated TA approves the change. An automated pass never promotes a student interpretation to a sourced tie.
+
+Students receive repository access that allows them to clone, create their own named branches, commit, push those branches, and open or update PRs in this private repository. They do not need approval for each local commit or branch push. Merging into protected `main` requires passing checks and instructor/TA approval. Students cannot approve their own merge or bypass those protections. Verify the actual organization permissions and branch rules with a student-access account before the contribution workshop.
 
 ### Required checks
 
@@ -247,9 +249,9 @@ Protect `CODEOWNERS`, workflow definitions, the course note, and source-tie main
 
 Local test results help the contributor, but only the PR's checks and authorized review satisfy the merge gate. Run `npm test` before every push as required by AGENTS.md. Protecting a branch does not mean publishing its contents outside the current private audience.
 
-### Check-in scope decision
+### Contribution scope and CourseWorks boundary
 
-The instructor is clarifying whether selected project notes or structured progress records should join content/code contributions in this workflow. Until decided, notes remain local and exportable. The eventual decision must identify the submitted fields, reviewer audience, storage location, and whether accepted records appear in the application. No automatic submission, grading, or public student profile is included.
+Repository contributions include playthrough videos, student readings of games, students' own minigames, and page improvements under AGENTS.md. Student readings are shared mechanic-and-dynamic arguments in the catalog; they are distinct from course reflection assignments. Reflections remain on CourseWorks. Do not add reflection files, progress check-in records, or a reflection approval workflow to this repository. Local notebook records remain private to the browser and exportable for the student's own use; contribution tools never bundle them into a PR.
 
 ## 11. Delivery phases and acceptance
 
@@ -257,7 +259,7 @@ The instructor is clarifying whether selected project notes or structured progre
 | --- | --- | --- |
 | A: Find and try | Playable entrance; motivator shortcuts; qualified MDA transition wording; actionable search/list; game routes; annotate current videos; video fallback links | A new visitor reaches Pig, a named game, and a specific video moment without repository knowledge; keyboard and phone journeys pass |
 | B: Compare and keep | Focused experiment host; backward-compatible reporting; Pig adapter; comparison; local notebook and import/export | Two explicitly saved runs remain distinguishable after reload; storage/import failures preserve work; existing minigames still mount and clean up |
-| C: Contribute and review | Contextual forms; worked reading; optional video observations; GitHub check and reviewer configuration; confirmed check-in format | A student prepares a valid focused PR; invalid/protected changes fail; an authorized human review is required; no personal notes are uploaded implicitly |
+| C: Contribute and review | Contextual forms; worked reading; optional video observations; student branch/push access; GitHub check and reviewer configuration | A student commits and pushes a contribution branch, opens a valid focused PR, and can update it; invalid/protected changes fail; merging requires an authorized human review; notebook records are excluded |
 | D: Broaden play | Discovery, Fellowship, Submission games | Rules tests pass; each variant is played on phone and keyboard; players can describe the changed rule and give their own account of its effect |
 | E: Apply to projects | Hypothesis editor, revisions, links to runs and playtest findings, readable export | A student exports an intended mechanic/behavior/feeling hypothesis and later records a finding and resulting decision without overwriting the original prediction |
 
@@ -271,7 +273,7 @@ Human acceptance includes an instructor-led short demonstration, a first contrib
 
 Before approving implementation, review:
 
-1. The check-in meaning and any shared-note audience/storage decision.
+1. The student contribution workflow and instructor/TA merge controls; reflections remain on CourseWorks.
 2. The three minigame rules and whether the contrasts serve the desired teaching use.
 3. The proposed phase order and which phase should be planned first.
 
