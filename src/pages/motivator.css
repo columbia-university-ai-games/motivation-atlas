@@ -67,3 +67,4 @@ a.cite-link:hover, a.cite-link:focus-visible { color: var(--accent); }
 .section-shortcuts { display: flex; flex-wrap: wrap; gap: 8px 16px; margin: 16px 0; }
 .section-shortcuts a { padding: 10px 4px; min-height: 44px; }
 [id="play"], [id="examples"], [id="sources"], [id="contribute"] { scroll-margin-top: 16px; }
+.minigame-host button { min-height: 44px; }
