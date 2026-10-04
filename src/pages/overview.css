@@ -10,7 +10,8 @@
 .overview-tools .count { color: var(--muted); font-size: 0.9rem; font-variant-numeric: tabular-nums; flex: 1 1 320px; min-width: 0; }
 .constellation-wrap { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
 .constellation { display: block; width: 100%; height: auto; }
-.constellation text { fill: var(--ink); font-family: var(--body); }
+.constellation text { fill: var(--ink); font-family: var(--body); pointer-events: none; }
+.constellation .link { pointer-events: none; }
 .constellation .link { stroke: var(--line); stroke-width: 1.2; }
 .constellation .link.proposed { stroke-dasharray: 5 5; }
 .constellation .game circle { fill: var(--surface); stroke: var(--ink); stroke-width: 2; }
@@ -19,8 +20,10 @@
 .constellation .game text { font-size: 15px; }
 .constellation .game.single text { opacity: 0; }
 .constellation .game { cursor: pointer; outline: none; }
-.constellation .game:hover text, .constellation .game:focus text, .constellation .game.multi.lit text { opacity: 1; }
-.constellation .game:hover circle, .constellation .game:focus circle, .constellation .game.lit circle { fill: var(--accent); stroke: var(--accent); }
+.constellation .game.hover text, .constellation .game:focus text, .constellation .game.multi.lit text { opacity: 1; }
+.constellation .game.hover circle, .constellation .game:focus circle, .constellation .game.lit circle { fill: var(--accent); stroke: var(--accent); }
+.constellation .game.hover circle { r: 9; }
+.constellation .game.hover { opacity: 1 !important; }
 .constellation .hub rect { fill: var(--ink); }
 .constellation .hub text { fill: var(--surface); font: 700 18px var(--display); }
 .constellation .hub.lit rect, .constellation .hub:focus rect { fill: var(--accent); }

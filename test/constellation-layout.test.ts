@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { buildAtlas } from "../src/content/build-atlas";
 import { parseNote } from "../src/content/parse-note";
-import { filterGames, layoutConstellation, RING_ORDER, SIZE } from "../src/pages/constellation-layout";
+import { filterGames, layoutConstellation, nearestNode, RING_ORDER, SIZE } from "../src/pages/constellation-layout";
 
 const read = (p: string) => readFileSync(p, "utf8");
 const atlas = buildAtlas({
@@ -55,5 +55,19 @@ describe("filterGames", () => {
   });
   it("returns every game for an empty query", () => {
     expect(filterGames(atlas, "  ").size).toBe(atlas.games.length);
+  });
+});
+
+describe("nearestNode", () => {
+  const nodes = [
+    { slug: "a", x: 100, y: 100, motivators: [], multi: false },
+    { slug: "b", x: 120, y: 100, motivators: [], multi: false },
+  ];
+  it("snaps to the closest dot within reach", () => {
+    expect(nearestNode(nodes, 104, 103, 24)?.slug).toBe("a");
+    expect(nearestNode(nodes, 113, 100, 24)?.slug).toBe("b");
+  });
+  it("returns nothing when no dot is within reach", () => {
+    expect(nearestNode(nodes, 200, 200, 24)).toBeNull();
   });
 });

@@ -81,3 +81,14 @@ export function filterGames(atlas: Atlas, query: string): Set<string> {
   const q = query.trim().toLowerCase();
   return new Set(atlas.games.filter((g) => q === "" || g.title.toLowerCase().includes(q)).map((g) => g.slug));
 }
+
+/** The dot closest to (x, y), if any lies within maxDist, in drawing units. */
+export function nearestNode(nodes: NodePos[], x: number, y: number, maxDist: number): NodePos | null {
+  let best: NodePos | null = null;
+  let bestDist = maxDist;
+  for (const n of nodes) {
+    const d = Math.hypot(n.x - x, n.y - y);
+    if (d <= bestDist) { best = n; bestDist = d; }
+  }
+  return best;
+}

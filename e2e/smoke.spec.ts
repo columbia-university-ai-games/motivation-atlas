@@ -31,7 +31,7 @@ for (const [path, heading] of pages) {
 
 test("a game card opens from the map", async ({ page }) => {
   await page.goto("/#/");
-  await page.locator('g.game[data-game="halo"]').click();
+  await page.locator('g.game[data-game="halo"] circle').click();
   await expect(page.locator("dialog h2")).toHaveText("Halo");
 });
 
@@ -39,4 +39,23 @@ test("Pig plays a roll", async ({ page }) => {
   await page.goto("/#/m/chance");
   await page.locator("[data-roll]").click();
   await expect(page.locator(".pig-die")).not.toHaveText("–");
+});
+
+test("aiming near a dot, not exactly on it, lights and opens that game", async ({ page }) => {
+  await page.goto("/#/");
+  const near = async (slug: string) => {
+    const dot = page.locator(`g.game[data-game="${slug}"] circle`);
+    await dot.scrollIntoViewIfNeeded();
+    const box = (await dot.boundingBox())!;
+    return { x: box.x + box.width / 2 + 5, y: box.y + box.height / 2 + 4 };
+  };
+  for (const slug of ["halo", "dark-souls"]) {
+    const { x, y } = await near(slug);
+    await page.mouse.move(x, y);
+    await expect(page.locator(`g.game[data-game="${slug}"]`)).toHaveClass(/hover/);
+    await expect(page.locator(`g.game[data-game="${slug}"] text`)).toHaveCSS("opacity", "1");
+  }
+  const { x, y } = await near("dark-souls");
+  await page.mouse.click(x, y);
+  await expect(page.locator("dialog h2")).toHaveText("Dark Souls");
 });

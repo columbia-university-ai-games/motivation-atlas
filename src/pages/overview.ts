@@ -1,6 +1,6 @@
 import type { Atlas } from "../content/types";
 import { h, s } from "../lib/dom";
-import { filterGames, layoutConstellation, SIZE } from "./constellation-layout";
+import { filterGames, layoutConstellation, nearestNode, SIZE } from "./constellation-layout";
 import "./overview.css";
 
 export function renderOverview(root: HTMLElement, atlas: Atlas, openGame: (slug: string) => void): () => void {
@@ -60,7 +60,6 @@ export function renderOverview(root: HTMLElement, atlas: Atlas, openGame: (slug:
       s("circle", { cx: n.x, cy: n.y, r: n.multi ? 7 : 5 }),
       s("text", { x: spot.x, y: spot.y, "text-anchor": spot.anchor }, game.title),
     );
-    node.addEventListener("click", () => openGame(n.slug));
     node.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openGame(n.slug); } });
     games.append(node);
   }
@@ -77,6 +76,31 @@ export function renderOverview(root: HTMLElement, atlas: Atlas, openGame: (slug:
     a.addEventListener("blur", () => setActive(null));
     hubLayer.append(a);
   }
+
+  // The pointer snaps to the nearest dot, so a reader need not land on a 5-pixel circle exactly.
+  const REACH = 22;
+  const nodeEls = new Map([...games.querySelectorAll<SVGGElement>("g.game")].map((el) => [el.dataset.game!, el]));
+  let hovered: string | null = null;
+  function setHover(slug: string | null): void {
+    if (slug === hovered) return;
+    if (hovered) nodeEls.get(hovered)?.classList.remove("hover");
+    hovered = slug;
+    if (slug) nodeEls.get(slug)?.classList.add("hover");
+    svg.style.cursor = slug ? "pointer" : "";
+  }
+  function nodeAt(e: PointerEvent | MouseEvent): string | null {
+    if ((e.target as Element).closest("a.hub")) return null;
+    const ctm = svg.getScreenCTM();
+    if (!ctm) return null;
+    const p = new DOMPoint(e.clientX, e.clientY).matrixTransform(ctm.inverse());
+    return nearestNode(nodes, p.x, p.y, REACH)?.slug ?? null;
+  }
+  svg.addEventListener("pointermove", (e) => setHover(nodeAt(e)));
+  svg.addEventListener("pointerleave", () => setHover(null));
+  svg.addEventListener("click", (e) => {
+    const slug = nodeAt(e);
+    if (slug) openGame(slug);
+  });
 
   let active: string | null = null;
   function setActive(slug: string | null): void {
