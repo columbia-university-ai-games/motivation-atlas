@@ -43,3 +43,18 @@
   border: 1px solid var(--line); border-radius: 999px; padding: 6px 14px; background: var(--surface);
 }
 .motivator-list a:hover, .motivator-list a:focus-visible { border-color: var(--accent); color: var(--accent); }
+.overview [hidden] { display: none !important; }
+.overview-tools button, .overview-tools select {
+  font: inherit; color: var(--ink); background: var(--surface); border: 1px solid var(--line);
+  border-radius: 6px; padding: 10px; min-height: 44px; max-width: 100%;
+}
+.overview-tools label { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.overview-tools [aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
+.constellation .hub { cursor: pointer; }
+.constellation .hub:focus-visible rect { stroke: var(--accent); stroke-width: 5px; }
+.catalog-results { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+.catalog-results > li { padding: 16px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); min-width: 0; overflow-wrap: anywhere; }
+.catalog-results > li > a { font: 600 1.1rem var(--display); }
+.catalog-results p { margin: 6px 0; }
+.catalog-results ul { padding-left: 20px; }
+.map-results { grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); }

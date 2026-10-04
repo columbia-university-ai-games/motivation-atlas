@@ -4,7 +4,6 @@ import { renderExperiment } from "./pages/experiment";
 import { renderExperiments } from "./pages/experiments";
 import { renderGame } from "./pages/game";
 import { renderAbout } from "./pages/about";
-import { closeGameCard, openGameCard } from "./pages/game-card";
 import { renderMotivator } from "./pages/motivator";
 import { renderNote } from "./pages/note";
 import { renderNotFound } from "./pages/not-found";
@@ -22,7 +21,6 @@ function renderContentError(root: HTMLElement, err: ContentError): () => void {
 }
 
 export function renderRoute(root: HTMLElement, hash: string): () => void {
-  closeGameCard();
   const route = parseRoute(hash);
   if (route.page === "note") return renderNote(root);
   if (route.page === "about") return renderAbout(root);
@@ -38,5 +36,5 @@ export function renderRoute(root: HTMLElement, hash: string): () => void {
   }
   if (route.page === "game") return renderGame(root, atlas, route.slug);
   if (route.page === "motivator") return renderMotivator(root, atlas, route.slug);
-  return renderOverview(root, atlas, (slug) => openGameCard(slug, atlas));
+  return renderOverview(root, atlas, hash);
 }

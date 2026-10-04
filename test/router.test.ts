@@ -24,3 +24,8 @@ it("recognizes shareable game URLs and rejects malformed slugs", () => {
   expect(parseRoute("#/g/halo")).toEqual({ page: "game", slug: "halo" });
   for (const path of ["/g/Halo", "/g/halo/extra", "/g/"]) expect(parseRoute(`#${path}`)).toEqual({ page: "notfound", path });
 });
+
+it("recognizes paths independently of query parameters", () => {
+  expect(parseRoute("#/?q=Halo&view=list")).toEqual({ page: "overview" });
+  expect(parseRoute("#/m/chance?section=play")).toEqual({ page: "motivator", slug: "chance" });
+});

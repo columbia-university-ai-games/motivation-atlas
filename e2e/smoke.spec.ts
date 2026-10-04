@@ -29,10 +29,10 @@ for (const [path, heading] of pages) {
   });
 }
 
-test("a game card opens from the map", async ({ page }) => {
-  await page.goto("/#/");
+test("a game page opens from the map", async ({ page }) => {
+  await page.goto("/#/?view=map");
   await page.locator('g.game[data-game="halo"] circle').click();
-  await expect(page.locator("dialog h2")).toHaveText("Halo");
+  await expect(page.locator("h1")).toHaveText("Halo");
 });
 
 test("Pig plays a roll", async ({ page }) => {
@@ -42,7 +42,7 @@ test("Pig plays a roll", async ({ page }) => {
 });
 
 test("aiming near a dot, not exactly on it, lights and opens that game", async ({ page }) => {
-  await page.goto("/#/");
+  await page.goto("/#/?view=map");
   const near = async (slug: string) => {
     const dot = page.locator(`g.game[data-game="${slug}"] circle`);
     await dot.scrollIntoViewIfNeeded();
@@ -57,5 +57,5 @@ test("aiming near a dot, not exactly on it, lights and opens that game", async (
   }
   const { x, y } = await near("dark-souls");
   await page.mouse.click(x, y);
-  await expect(page.locator("dialog h2")).toHaveText("Dark Souls");
+  await expect(page.locator("h1")).toHaveText("Dark Souls");
 });
