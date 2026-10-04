@@ -17,6 +17,14 @@ describe("renderRoute", () => {
     expect(r.querySelector("h1")!.textContent).toBe("About the Atlas");
   });
 
+  it("lists every motivator as a link under the map, for phones and screen readers", () => {
+    const r = root();
+    renderRoute(r, "#/");
+    const links = [...r.querySelectorAll<HTMLAnchorElement>(".motivator-list a")].map((a) => a.getAttribute("href"));
+    expect(links).toHaveLength(11);
+    expect(links).toContain("#/m/chance");
+  });
+
   it("renders not found for an unknown path", () => {
     const r = root();
     renderRoute(r, "#/elsewhere");

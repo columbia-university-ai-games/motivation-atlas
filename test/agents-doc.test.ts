@@ -14,6 +14,10 @@ describe("AGENTS.md", () => {
     const scripts = [...doc.matchAll(/npm run ([a-z0-9:-]+)/g)].map((m) => m[1]);
     for (const s of scripts) expect(pkg.scripts[s], `npm run ${s}`).toBeDefined();
   });
+  it("tells students to sign in to GitHub and to open PRs with the template", () => {
+    expect(doc).toContain("gh auth login");
+    expect(doc).not.toContain("--fill");
+  });
   it("uses no em dashes", () => {
     expect(doc).not.toContain("—");
   });

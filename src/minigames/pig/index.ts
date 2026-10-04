@@ -84,8 +84,9 @@ function mount(el: HTMLElement): () => void {
     turn.textContent = String(state.turnTotal);
     status.textContent = message();
     const yourTurn = state.current === 0 && state.winner === null;
-    rollBtn.disabled = !yourTurn;
-    holdBtn.disabled = !yourTurn || !options.pushYourLuck || state.turnTotal === 0;
+    // aria-disabled instead of disabled: a disabled button drops keyboard focus every time the bot moves.
+    rollBtn.setAttribute("aria-disabled", String(!yourTurn));
+    holdBtn.setAttribute("aria-disabled", String(!yourTurn || !options.pushYourLuck || state.turnTotal === 0));
     drawSpark();
     const changes = leadChanges(state.leadHistory);
     leadText.textContent = `The lead has changed hands ${changes} ${changes === 1 ? "time" : "times"}.`;

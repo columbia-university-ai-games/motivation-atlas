@@ -34,3 +34,9 @@
 @media (prefers-reduced-motion: no-preference) {
   .constellation .game, .constellation .link { transition: opacity 0.15s; }
 }
+.motivator-list { display: flex; flex-wrap: wrap; gap: 8px; }
+.motivator-list a {
+  font: 600 0.95rem var(--display); color: var(--ink); text-decoration: none;
+  border: 1px solid var(--line); border-radius: 999px; padding: 6px 14px; background: var(--surface);
+}
+.motivator-list a:hover, .motivator-list a:focus-visible { border-color: var(--accent); color: var(--accent); }

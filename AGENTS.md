@@ -26,9 +26,11 @@ and they must name the mechanic and the dynamic that carry the motivator.
 
 ## Run it
 
-You need Node 22.18 or later (`node --version`) and the GitHub CLI.
+You need Node 22.18 or later (`node --version`) and the GitHub CLI. The
+repository is private, so sign in to GitHub once before you clone it.
 
 ```bash
+gh auth login
 gh repo clone columbia-university-ai-games/motivation-atlas
 cd motivation-atlas
 npm install
@@ -195,8 +197,9 @@ one.
 
 1. Make a branch named `your-github-username/short-topic`:
    `git switch -c your-github-username/pig-variant`.
-2. Commit, push, and open a pull request: `gh pr create --fill`. The
-   template asks which motivator, which mechanic, and what dynamic you saw.
+2. Commit, push, and open a pull request with `gh pr create`. Write a
+   title, then choose to edit the body: it opens with the template, which
+   asks which motivator, which mechanic, and what dynamic you saw.
 3. CI runs the tests and the build. The instructor or a TA reviews and
    merges. You cannot push to `main` directly; that is on purpose.
 4. Keep pull requests small: one video batch, one reading, or one minigame

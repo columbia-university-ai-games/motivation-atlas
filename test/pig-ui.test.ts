@@ -29,7 +29,9 @@ describe("Pig on the page", () => {
     vi.spyOn(Math, "random").mockReturnValue(0); // die 1: you bust, the bot starts
     const { q, unmount, el } = setup();
     q<HTMLButtonElement>("[data-roll]").click();
-    expect(q<HTMLButtonElement>("[data-roll]").disabled).toBe(true);
+    // Roll stays focusable so keyboard players keep their place; it is marked unavailable instead.
+    expect(q<HTMLButtonElement>("[data-roll]").disabled).toBe(false);
+    expect(q("[data-roll]").getAttribute("aria-disabled")).toBe("true");
     q<HTMLButtonElement>("[data-roll]").click();
     expect(q("[data-score='0']").textContent).toBe("0");
     expect(vi.getTimerCount()).toBe(1);

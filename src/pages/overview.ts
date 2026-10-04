@@ -121,6 +121,8 @@ export function renderOverview(root: HTMLElement, atlas: Atlas, openGame: (slug:
       count,
     ),
     h("div", { class: "constellation-wrap" }, svg),
+    h("nav", { class: "motivator-list", "aria-label": "The eleven motivators" },
+      ...hubs.map((hub) => h("a", { href: `#/m/${hub.slug}` }, hub.shortName))),
     h("p", { class: "legend" },
       h("span", { class: "key sourced" }), "Tied by a cited source ",
       hasProposals ? h("span", { class: "key proposed" }) : null, hasProposals ? "Proposed by a student" : null,
