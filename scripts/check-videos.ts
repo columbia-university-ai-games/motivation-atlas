@@ -1,8 +1,12 @@
 import { readFileSync } from "node:fs";
 import { classifyOembed } from "../src/content/oembed.ts";
-import type { Video } from "../src/content/types.ts";
+import { readVideos } from "../src/content/csv.ts";
 
-const videos: Video[] = JSON.parse(readFileSync(new URL("../content/videos.json", import.meta.url), "utf8"));
+const { videos, errors } = readVideos(readFileSync(new URL("../content/videos.csv", import.meta.url), "utf8"));
+if (errors.length) {
+  console.error(errors.join("\n"));
+  process.exit(1);
+}
 let failed = 0;
 
 for (const video of videos) {

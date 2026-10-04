@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { citationKeysIn, parseBibliography } from "../src/content/bibliography";
+import { applySourceLinks, citationKeysIn, parseBibliography } from "../src/content/bibliography";
 import { parseNote } from "../src/content/parse-note";
 
 const note = readFileSync("content/player-motivations.md", "utf8");
@@ -43,5 +43,27 @@ describe("citationKeysIn", () => {
   it("finds author-year citations and ignores game titles with numbers", () => {
     expect(citationKeysIn("Halo 3 and Super Mario 64 (Ryan et al. 2006; Lazzaro 2004a, p. 3)")).toEqual(["Ryan et al. 2006", "Lazzaro 2004a"]);
     expect(citationKeysIn("Caillois, as summarized in Salen and Zimmerman 2003, ch. 22")).toEqual(["Salen and Zimmerman 2003"]);
+  });
+});
+
+describe("applySourceLinks", () => {
+  it("replaces a citation's link and keeps the rest", () => {
+    const { bibliography, errors } = applySourceLinks(bib, [{ key: "Schell 2019", url: "https://example.com/schell", note: "" }]);
+    expect(errors).toEqual([]);
+    const schell = bibliography.find((e) => e.key === "Schell 2019")!;
+    expect(schell.url).toBe("https://example.com/schell");
+    expect(schell.kind).toBe("team");
+    expect(bibliography.find((e) => e.key === "Yee 2006")!.url).toBe(byKey.get("Yee 2006")!.url);
+  });
+
+  it("rejects a key the note never cites and a link that is not a web address", () => {
+    const { errors } = applySourceLinks(bib, [
+      { key: "Schell 2020", url: "https://example.com", note: "" },
+      { key: "Koster 2013", url: "file:///book.pdf", note: "" },
+    ]);
+    expect(errors).toEqual([
+      'content/sources.csv row 2: no bibliography entry is cited as "Schell 2020"',
+      'content/sources.csv row 3 (Koster 2013): the url must start with https://',
+    ]);
   });
 });

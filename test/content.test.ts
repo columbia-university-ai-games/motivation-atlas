@@ -1,18 +1,19 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { parseNote } from "../src/content/parse-note";
-import { validateContent } from "../src/content/validate";
+import { loadContent } from "../src/content/load";
 
 const read = (path: string) => readFileSync(path, "utf8");
 
 describe("the repository's content", () => {
   it("passes every check", () => {
-    const errors = validateContent({
-      motivators: parseNote(read("content/player-motivations.md")),
-      gamesFile: JSON.parse(read("content/games.json")),
-      proposals: JSON.parse(read("content/proposals.json")),
-      videos: JSON.parse(read("content/videos.json")),
+    const { errors, input } = loadContent({
+      note: read("content/player-motivations.md"),
+      gamesJson: read("content/games.json"),
+      proposalsJson: read("content/proposals.json"),
+      videosCsv: read("content/videos.csv"),
+      sourcesCsv: read("content/sources.csv"),
     });
     expect(errors).toEqual([]);
+    expect(input.videos.length).toBeGreaterThan(10);
   });
 });

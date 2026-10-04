@@ -1,12 +1,11 @@
-import gamesFile from "../../content/games.json";
-import proposals from "../../content/proposals.json";
-import videos from "../../content/videos.json";
+import gamesJson from "../../content/games.json?raw";
 import note from "../../content/player-motivations.md?raw";
-import { parseBibliography } from "./bibliography";
+import proposalsJson from "../../content/proposals.json?raw";
+import sourcesCsv from "../../content/sources.csv?raw";
+import videosCsv from "../../content/videos.csv?raw";
 import { buildAtlas } from "./build-atlas";
-import { parseNote } from "./parse-note";
-import type { Atlas, GamesFile, Proposal, Video } from "./types";
-import { validateContent, type ContentInput } from "./validate";
+import { loadContent } from "./load";
+import type { Atlas } from "./types";
 
 export const noteText: string = note;
 
@@ -22,19 +21,8 @@ let cached: Atlas | null = null;
 
 export function loadAtlas(): Atlas {
   if (cached) return cached;
-  let input: ContentInput;
-  try {
-    input = {
-      motivators: parseNote(note),
-      gamesFile: gamesFile as GamesFile,
-      proposals: proposals as unknown as Proposal[],
-      videos: videos as unknown as Video[],
-    };
-  } catch (err) {
-    throw new ContentError([(err as Error).message]);
-  }
-  const errors = validateContent(input);
+  const { input, bibliography, errors } = loadContent({ note, gamesJson, proposalsJson, videosCsv, sourcesCsv });
   if (errors.length) throw new ContentError(errors);
-  cached = { ...buildAtlas(input), bibliography: parseBibliography(note) };
+  cached = { ...buildAtlas(input), bibliography };
   return cached;
 }

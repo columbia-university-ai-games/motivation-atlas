@@ -4,7 +4,7 @@ export interface BibEntry {
   title: string;
   /** Where a student can read it: a free copy, the publisher, or a Columbia Libraries search. Empty if none. */
   url: string;
-  kind: "free" | "publisher" | "library" | "none";
+  kind: "free" | "publisher" | "library" | "team" | "none";
 }
 
 const YEAR = String.raw`(?:19|20)\d{2}[a-z]?|n\.d\.`;
@@ -66,4 +66,27 @@ export function parseBibliography(markdown: string): BibEntry[] {
     }
   }
   return entries;
+}
+
+/** Apply the team's link overrides from content/sources.csv; the note still decides what is cited. */
+export function applySourceLinks(
+  bibliography: BibEntry[],
+  sources: Array<{ key: string; url: string; note?: string }>,
+): { bibliography: BibEntry[]; errors: string[] } {
+  const errors: string[] = [];
+  const overrides = new Map<string, string>();
+  sources.forEach((s, i) => {
+    const row = i + 2;
+    if (!bibliography.some((e) => e.key === s.key)) {
+      errors.push(`content/sources.csv row ${row}: no bibliography entry is cited as "${s.key}"`);
+    } else if (!/^https?:\/\//.test(s.url)) {
+      errors.push(`content/sources.csv row ${row} (${s.key}): the url must start with https://`);
+    } else {
+      overrides.set(s.key, s.url);
+    }
+  });
+  return {
+    bibliography: bibliography.map((e) => (overrides.has(e.key) ? { ...e, url: overrides.get(e.key)!, kind: "team" as const } : e)),
+    errors,
+  };
 }

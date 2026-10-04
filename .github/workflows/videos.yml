@@ -1,10 +1,10 @@
 name: Videos
 on:
   pull_request:
-    paths: [content/videos.json]
+    paths: [content/videos.csv]
   push:
     branches: [main]
-    paths: [content/videos.json]
+    paths: [content/videos.csv]
 jobs:
   check-videos:
     runs-on: ubuntu-latest

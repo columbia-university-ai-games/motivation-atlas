@@ -81,7 +81,8 @@ with `git switch -` (or `git switch your-github-username/short-topic`).
 | `content/player-motivations.md` | A copy of the course note. The motivator pages are built from it. | **Never.** The instructor updates it. |
 | `content/games.json` | Every game, and the ties the note makes between games and motivators | Add a game when you propose a tie for it; never add or change a tie |
 | `content/proposals.json` | Student readings: a game, a motivator, the mechanic and the dynamic | Yes |
-| `content/videos.json` | Playthrough videos, one entry per video | Yes |
+| `content/videos.csv` | Playthrough videos, one row per video | Yes |
+| `content/sources.csv` | Where a citation's link should go, when the bibliography's link is not the best one | Yes |
 | `src/minigames/` | One folder per minigame, plus `src/minigames/registry.ts` | Yes, your own folder and one line in the registry |
 | `src/minigames/_template/` | A tiny working minigame to copy | Copy it; do not edit it |
 | `src/pages/` | The map, motivator pages, note and about pages | Yes, for look and interaction improvements |
@@ -97,16 +98,40 @@ with `git switch -` (or `git switch your-github-username/short-topic`).
 2. Get its title and channel exactly as YouTube reports them by opening
    `https://www.youtube.com/oembed?format=json&url=https://www.youtube.com/watch?v=VIDEO_ID`
    in your browser.
-3. Add an entry to `content/videos.json`. The game must already be in
-   `content/games.json`; use its `slug`.
+3. Add a row to `content/videos.csv`. The game must already be in
+   `content/games.json`; use its `slug`. The columns are:
 
-   ```json
-   { "game": "myst", "youtubeId": "VIDEO_ID", "title": "Title from oEmbed", "channel": "author_name from oEmbed", "start": 95, "watchFor": "The first time the island's machinery responds to a switch" }
-   ```
+   | game | youtubeId | title | channel | start | watchFor |
+   | --- | --- | --- | --- | --- | --- |
+   | myst | VIDEO_ID | title from oEmbed | author_name from oEmbed | 95 | The first time the island's machinery responds to a switch |
 
    `start` (seconds) and `watchFor` (one line on where the motivator shows)
-   are optional and make the video far more useful.
+   are optional and make the video far more useful; leave a cell empty to
+   skip it. The easiest way to edit the file is on GitHub: open
+   `content/videos.csv`, choose the pencil icon, add your row, and propose
+   the change, which opens a pull request. A spreadsheet works too (import
+   the file, then download it as CSV). In a plain text editor, put any cell
+   that contains a comma inside double quotes, and double any quote inside
+   it: `"Tetris, the ""classic"""`.
 4. Run `npm run check-videos` and `npm test`.
+
+### Fix where a citation links
+
+Every citation on the site links to its source. The link comes from the
+course note's bibliography: a free copy of a paper if one exists, otherwise
+the publisher, and for books a Columbia Libraries search. When you find a
+better link (a direct e-book page in the library, a free copy the note does
+not list), add a row to `content/sources.csv`:
+
+| key | url | note |
+| --- | --- | --- |
+| Schell 2019 | https://… | Library e-book, chapter view |
+
+`key` is the citation exactly as the site shows it ("Schell 2019",
+"Salen and Zimmerman 2003", "Quantic Foundry reference sheet"). The row
+changes only where that citation's link goes; what the note cites stays the
+note's decision. `npm test` rejects a key the note never cites and a link
+that is not a web address.
 
 ### Propose a tie (a student reading)
 
@@ -201,7 +226,7 @@ code, its rules engine and its README.
 
 Pages live in `src/pages/`, one TypeScript file and one stylesheet each.
 Keep three things true: text that came from `proposals.json` or
-`videos.json` is set with `textContent` (the `h` helper in
+`videos.csv` is set with `textContent` (the `h` helper in
 `src/lib/dom.ts` does this for you) and never with `innerHTML`; colors
 come from the tokens in `src/styles.css` so both light and dark modes
 work; and every page fits a phone screen. `npm run e2e` checks the last

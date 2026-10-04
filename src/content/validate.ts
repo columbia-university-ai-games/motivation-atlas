@@ -78,7 +78,7 @@ export function validateContent(input: ContentInput): string[] {
 
   const videoKeys = new Set<string>();
   input.videos.forEach((v, i) => {
-    const where = `content/videos.json [${i}] (${v.game})`;
+    const where = `content/videos.csv row ${i + 2} (${v.game})`;
     if (!gameSlugs.has(v.game)) errors.push(`${where}: no game with slug "${v.game}"`);
     if (typeof v.youtubeId !== "string" || !YOUTUBE_ID.test(v.youtubeId)) errors.push(`${where}: youtubeId "${v.youtubeId}" is not an 11-character YouTube id`);
     if (!filled(v.title)) errors.push(`${where}: title is empty`);

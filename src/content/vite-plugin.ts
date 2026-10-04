@@ -1,25 +1,20 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import type { Plugin } from "vite";
-import { parseNote } from "./parse-note.ts";
-import { validateContent } from "./validate.ts";
+import { loadContent } from "./load.ts";
 
 export function contentCheck(root: string = process.cwd()): Plugin {
   return {
     name: "content-check",
     buildStart() {
       const read = (file: string) => readFileSync(join(root, file), "utf8");
-      let errors: string[];
-      try {
-        errors = validateContent({
-          motivators: parseNote(read("content/player-motivations.md")),
-          gamesFile: JSON.parse(read("content/games.json")),
-          proposals: JSON.parse(read("content/proposals.json")),
-          videos: JSON.parse(read("content/videos.json")),
-        });
-      } catch (err) {
-        errors = [(err as Error).message];
-      }
+      const { errors } = loadContent({
+        note: read("content/player-motivations.md"),
+        gamesJson: read("content/games.json"),
+        proposalsJson: read("content/proposals.json"),
+        videosCsv: read("content/videos.csv"),
+        sourcesCsv: read("content/sources.csv"),
+      });
       if (errors.length) this.error(`Content check failed:\n- ${errors.join("\n- ")}`);
     },
   };
