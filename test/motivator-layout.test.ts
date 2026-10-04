@@ -14,8 +14,8 @@ describe("a motivator page in three bands", () => {
     const bands = [...root.querySelectorAll(".band")].map((b) => b.querySelector("h2")!.textContent);
     expect(bands).toEqual(["Mechanics", "Dynamics", "Aesthetic"]);
     expect([...root.querySelectorAll(".band-arrow")].map((a) => a.textContent)).toEqual([
-      "which, while the game runs, produce",
-      "which players feel as",
+      "can give rise to",
+      "which players may experience as",
     ]);
   });
 
@@ -49,4 +49,13 @@ describe("a motivator page in three bands", () => {
     expect(other.textContent).toContain("fiero");
     expect([...other.querySelectorAll("a.cite-link")].map((a) => a.textContent)).toContain("Lazzaro 2004a");
   });
+});
+
+it("links shortcuts to focusable sections and provides a real contributor guide", () => {
+  const root = page("challenge");
+  for (const section of ["play", "examples", "sources"]) {
+    expect(root.querySelector(`a[href="#/m/challenge?section=${section}"]`)).not.toBeNull();
+    expect(root.querySelector(`#${section}`)?.getAttribute("tabindex")).toBe("-1");
+  }
+  expect(root.querySelector('a[href$="/AGENTS.md"]')).not.toBeNull();
 });

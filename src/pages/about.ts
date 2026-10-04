@@ -18,7 +18,8 @@ export function renderAbout(root: HTMLElement): () => void {
     h("p", {}, "A solid line from a game to a motivator means a cited source ties them together, and the game card names that source. The note's rule holds here: a game appears under a motivator only when a source attaches it there. A dashed line is a student reading: a classmate's argument, naming the mechanic and the dynamic that carry the motivator. Read those as hypotheses to test, the way your playtests treat intended motivations."),
     h("h2", {}, "Reading the citations"),
     h("p", {}, "Citations give author and year; the full bibliography is at the end of the note. Rules of Play and Reality Is Broken are cited by chapter because their print and ebook page numbers differ."),
-    h("h2", {}, "Adding to it"),
+    h("h2", { id: "contribute", tabindex: -1 }, "Adding to it"),
+    h("p", {}, h("a", { href: "https://github.com/columbia-university-ai-games/motivation-atlas/blob/main/AGENTS.md" }, "Open the contributor guide"), ". This is a private repository; sign in with the GitHub account given course access."),
     h("p", {}, "Everything here is files in the repository: videos, student readings and minigames. AGENTS.md at the top of the repository explains how to add each one and send it in as a pull request."),
     h("p", {}, h("a", { href: "#/note" }, "Read the note"), " or ", h("a", { href: "#/" }, "go back to the map"), "."),
   );

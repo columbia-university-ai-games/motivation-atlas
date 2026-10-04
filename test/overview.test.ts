@@ -63,3 +63,11 @@ it("excludes proposed-only games from focus and pointer candidates and selects h
   expect(root.querySelector('a[data-open-motivator]')?.getAttribute("href")).toBe("#/m/chance");
   vi.unstubAllGlobals();
 });
+
+it("offers playable and catalog entrances without deferred feature links", () => {
+  cleanup = renderRoute(root, "#/");
+  expect(root.querySelector('a[href="#/play/pig"]')).not.toBeNull();
+  root.querySelector<HTMLButtonElement>("[data-explore]")!.click();
+  expect(document.activeElement?.id).toBe("game-search");
+  expect(root.querySelector('a[href^="#/notebook"]')).toBeNull();
+});

@@ -59,12 +59,15 @@ export function renderMotivator(root: HTMLElement, atlas: Atlas, slug: string): 
   const line = h("div", { class: "bands" },
     band("mechanics", "Mechanics", "The rules a designer builds.",
       h("ul", {}, ...m.mechanics.map((item) => station("mechanics", item, bib)))),
-    h("p", { class: "band-arrow" }, "which, while the game runs, produce"),
+    h("p", { class: "band-arrow" }, "can give rise to"),
     band("dynamics", "Dynamics", "What emerges when players meet those rules.",
       h("ul", {}, ...m.dynamics.map((item) => station("dynamics", item, bib)))),
-    h("p", { class: "band-arrow" }, "which players feel as"),
+    h("p", { class: "band-arrow" }, "which players may experience as"),
     band("aesthetic", "Aesthetic", "What the player feels.", feeling),
   );
+
+  const sourceHeading = line.querySelector("h2")!;
+  sourceHeading.id = "sources"; sourceHeading.tabIndex = -1;
 
   const games = atlas.games.filter((g) => g.links.some((l) => l.kind === "sourced" && l.motivator === slug));
   const readings = atlas.games.flatMap((g) => g.links
@@ -87,7 +90,7 @@ export function renderMotivator(root: HTMLElement, atlas: Atlas, slug: string): 
   const cleanups: Array<() => void> = [];
   const found = minigamesFor(slug);
   if (found.length === 0) {
-    minigameSlot.append(h("p", { class: "muted" }, "No minigame yet. See AGENTS.md to make one."));
+    minigameSlot.append(h("p", { class: "muted" }, "No minigame yet. ", h("a", { href: "https://github.com/columbia-university-ai-games/motivation-atlas/blob/main/AGENTS.md" }, "Make a minigame with the contributor guide"), "."));
   } else {
     for (const game of found) {
       const view = presentMinigame(game);
@@ -99,12 +102,13 @@ export function renderMotivator(root: HTMLElement, atlas: Atlas, slug: string): 
   const page = h("article", { class: "page motivator" },
     h("p", { class: "tag" }, h("a", { href: "#/" }, "Map"), " / motivator"),
     h("h1", {}, m.name),
+    h("nav", { class: "section-shortcuts", "aria-label": "On this page" }, ...["play", "examples", "sources"].map(section => h("a", { href: `#/m/${slug}?section=${section}` }, section.charAt(0).toUpperCase() + section.slice(1)))),
     m.gloss ? h("p", { class: "gloss" }, m.gloss) : null,
     namedBy,
     line,
-    h("h2", {}, "Play with it"),
+    h("h2", { id: "play", tabindex: -1 }, "Play with it"),
     minigameSlot,
-    h("h2", {}, "Example games"),
+    h("h2", { id: "examples", tabindex: -1 }, "Example games"),
     gameList,
     readings.length ? h("h2", {}, "Student readings") : null,
     readings.length ? h("ul", { class: "readings" }, ...readings.map(({ game, link }) => h("li", {},

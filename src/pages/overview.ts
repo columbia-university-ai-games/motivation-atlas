@@ -177,12 +177,16 @@ export function renderOverview(root: HTMLElement, atlas: Atlas, hash = location.
   clear.addEventListener("click", () => { state.motivator = null; apply(true); });
   reset.addEventListener("click", () => { state = { query: "", motivator: null, relationship: "all", videosOnly: false, view: state.view }; apply(true); search.focus(); });
 
+  const explore = h("button", { type: "button", "data-explore": "" }, "Explore games and examples");
+  explore.addEventListener("click", () => { search.focus(); search.scrollIntoView?.({ block: "start" }); });
+
   const page = h("section", { class: "overview" },
     h("div", { class: "overview-intro" },
       h("h1", {}, "Why people play"),
       h("p", {}, "Eleven motivators, the course note's own synthesis of many frameworks, and the games its sources tie to each. The groups overlap: one game can serve several motivators, and one player can want different things on different days. A game linked to several motivators sits between them. Select a motivator to find its games, then open its page to explore mechanics, dynamics, and aesthetic."),
     ),
-    h("div", { class: "overview-tools" },
+    h("div", { class: "overview-tools entrance" }, h("a", { href: "#/play/pig" }, "Try a two-minute experiment"), explore),
+    h("div", { class: "overview-tools", id: "catalog" },
       search,
       h("label", { for: "motivator-filter" }, "Motivator ", motivator),
       h("label", { for: "relationship-filter" }, "Relationship ", relationship),
