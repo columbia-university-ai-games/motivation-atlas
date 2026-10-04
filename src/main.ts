@@ -1,9 +1,6 @@
 import "./styles.css";
-import { parseRoute } from "./router";
+import { loadAtlas } from "./content/atlas";
+import { renderOverview } from "./pages/overview";
 
 const app = document.getElementById("app")!;
-function render(): void {
-  app.textContent = `Route: ${parseRoute(location.hash).page}`;
-}
-addEventListener("hashchange", render);
-render();
+renderOverview(app, loadAtlas(), (slug) => console.log("open", slug));

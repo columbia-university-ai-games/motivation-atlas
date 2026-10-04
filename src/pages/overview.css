@@ -1,0 +1,36 @@
+.overview { max-width: 1100px; margin: 0 auto; display: grid; gap: 16px; }
+.overview-intro { max-width: 68ch; }
+.overview-intro h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); margin: 0 0 8px; }
+.overview-intro p { margin: 0; color: var(--muted); }
+.overview-tools { display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center; }
+.overview-tools input[type="search"] {
+  font: inherit; padding: 8px 12px; border: 1px solid var(--line); border-radius: 6px;
+  background: var(--surface); color: var(--ink); min-width: 0; width: min(320px, 100%);
+}
+.overview-tools .count { color: var(--muted); font-size: 0.9rem; font-variant-numeric: tabular-nums; flex: 1 1 320px; min-width: 0; }
+.constellation-wrap { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.constellation { display: block; width: 100%; height: auto; }
+.constellation text { fill: var(--ink); font-family: var(--body); }
+.constellation .link { stroke: var(--line); stroke-width: 1.2; }
+.constellation .link.proposed { stroke-dasharray: 5 5; }
+.constellation .game circle { fill: var(--surface); stroke: var(--ink); stroke-width: 2; }
+.constellation .game.activity circle { stroke-dasharray: 3 2; }
+.constellation .game.tabletop circle { fill: var(--line); }
+.constellation .game text { font-size: 15px; }
+.constellation .game.single text { opacity: 0; }
+.constellation .game { cursor: pointer; outline: none; }
+.constellation .game:hover text, .constellation .game:focus text, .constellation .game.multi.lit text { opacity: 1; }
+.constellation .game:hover circle, .constellation .game:focus circle, .constellation .game.lit circle { fill: var(--accent); stroke: var(--accent); }
+.constellation .hub rect { fill: var(--ink); }
+.constellation .hub text { fill: var(--surface); font: 700 18px var(--display); }
+.constellation .hub.lit rect, .constellation .hub:focus rect { fill: var(--accent); }
+.constellation.focusing .game:not(.lit) { opacity: 0.25; }
+.constellation.focusing .link:not(.lit) { opacity: 0.15; }
+.constellation .link.lit { stroke: var(--accent); stroke-width: 2; }
+.constellation.hide-proposals .link.proposed, .constellation.hide-proposals .game.proposed-only { display: none; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; color: var(--muted); font-size: 0.9rem; margin: 0; }
+.legend .key { display: inline-block; width: 28px; border-top: 2px solid var(--muted); }
+.legend .key.proposed { border-top-style: dashed; }
+@media (prefers-reduced-motion: no-preference) {
+  .constellation .game, .constellation .link { transition: opacity 0.15s; }
+}
