@@ -1,6 +1,14 @@
 import "./styles.css";
-import { loadAtlas } from "./content/atlas";
-import { renderOverview } from "./pages/overview";
+import { renderRoute } from "./app";
 
 const app = document.getElementById("app")!;
-renderOverview(app, loadAtlas(), (slug) => console.log("open", slug));
+let cleanup: () => void = () => {};
+
+function render(): void {
+  cleanup();
+  cleanup = renderRoute(app, location.hash);
+  window.scrollTo(0, 0);
+}
+
+addEventListener("hashchange", render);
+render();

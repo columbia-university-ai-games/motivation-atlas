@@ -1,0 +1,7 @@
+.prose { max-width: 70ch; overflow-wrap: anywhere; }
+.prose h1 { font-size: clamp(1.8rem, 4vw, 2.4rem); }
+.prose h2 { margin-top: 2em; }
+.prose table { display: block; overflow-x: auto; border-collapse: collapse; font-size: 0.9rem; }
+.prose th, .prose td { border: 1px solid var(--line); padding: 4px 8px; }
+.prose ul { padding-left: 1.2em; }
+.prose li { margin: 0.3em 0; }
