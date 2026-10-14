@@ -1,0 +1,60 @@
+.fogbound { margin-block: 16px; padding: 20px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; }
+.fog-heading { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+.fog-heading h3 { margin: 0; font-size: 1.8rem; }
+.fog-heading p { margin: 4px 0; color: var(--muted); }
+.fog-toggle { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+.fog-toggle input { width: 22px; height: 22px; accent-color: var(--accent); }
+.fog-instructions, .fog-legend { font-size: .85rem; color: var(--muted); }
+.fog-board { background: #101b26; border-radius: 8px; overflow: hidden; touch-action: none; }
+.fog-world { display: block; width: 100%; aspect-ratio: 4 / 3; }
+.fog-world text { font-family: var(--body); }
+.fog-counts { font: .8rem var(--mono); margin: 10px 0; line-height: 1.8; }
+.fog-status { min-height: 3.2em; margin: 8px 0; }
+.fog-controls { display: flex; gap: 18px; align-items: center; justify-content: space-between; }
+.fog-pad { display: grid; grid-template-columns: repeat(3,44px); gap: 4px; }
+.fogbound button { min-height: 44px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); color: var(--ink); font: inherit; cursor: pointer; padding: 8px 12px; }
+.fog-pad button { padding: 0; font-size: 1.2rem; touch-action: none; user-select: none; }
+.fogbound button:disabled { opacity: .5; cursor: default; }
+.fogbound .fog-primary { background: var(--accent); border-color: var(--accent); color: var(--surface); }
+.fog-actions { display: flex; flex-direction: column; gap: 6px; }
+.fog-reflection { border-top: 1px solid var(--line); margin-top: 16px; }
+.fog-reflection[hidden] { display: none; }
+@media(max-width: 480px) { .fogbound { padding: 10px; } .fog-controls { gap: 8px; } .fog-actions { flex: 1; } .fog-actions button { font-size: .8rem; padding: 6px; } .fog-pad { grid-template-columns: repeat(3,40px); } }
+.fog-board { position: relative; border: 2px solid transparent; cursor: pointer; }
+.fog-board:focus, .fog-board:focus-within { border-color: #f6d583; outline: none; box-shadow: 0 0 0 2px #f6d58344; }
+.fog-hud { position: absolute; top: 10px; left: 10px; max-width: calc(100% - 20px); padding: 6px 9px; border-radius: 5px; background: #101b26dd; color: #fff1d2; font: .75rem/1.5 var(--body); pointer-events: none; }
+.fog-hud progress { display: block; width: 100%; height: 7px; margin-top: 4px; accent-color: #f5c975; }
+.fog-prompt { position: absolute; top: 40%; left: 50%; transform: translate(-50%,-100%); width: max-content; max-width: 94%; background: #fff1d2; color: #16202a; padding: 7px 12px; border-radius: 6px; font-size: .85rem; text-align: center; pointer-events: none; }
+.fog-toast { position: absolute; top: 70px; left: 50%; transform: translateX(-50%); width: min(90%,390px); color: #fff1d2; text-align: center; pointer-events: none; }
+.fog-toast-enter { display: block; background: #101b26e8; padding: 10px; border: 1px solid #f5c975; border-radius: 6px; animation: fog-reward 5s both; font-size: .85rem; }
+.fogbound .fog-resume { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; border-radius: 0; background: #101b26bb; color: #fff1d2; font-size: 1.25rem; backdrop-filter: blur(2px); }
+.fog-win { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); padding: 10px 14px; color: #fff1d2; background: #173e4fee; border: 1px solid #86c9f4; border-radius: 6px; pointer-events: none; white-space: nowrap; font-size: 1.15rem; }
+.fog-win-enter { animation: fog-victory 2s cubic-bezier(.2,.8,.2,1) forwards; }
+.fog-player-pop { transform-box: fill-box; transform-origin: center; animation: fog-pop .3s ease-out; }
+.fogbound [hidden] { display: none !important; }
+@keyframes fog-reward { 0% { opacity: 0; transform: translateY(8px); } 8%,80% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; } }
+@keyframes fog-pop { 40% { transform: scale(1.6); } 100% { transform: scale(1); } }
+@keyframes fog-victory { 0%,45% { top: 50%; left: 50%; transform: translate(-50%,-50%) scale(1); } 100% { top: 10px; left: calc(100% - 10px); transform: translate(-100%,0) scale(.75); transform-origin: top right; } }
+@media(max-width:480px) { .fog-hud { font-size: .65rem; } .fog-prompt { font-size: .75rem; } .fog-toast-enter { padding: 6px; font-size: .75rem; } }
+@media(prefers-reduced-motion:reduce) { .fog-player-pop { animation: none; } .fog-toast-enter { animation: none; } .fog-win-enter { animation: none; top: 10px; left: calc(100% - 10px); transform: translate(-100%,0) scale(.75); transform-origin: top right; } }
+
+@media(max-width:480px) { .fog-win-enter { animation-name: fog-victory-phone; } }
+@keyframes fog-victory-phone { 0%,45% { top:50%;left:50%;transform:translate(-50%,-50%); } 100% { top:65px;left:calc(100% - 10px);transform:translate(-100%,0) scale(.7);transform-origin:top right; } }
+
+.fog-entry strong,.fog-entry span,.fog-entry small { display:block; }
+.fog-entry strong { font:700 1.7rem var(--display);margin-bottom:18px; }
+.fog-entry span { font-size:.95rem;line-height:1.8; }
+.fog-entry small { font-size:.8rem;line-height:1.8;margin-top:14px; }
+
+.fog-boost-hud { position:absolute;left:10px;bottom:10px;color:#a9efff;background:#101b26dd;padding:6px 9px;border-radius:5px;font: .75rem/1.5 var(--body);pointer-events:none;max-width:calc(100% - 20px); }
+.fog-boost-hud progress { display:block;width:100%;height:7px;accent-color:#81d5eb; }
+.fog-boost-button { touch-action:none;user-select:none; }
+.fog-final-win { position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:90%;padding:20px 10px;text-align:center;background:#173e4feb;color:#fff1d2;border:1px solid #f5c975;border-radius:8px;pointer-events:none;animation:fog-final-reveal .4s ease-out; }
+.fog-final-win strong { display:block;font:700 clamp(1.2rem,4vw,2.2rem) var(--display); }
+.fog-final-win span { display:block;font-size:.85rem;margin-top:8px; }
+@media(max-width:480px) { .fog-boost-hud { font-size:.65rem; } }
+@media(prefers-reduced-motion:reduce) { .fog-final-win { animation:none; } }
+
+@keyframes fog-final-reveal { from {opacity:0;transform:translate(-50%,-50%) scale(.8);} to {opacity:1;transform:translate(-50%,-50%) scale(1);} }
+
+.fog-quest { border-top:1px solid #73859166;margin-top:5px;padding-top:5px;color:#f5d99c;font-weight:600; }
