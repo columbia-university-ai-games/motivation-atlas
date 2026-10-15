@@ -1,0 +1,22 @@
+.fishing { display: grid; gap: 16px; }
+.fishing-board { display: grid; gap: 10px; justify-items: center; text-align: center; }
+.fishing-counts { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
+.fishing-counts > div { display: grid; }
+.fishing-label { font-size: 0.85rem; color: var(--muted); }
+.fishing-num { font: 700 2rem var(--display); font-variant-numeric: tabular-nums; }
+.fishing-pond { font-size: 3.5rem; line-height: 1; min-height: 3.5rem; }
+.fishing-status { margin: 0; min-height: 1.6em; }
+.fishing-log { display: flex; flex-wrap: wrap; justify-content: center; gap: 2px; max-width: 100%; min-height: 1.6em; }
+.fishing-mark { width: 1.4em; text-align: center; color: var(--muted); }
+.fishing-actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+.fishing-btn { font: 600 1rem var(--body); padding: 10px 22px; border-radius: 8px; border: 2px solid var(--ink); background: var(--ink); color: var(--surface); cursor: pointer; min-width: 110px; }
+.fishing-btn.secondary { background: none; color: var(--ink); }
+.fishing-btn[aria-disabled="true"] { opacity: 0.4; cursor: not-allowed; }
+.fishing-mechanics { border: 1px solid var(--line); border-radius: 8px; display: grid; gap: 8px; padding: 12px 16px; }
+.fishing-mechanics legend { font: 500 0.75rem var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.fishing-mechanics .fishing-btn { justify-self: start; }
+.fishing-reflect { border-left: 4px solid var(--aes, var(--accent)); padding: 8px 16px; background: var(--bg); border-radius: 0 6px 6px 0; }
+.fishing-reflect h4 { margin: 0 0 4px; }
+.fishing-summary { margin: 0 0 4px; font-weight: 600; }
+.fishing-summary:empty { display: none; }
+.fishing-reflect ul { margin: 0; padding-left: 18px; }
