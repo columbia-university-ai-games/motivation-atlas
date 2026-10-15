@@ -93,23 +93,26 @@ export function renderMotivator(root: HTMLElement, atlas: Atlas, slug: string): 
     for (const game of found) {
       const host = h("div", { class: "minigame-host" });
       const readme = readmeFor(game.slug);
-      const howTo = h("div", { class: "minigame-howto" }, h("h4", {}, "How to play"));
+      const fullReadme = game.slug === "battle-forge";
+      const howTo = h("div", { class: "minigame-howto" }, h("h4", {}, fullReadme ? "README" : "How to play"));
       const rules = h("div", {});
       rules.innerHTML = safeBlock(readme.Mechanic ?? "This minigame's README has no Mechanic section yet.");
+      if (fullReadme) howTo.append(h("h5", {}, "Mechanic"));
       howTo.append(rules);
       const about = h("details", { class: "minigame-about" }, h("summary", {}, "What it demonstrates"));
       for (const name of ["Dynamic", "Aesthetic", "Sources"]) {
         if (!readme[name]) continue;
         const body = h("div", {});
         body.innerHTML = safeBlock(readme[name]); // student README: raw HTML is escaped
-        about.append(h("h4", {}, name), body);
+        if (fullReadme) howTo.append(h("h5", {}, name), body);
+        else about.append(h("h4", {}, name), body);
       }
       minigameSlot.append(h("section", { class: "minigame" },
         h("h3", {}, game.title),
         game.author ? h("p", { class: "tag" }, `by ${game.author}`) : null,
         howTo,
         host,
-        about,
+        fullReadme ? null : about,
       ));
       cleanups.push(mountSafely(host, game));
     }

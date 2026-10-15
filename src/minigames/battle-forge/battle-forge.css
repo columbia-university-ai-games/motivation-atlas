@@ -1,0 +1,88 @@
+.battle-forge {
+  --bf-bg: #0d1520; --bf-panel: #172333; --bf-line: #344355;
+  --bf-text: #eef3fa; --bf-muted: #a9b8cc; --bf-cyan: #83e6e0; --bf-gold: #ffc778;
+  color: var(--bf-text); background: var(--bf-bg); border: 1px solid var(--bf-line);
+  border-radius: 18px; padding: 24px; margin-block: 16px; overflow: hidden;
+  font: 14px/1.5 var(--body); color-scheme: dark; isolation: isolate;
+}
+.battle-forge * { box-sizing: border-box; }
+.battle-forge [hidden] { display: none !important; }
+.battle-forge button { font: inherit; cursor: pointer; color: var(--bf-text); border: 1px solid var(--bf-line); border-radius: 8px; background: var(--bf-panel); min-height: 44px; padding: 10px 14px; touch-action: manipulation; }
+.battle-forge button:hover { border-color: var(--bf-cyan); }
+.battle-forge button:focus-visible, .battle-forge :focus-visible { outline: 3px solid var(--bf-cyan); outline-offset: 3px; }
+.battle-forge button:disabled { opacity: .45; cursor: default; }
+.bf-heading { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 22px; }
+.bf-eyebrow { font: 11px/1.5 var(--mono); color: var(--bf-gold); letter-spacing: .14em; margin: 0 0 5px; }
+.bf-heading h4 { font: 800 clamp(26px, 6vw, 40px)/1 var(--display); margin: 0; letter-spacing: -.04em; }
+.bf-heading h4 span { color: var(--bf-cyan); padding-left: .18em; }
+.bf-mode { font: 10px/1.5 var(--mono); padding: 7px 9px; border: 1px solid #466762; color: var(--bf-cyan); border-radius: 4px; max-width: 120px; text-align: center; }
+.bf-mode-off { color: var(--bf-gold); border-color: #7b5b35; }
+.bf-settings { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+.bf-toggle { display: flex; align-items: center; gap: 10px; cursor: pointer; min-height: 44px; font-weight: 600; }
+.bf-toggle input { width: 22px; height: 22px; accent-color: var(--bf-cyan); margin: 0; }
+.bf-toggle small { display: block; color: var(--bf-muted); font-size: 11px; font-weight: 400; }
+.bf-run-buttons { display: flex; gap: 8px; }
+.battle-forge .bf-start { background: var(--bf-cyan); color: #102528; font-weight: 750; border-color: var(--bf-cyan); }
+.bf-pending { color: var(--bf-muted); font-size: 11px; margin: 9px 0 20px; }
+.bf-pending-change { color: var(--bf-gold); border: 1px solid #7b5b35; border-radius: 6px; padding: 10px; background: #33271b; }
+.bf-hud { display: flex; justify-content: space-between; align-items: end; gap: 12px; margin-bottom: 12px; }
+.bf-phase { font: 11px var(--mono); color: var(--bf-gold); }
+.bf-health { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font: 10px var(--mono); margin-top: 7px; }
+.battle-forge progress { appearance: none; border: 0; height: 5px; border-radius: 4px; overflow: hidden; background: var(--bf-line); }
+.battle-forge progress::-webkit-progress-bar { background: var(--bf-line); }
+.battle-forge progress::-webkit-progress-value { background: var(--bf-cyan); }
+.battle-forge progress::-moz-progress-bar { background: var(--bf-cyan); }
+.bf-health progress { width: 100px; }
+.bf-clock { display: block; text-align: right; font: 700 24px/1.2 var(--mono); font-variant-numeric: tabular-nums; }
+.bf-kills { font: 10px var(--mono); color: var(--bf-muted); }
+.bf-boss-row { padding: 9px 12px; background: #2c2530; font: 10px/1.5 var(--mono); color: var(--bf-gold); margin-bottom: 8px; border-radius: 6px; }
+.bf-boss-row progress { display: block; width: 100%; margin-top: 5px; }
+.bf-boss-row progress::-webkit-progress-value { background: var(--bf-gold); }
+.bf-boss-row progress::-moz-progress-bar { background: var(--bf-gold); }
+.bf-arena { position: relative; width: 100%; aspect-ratio: 5 / 3; background: #101b28; border: 1px solid var(--bf-line); border-radius: 10px; touch-action: none; overflow: hidden; }
+.bf-arena > canvas { display: block; width: 100%; height: 100%; }
+.bf-reward { position: absolute; top: 12%; left: 50%; transform: translateX(-50%); width: min(420px, 92%); padding: clamp(9px, 2vw, 18px); border: 1px solid var(--bf-cyan); border-radius: 10px; background: #102a31ed; box-shadow: 0 6px 30px #0005; text-align: center; pointer-events: none; }
+.bf-reward small { display: block; color: var(--bf-cyan); font: 10px/1.5 var(--mono); letter-spacing: .06em; }
+.bf-reward strong { display: block; color: #fff; font-size: clamp(15px, 2.5vw, 23px); line-height: 1.3; margin: 5px 0; }
+.bf-reward span { display: block; color: #d1eee9; font-size: clamp(10px, 1.5vw, 12px); line-height: 1.5; }
+.bf-reward-off { border-color: var(--bf-gold); background: #33271bed; }
+.bf-reward-off small { color: var(--bf-gold); }
+.bf-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 8px; background: #0d1520d9; text-align: center; padding: 16px; pointer-events: none; }
+.bf-overlay strong { font: 750 clamp(16px, 4vw, 28px)/1.2 var(--display); }
+.bf-overlay span { color: var(--bf-muted); font-size: 12px; max-width: 300px; }
+.bf-instructions { font: 10px/1.6 var(--mono); color: var(--bf-muted); margin: 8px 0 0; }
+.bf-status { min-height: 42px; border-left: 2px solid var(--bf-gold); padding-left: 10px; font-size: 12px; color: #ffe0b5; margin: 14px 0; }
+.bf-controls { display: flex; align-items: center; gap: 16px; }
+.bf-dpad { display: grid; grid-template-columns: repeat(3, 44px); grid-template-rows: repeat(2, 44px); gap: 3px; flex-shrink: 0; }
+.battle-forge .bf-dpad button { padding: 0; font-size: 19px; touch-action: none; user-select: none; }
+.bf-arrowup { grid-area: 1 / 2; }.bf-arrowleft { grid-area: 2 / 1; }.bf-arrowdown { grid-area: 2 / 2; }.bf-arrowright { grid-area: 2 / 3; }
+.bf-skills { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; flex: 1; min-width: 0; }
+.battle-forge .bf-skill { text-align: left; min-height: 80px; padding: 10px; border: 1px solid var(--bf-line); border-radius: 8px; background: var(--bf-panel); }
+.bf-skill strong { display: block; font-size: 13px; }
+.bf-skill span { display: block; font-size: 10px; margin-top: 6px; color: var(--bf-muted); }
+.bf-skill[data-unlocked="false"] { opacity: .65; cursor: default; }
+.battle-forge .bf-unlocked { border-color: #568f89; background: #1c393f; }
+.bf-unlocked span { color: var(--bf-cyan); }
+.bf-milestone { font: 11px/1.7 var(--mono); color: var(--bf-muted); margin-block: 18px; }
+.bf-roadmap { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; border-top: 1px solid var(--bf-line); padding-top: 16px; }
+.bf-roadmap span { font: 10px/1.5 var(--mono); color: var(--bf-muted); }
+.bf-roadmap b { display: block; font: 600 13px/1.5 var(--body); color: var(--bf-text); margin-block: 4px; }
+.bf-results { margin-top: 22px; padding: 16px; border: 1px solid #4f7975; border-radius: 8px; background: #142c30; }
+.bf-results h5 { font: 700 20px var(--display); margin: 0 0 14px; }
+.bf-results p { font-size: 12px; }
+.bf-results table { border-collapse: collapse; width: 100%; font-size: 11px; table-layout: fixed; }
+.bf-results caption { text-align: left; color: var(--bf-muted); margin-bottom: 8px; }
+.bf-results td, .bf-results th { padding: 7px 3px; text-align: left; border-bottom: 1px solid #355256; overflow-wrap: anywhere; }
+.bf-notes { margin-top: 20px; font-size: 12px; color: var(--bf-muted); }
+.bf-notes summary { min-height: 44px; cursor: pointer; padding-top: 10px; }
+@media (max-width: 540px) {
+  .battle-forge { padding: 14px; border-radius: 12px; }
+  .bf-heading { gap: 8px; }.bf-mode { font-size: 9px; max-width: 90px; }
+  .bf-controls { flex-direction: column-reverse; gap: 12px; }
+  .bf-skills { width: 100%; }.battle-forge .bf-skill { min-height: 64px; }
+  .bf-roadmap { gap: 8px; }.bf-roadmap b { font-size: 12px; }
+  .bf-run-buttons { width: 100%; }.bf-start { flex: 1; }
+  .bf-health progress { width: 65px; }.bf-phase { font-size: 10px; }
+}
+
+.bf-skill small { display: block; color: var(--bf-muted); font: 9px/1.5 var(--mono); letter-spacing: .04em; margin-bottom: 4px; }
