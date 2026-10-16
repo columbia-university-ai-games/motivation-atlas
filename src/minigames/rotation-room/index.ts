@@ -21,6 +21,10 @@ function mount(el: HTMLElement): () => void {
   const selection = h("span", { "data-selection": "" });
   const players = h("div", { class: "rr-players", role: "group", "aria-label": "Choose exactly two starters" });
   const power = h("output", { class: "rr-power", "data-power": "", "aria-label": "Selected team power" });
+  const powerSum = h("span", { class: "rr-small", "data-power-sum": "", hidden: true });
+  const breakdown = h("ul", {
+    class: "rr-breakdown", "data-power-breakdown": "", "aria-label": "Selected player power contributions", hidden: true,
+  });
   const target = h("strong", { class: "rr-target", "data-target": "" });
   const projection = h("p", { class: "rr-small", "data-projection": "", "aria-live": "polite" });
   const play = h("button", { type: "button", class: "rr-button", "data-play": "" }, "Play match");
@@ -39,11 +43,11 @@ function mount(el: HTMLElement): () => void {
   const comparison = h("section", { class: "rr-comparison", "data-comparison": "", hidden: true });
   const squadTitle = h("strong", {}, "Choose your starters");
   const matchup = h("div", { class: "rr-matchup" },
-    h("div", {}, h("span", { class: "rr-small" }, "Your power"), power),
+    h("div", {}, h("span", { class: "rr-small" }, "Team power"), power, powerSum),
     h("span", { class: "rr-versus", "aria-hidden": "true" }, "/"),
     h("div", {}, h("span", { class: "rr-small" }, "Required strength"), target),
   );
-  const formula = h("p", { class: "rr-formula" }, "Power = combined skill + half of each starter’s energy, rounded down.");
+  const formula = h("p", { class: "rr-formula" }, "Energy bonus = half of current energy, rounded down.");
 
   const root = h("section", { class: "rotation-room", "aria-label": "Rotation Room" },
     h("header", { class: "rr-header" },
@@ -59,7 +63,7 @@ function mount(el: HTMLElement): () => void {
     h("div", { class: "rr-scoreboard" }, match, wins), nextOpponent, fixtures,
     status,
     h("div", { class: "rr-squad-label" }, squadTitle, selection), players,
-    matchup, formula, projection, play, history, finish, comparison,
+    breakdown, matchup, formula, projection, play, history, finish, comparison,
   );
 
   const cards = state.players.map((player) => {
@@ -139,7 +143,19 @@ function mount(el: HTMLElement): () => void {
         ? `Last match: ${change.started ? "started" : "rested"} · ${change.before} → ${change.after} (${change.after - change.before > 0 ? "+" : ""}${change.after - change.before})`
         : "Ready for the opening match";
     }
+    const contributions = state.players.filter((player) => state.selected.includes(player.id)).map((player) => {
+      const contribution = teamPower({ ...state, selected: [player.id] });
+      return { player, contribution, bonus: contribution - player.skill };
+    });
+    breakdown.hidden = summary.complete || contributions.length === 0;
+    breakdown.replaceChildren(...contributions.map(({ player, contribution, bonus }) => h("li", { "data-contribution": player.id },
+      h("span", {}, `${player.name}: Skill ${player.skill} + energy bonus ${bonus}`),
+      " ", h("strong", {}, `= ${contribution}`),
+    )));
     power.textContent = fullPair && !summary.complete ? String(teamPower(state)) : "—";
+    powerSum.hidden = !fullPair || summary.complete;
+    powerSum.textContent = fullPair && !summary.complete
+      ? `${contributions.map(({ contribution }) => contribution).join(" + ")} = ${teamPower(state)}` : "";
     target.textContent = required === null ? "—" : String(required);
     projection.textContent = summary.complete ? "Four matches played. Try the other setting and compare."
       : !fullPair ? "Select two players to see their projected power."

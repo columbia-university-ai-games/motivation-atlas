@@ -39,6 +39,9 @@
 .rotation-room .rr-energy-track { display: block; background: var(--line); height: 5px; border-radius: 3px; overflow: hidden; }
 .rotation-room .rr-energy-fill { display: block; height: 100%; background: var(--dyn); }
 .rotation-room .rr-energy-change { font-size: 0.68rem; color: var(--muted); min-height: 2.6em; }
+.rotation-room .rr-breakdown { list-style: none; padding: 8px 0; margin: 12px 0 0; border-block: 1px solid var(--line); font-size: 0.8rem; }
+.rotation-room .rr-breakdown li { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px 8px; padding-block: 3px; }
+.rotation-room .rr-breakdown strong, .rotation-room [data-power-sum] { font-variant-numeric: tabular-nums; }
 .rotation-room .rr-matchup { display: flex; align-items: center; justify-content: center; gap: 24px; margin: 16px 0 8px; text-align: center; }
 .rotation-room .rr-matchup > div { display: grid; }
 .rotation-room .rr-power, .rotation-room .rr-target { font: 800 2.2rem/1.2 var(--display); font-variant-numeric: tabular-nums; }

@@ -236,6 +236,51 @@ function mountGame() {
 }
 
 describe("Rotation Room on the Challenge page", () => {
+  it("explains each starter's current skill and energy contribution before playing in both modes", () => {
+    const { host, get, click, choose } = mountGame();
+    expect(get("[data-power-breakdown]").hidden).toBe(true);
+    choose(strongest);
+    expect(get("[data-power-breakdown]").hidden).toBe(false);
+    expect(get("[data-contribution='ari']").textContent).toBe("Ari: Skill 5 + energy bonus 3 = 8");
+    expect(get("[data-contribution='bo']").textContent).toBe("Bo: Skill 4 + energy bonus 3 = 7");
+    expect(get("[data-power-sum]").textContent).toBe("8 + 7 = 15");
+    expect(get("[data-power]").textContent).toBe("15");
+    expect(get("[data-target]").textContent).toBe("13");
+
+    click("[data-play]");
+    expect(get("[data-contribution='ari']").textContent).toBe("Ari: Skill 5 + energy bonus 1 = 6");
+    expect(get("[data-contribution='bo']").textContent).toBe("Bo: Skill 4 + energy bonus 1 = 5");
+    expect(get("[data-power-sum]").textContent).toBe("6 + 5 = 11");
+    expect(get("[data-power]").textContent).toBe("11");
+    expect(get("[data-target]").textContent).toBe("12");
+
+    click("[data-player='ari']");
+    expect(host.querySelector("[data-contribution='ari']")).toBeNull();
+    const partialSum = get("[data-power-sum]");
+    expect(partialSum.hidden || partialSum.textContent?.trim() === "").toBe(true);
+    choose(["bo", "cleo"]);
+    expect(host.querySelector("[data-contribution='ari']")).toBeNull();
+    expect(get("[data-contribution='cleo']").textContent).toBe("Cleo: Skill 4 + energy bonus 3 = 7");
+    expect(get("[data-power-sum]").textContent).toBe("5 + 7 = 12");
+
+    get<HTMLInputElement>("[data-mechanic='fatigue']").click();
+    expect(get("[data-power-breakdown]").hidden).toBe(true);
+    expect(host.querySelector("[data-contribution]")).toBeNull();
+    choose(strongest);
+    expect(get("[data-contribution='ari']").textContent).toBe("Ari: Skill 5 + energy bonus 3 = 8");
+    expect(get("[data-contribution='bo']").textContent).toBe("Bo: Skill 4 + energy bonus 3 = 7");
+    expect(get("[data-power-sum]").textContent).toBe("8 + 7 = 15");
+    expect(get("[data-target]").textContent).toBe("13");
+    click("[data-play]");
+    expect(get("[data-contribution='ari']").textContent).toBe("Ari: Skill 5 + energy bonus 3 = 8");
+    expect(get("[data-contribution='bo']").textContent).toBe("Bo: Skill 4 + energy bonus 3 = 7");
+    expect(get("[data-power-sum]").textContent).toBe("8 + 7 = 15");
+    expect(get("[data-power]").textContent).toBe("15");
+    expect(get("[data-target]").textContent).toBe("12");
+    for (let remaining = 0; remaining < 3; remaining++) click("[data-play]");
+    expect(get("[data-power-breakdown]").hidden).toBe(true);
+  });
+
   it("shows the goal, squad and target, and requires two distinct starters before advancing", () => {
     const { host, get, click } = mountGame();
     expect(host.textContent).toContain("Win as many of the four matches as you can");
