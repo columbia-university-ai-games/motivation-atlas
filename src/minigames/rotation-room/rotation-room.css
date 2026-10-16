@@ -1,0 +1,79 @@
+.rotation-room {
+  color: var(--ink);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: clamp(12px, 3vw, 24px);
+  font: 400 0.95rem/1.45 var(--body);
+  max-width: 680px;
+  margin-inline: auto;
+}
+.rotation-room p { margin: 0; }
+.rotation-room .rr-header { border-top: 4px solid var(--dyn); padding-top: 12px; }
+.rotation-room .rr-eyebrow { font: 500 0.67rem/1.6 var(--mono); letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); }
+.rotation-room .rr-title { font: 800 clamp(1.65rem, 6vw, 2.4rem)/1.1 var(--display); letter-spacing: -0.035em; margin: 5px 0 8px; }
+.rotation-room .rr-goal { max-width: 44ch; }
+.rotation-room .rr-small, .rotation-room .rr-formula { font-size: 0.8rem; color: var(--muted); }
+.rotation-room .rr-rule { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; margin-block: 16px; display: grid; gap: 5px; }
+.rotation-room .rr-toggle { display: flex; align-items: center; gap: 9px; cursor: pointer; min-height: 44px; }
+.rotation-room .rr-toggle input { width: 22px; height: 22px; margin: 0; accent-color: var(--dyn); flex-shrink: 0; }
+.rotation-room .rr-mode { margin-left: auto; font: 600 0.75rem var(--mono); border: 1px solid var(--line); border-radius: 4px; padding: 4px 7px; }
+.rotation-room .rr-scoreboard, .rotation-room .rr-squad-label { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 12px; }
+.rotation-room .rr-scoreboard { font-variant-numeric: tabular-nums; }
+.rotation-room .rr-fixtures { list-style: none; padding: 0; margin: 12px 0 18px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+.rotation-room .rr-fixture { display: grid; justify-items: center; border: 1px solid var(--line); border-radius: 6px; padding: 5px; color: var(--muted); font: 500 0.7rem var(--mono); }
+.rotation-room .rr-fixture strong { font-size: 1.15rem; color: var(--ink); }
+.rotation-room .rr-current { border: 2px solid var(--dyn); padding: 4px; background: var(--dyn-soft); color: var(--ink); }
+.rotation-room .rr-fixture-state { font-size: 0.65rem; margin-top: 3px; }
+.rotation-room .rr-squad-label { font-size: 0.85rem; margin-bottom: 8px; }
+.rotation-room [data-selection] { color: var(--muted); }
+.rotation-room .rr-players { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.rotation-room .rr-player { width: 100%; min-width: 0; background: var(--surface); color: var(--ink); border: 2px solid var(--line); border-radius: 8px; padding: 11px; font: inherit; text-align: left; cursor: pointer; display: grid; gap: 8px; touch-action: manipulation; }
+.rotation-room .rr-player[aria-pressed="true"] { border-color: var(--dyn); background: var(--dyn-soft); }
+.rotation-room .rr-player[aria-disabled="true"] { cursor: default; }
+.rotation-room .rr-player-top, .rotation-room .rr-player-stats { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 3px 8px; }
+.rotation-room .rr-player-name { font: 700 1.1rem var(--display); }
+.rotation-room .rr-picked { font-size: 0.7rem; color: var(--muted); }
+.rotation-room .rr-player[aria-pressed="true"] .rr-picked { color: var(--dyn); font-weight: 700; }
+.rotation-room .rr-player-stats { font-size: 0.8rem; font-variant-numeric: tabular-nums; }
+.rotation-room .rr-energy-track { display: block; background: var(--line); height: 5px; border-radius: 3px; overflow: hidden; }
+.rotation-room .rr-energy-fill { display: block; height: 100%; background: var(--dyn); }
+.rotation-room .rr-energy-change { font-size: 0.68rem; color: var(--muted); min-height: 2.6em; }
+.rotation-room .rr-matchup { display: flex; align-items: center; justify-content: center; gap: 24px; margin: 16px 0 8px; text-align: center; }
+.rotation-room .rr-matchup > div { display: grid; }
+.rotation-room .rr-power, .rotation-room .rr-target { font: 800 2.2rem/1.2 var(--display); font-variant-numeric: tabular-nums; }
+.rotation-room .rr-versus { font-size: 1.8rem; color: var(--muted); }
+.rotation-room .rr-formula { text-align: center; }
+.rotation-room [data-projection] { margin-block: 10px; }
+.rotation-room .rr-button { display: block; width: 100%; min-height: 48px; padding: 11px 14px; border: 2px solid var(--ink); border-radius: 7px; background: var(--ink); color: var(--surface); font: 600 0.95rem/1.35 var(--body); cursor: pointer; touch-action: manipulation; }
+.rotation-room .rr-button[aria-disabled="true"] { background: var(--line); border-color: var(--line); color: var(--ink); cursor: default; }
+.rotation-room .rr-secondary { background: var(--surface); color: var(--ink); }
+.rotation-room .rr-feedback { font-size: 0.85rem; margin-block: 0 12px; padding-left: 10px; border-left: 3px solid var(--dyn); }
+.rotation-room .rr-history { margin: 12px 0 0; padding: 0; list-style: none; font-size: 0.8rem; }
+.rotation-room .rr-history li { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 3px 10px; padding-block: 7px; border-bottom: 1px solid var(--line); }
+.rotation-room [data-result="loss"] strong { color: var(--warn); }
+.rotation-room .rr-finish { margin-top: 16px; border: 2px solid var(--dyn); border-radius: 8px; background: var(--surface); padding: 14px; }
+.rotation-room .rr-finish h4 { font: 800 1.4rem/1.2 var(--display); margin: 6px 0 8px; }
+.rotation-room .rr-finish > p + p { margin-top: 6px; }
+.rotation-room .rr-replays { display: grid; gap: 8px; margin-block: 14px; }
+.rotation-room .rr-reflection { border-top: 1px solid var(--line); padding-top: 12px; font-weight: 500; }
+.rotation-room .rr-comparison { margin-top: 18px; }
+.rotation-room .rr-comparison h4 { margin: 0 0 4px; font-size: 1rem; }
+.rotation-room .rr-comparison-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 8px; }
+.rotation-room .rr-comparison-card { background: var(--surface); padding: 10px; border: 1px solid var(--line); border-radius: 6px; min-width: 0; font-size: 0.8rem; }
+.rotation-room .rr-saved-score { font: 800 1.3rem/1.5 var(--display); }
+.rotation-room .rr-comparison details { margin-top: 8px; font-size: 0.75rem; }
+.rotation-room .rr-comparison summary { cursor: pointer; padding-block: 8px; }
+.rotation-room .rr-comparison ol { list-style: none; padding: 0; margin: 0; }
+.rotation-room .rr-comparison li { display: grid; gap: 2px; padding-block: 6px; border-top: 1px solid var(--line); overflow-wrap: anywhere; }
+.rotation-room :is(button, input):focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+@media (hover: hover) {
+  .rotation-room .rr-player[aria-disabled="false"]:hover { border-color: var(--dyn); }
+  .rotation-room .rr-button[aria-disabled="false"]:hover { text-decoration: underline; text-underline-offset: 3px; }
+}
+@media (max-width: 360px) {
+  .rotation-room .rr-player { padding: 8px; }
+  .rotation-room .rr-matchup { gap: 12px; }
+  .rotation-room .rr-comparison-grid { grid-template-columns: 1fr; }
+}
+.rotation-room [hidden] { display: none; }
