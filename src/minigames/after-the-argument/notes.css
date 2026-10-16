@@ -1,0 +1,19 @@
+.after-argument { display: grid; gap: 18px; }
+.argument-intro { margin: 0; }
+.argument-toggle { display: flex; align-items: flex-start; gap: 9px; width: fit-content; cursor: pointer; }
+.argument-toggle input { width: 1.1rem; height: 1.1rem; accent-color: var(--accent); }
+.argument-notes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.argument-note { min-height: 190px; padding: 16px; color: #332c1f; background: #f6e8a9; border: 1px solid #d7c57d; border-radius: 3px 3px 10px 3px; box-shadow: 0 3px 8px #0002; transform: rotate(-1deg); }
+.argument-note:nth-child(2) { transform: rotate(1deg); background: #f3e5a3; }
+.argument-note:nth-child(3) { transform: rotate(-.5deg); background: #f8edbd; }
+.argument-note-meta { margin: 0 0 12px; font: 600 .8rem var(--mono); letter-spacing: .04em; color: #675c3c; }
+.argument-line { margin: 0 0 12px; line-height: 1.45; }
+.argument-line:last-child { margin-bottom: 0; }
+.argument-speaker { font-weight: 700; }
+.argument-reflect { border-left: 4px solid var(--accent); padding: 8px 16px; background: var(--bg); border-radius: 0 6px 6px 0; }
+.argument-reflect h4 { margin: 0 0 4px; }
+.argument-reflect ul { margin: 0; padding-left: 18px; }
+@media (max-width: 680px) {
+  .argument-notes { grid-template-columns: 1fr; }
+  .argument-note { min-height: 0; }
+}
