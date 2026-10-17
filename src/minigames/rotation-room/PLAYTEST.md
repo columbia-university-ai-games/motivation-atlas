@@ -1,8 +1,9 @@
 # Rotation Room: anonymous comparison playtest
 
-README status: **pending real human observations**. Automated checks do not
-complete this requirement. Use one other real person; do not record their name,
-contact details, account, or other identifying information.
+README status: **real playtest observations confirmed by lfg2131; final README
+approved**. The confirmed results and reactions are recorded in README.md.
+The procedure and blank worksheet below remain available for repeat playtests.
+Keep testers anonymous; do not record personal or identifying information.
 
 Open the Atlas at `http://localhost:5173/#/m/challenge` and scroll to **Play with
 it → Rotation Room**. If the server is stopped, run `npm run dev -- --host
@@ -32,7 +33,7 @@ feelings. Start a fresh ON run with no completed comparison scores visible
    Note any clarification or help you provided and that ON came first; familiarity
    on the second run can affect this small comparison.
 
-## Tiny observation sheet
+## Blank observation sheet for a repeat playtest
 
 ```text
 Anonymous tester: A (no personal details)
@@ -53,9 +54,10 @@ Which required more thought, and their reason:
 Help/clarifications provided:
 ```
 
-Return the filled sheet to Codex. Only then replace the pending README sections
-with accurate observations, keeping its four sections and approximately 250
-words. lfg2131 has decided to **KEEP** Codex's suggestion to show all four match
+The author confirmed the original tester's scores (ON 2/4, OFF 3/4), three
+lineup changes in each run, different match-two selections, the quoted reactions,
+and the difficulty calculating power. No unreported lineups have been inferred.
+lfg2131 has decided to **KEEP** Codex's suggestion to show all four match
 targets upfront, "because it makes fatigue management a strategic planning
 challenge rather than a guessing game." This decision is recorded in Sources.
 
@@ -63,12 +65,13 @@ challenge rather than a guessing game." This decision is recorded in Sources.
 
 GitHub identity must be `lfg2131`; remote must remain
 `columbia-university-ai-games/motivation-atlas`; branch must be
-`lfg2131/rotation-room`. At preparation, GitHub reports read access but
-`permissions.push: false`. An instructor or repository administrator must grant
-Write access (and you must accept any invitation) before pushing here. Recheck
-permissions after that; do not switch repositories or force-push.
+`lfg2131/rotation-room`. Upstream Write access is unavailable. The author has
+explicitly authorized a fork under `lfg2131`, pushing this existing branch there,
+and opening a PR into the upstream `main`. Keep `origin` pointing upstream and
+use a separate `fork` remote. Do not force-push or push to upstream `main`.
 
-After the real playtest and README are complete: review only this folder and
+Before submission, review only this folder and
 `test/rotation-room.test.ts`, run `npm test`, `npm run typecheck`, and
-`npm run build`, commit the observations, push this branch, open the PR with `gh pr create`, and
-check its actual CI result. No PR should be opened while observations are pending.
+`npm run build`, plus browser checks. Commit the approved observations, push
+this branch to the authorized fork, open the upstream PR with `gh pr create`,
+and check its actual CI result. Submit the PR URL on CourseWorks.

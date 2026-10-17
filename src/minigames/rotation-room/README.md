@@ -1,40 +1,40 @@
+# Rotation Room
+
+Motivator: Challenge. Author: lfg2131.
+
 ## Mechanic
 
-Win as many of four football matches as possible. Click or tap two player cards;
-with a keyboard, Tab to a card and press Space or Enter. Deselect before replacing
-a starter. Press **Play match**. Meet or exceed the opponent's target to win.
-Power adds each starter's skill plus half their energy, rounded down.
-
-**Fatigue matters ON:** starters lose 3 energy after playing; resting players
-recover 3, bounded by 0 and 6. **OFF:** everyone stays at 6/6. Changing the toggle
-starts a fresh tournament with identical players and fixtures. Compare both
-completed scores without reloading. Nothing is saved after leaving the page.
+Manage four footballers over four matches. Select two starters, then press
+**Play match**. Click/tap cards or use Tab and Space/Enter. Team power sums each
+starter's `skill + floor(energy / 2)`; meeting the opponent target wins. A live
+breakdown explains each contribution. **Fatigue ON:** starters lose three energy;
+reserves recover three, bounded 0–6. **OFF:** everyone stays full. Changing the
+toggle starts a fresh run. All targets are visible upfront; completed scores
+can be compared.
 
 ## Dynamic
 
-**PENDING REAL HUMAN PLAYTEST — not submission-ready.** Another person must
-complete ON, then OFF. Replace this marker with their observed lineups, wins,
-changes between matches, and any differences in decisions. See PLAYTEST.md for
-the neutral procedure and anonymous observation sheet. Automated strategy tests
-are balance evidence, not human observations.
+One real playtester won **2/4 ON** and **3/4 OFF**, changing lineups three times
+in each run and choosing different pairs for match two. Without fatigue,
+choosing the strongest players felt sufficient; with fatigue, they considered
+whom to rest and when. This single observation suggests different decisions,
+not a general effect on wins or lineup changes.
 
 ## Aesthetic
 
-**PENDING REAL HUMAN PLAYTEST.** Record the same person's actual account of how
-each mode felt and which required more thought. Use only their words or an
-accurate paraphrase; do not infer feelings from their score.
+The tester liked the game, calling OFF "too easy" and ON "kinda harder and needs
+thinking." They struggled to calculate power mentally; the resulting contribution
+breakdown keeps the focus on planning.
 
 ## Sources
 
-The course note's Challenge item reads: Challenge, "game as obstacle course"
-(Hunicke et al. 2004, p. 2). Managing fatigue supplies a constraint, repeated
-decisions, and possible failure. This design rationale does not establish
-any playtester's feelings.
+The note describes Challenge as **"game as obstacle course"** (Hunicke, LeBlanc,
+and Zubek 2004, p. 2). Fatigue creates a constraint, repeated decisions and
+possible failure.
 
-Credit: Codex assisted implementation and tests; Kevin Toms' *Football Manager*
-inspired the squad-selection idea. Code and interface are original; no outside
-art, sound, or game code was borrowed.
+Inspired by Kevin Toms' [*Football Manager* (1982)](https://kevintoms.itch.io/).
+Codex implemented and tested the game; ChatGPT assisted README wording.
+No outside code, art or sound was borrowed.
 
-**Codex suggestion — KEEP:** Codex suggested showing all four match targets
-upfront. lfg2131 kept it "because it makes fatigue management a strategic planning
-challenge rather than a guessing game."
+I **kept** Codex's suggestion to show all four targets because it makes fatigue
+management a strategic planning challenge rather than a guessing game.
