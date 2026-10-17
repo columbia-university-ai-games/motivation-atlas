@@ -87,13 +87,17 @@ export function renderMotivator(root: HTMLElement, atlas: Atlas, slug: string): 
   const minigameSlot = h("div", { class: "minigames" });
   const cleanups: Array<() => void> = [];
   const found = minigamesFor(slug);
+  const playFirst = found.some((game) => game.slug === "fog-scout");
   if (found.length === 0) {
     minigameSlot.append(h("p", { class: "muted" }, "No minigame yet. See AGENTS.md to make one."));
   } else {
     for (const game of found) {
       const host = h("div", { class: "minigame-host" });
       const readme = readmeFor(game.slug);
-      const howTo = h("div", { class: "minigame-howto" }, h("h4", {}, "How to play"));
+      const featured = game.slug === "fog-scout";
+      const howTo = featured
+        ? h("details", { class: "minigame-howto minigame-instructions" }, h("summary", {}, "How to play"))
+        : h("div", { class: "minigame-howto" }, h("h4", {}, "How to play"));
       const rules = h("div", {});
       rules.innerHTML = safeBlock(readme.Mechanic ?? "This minigame's README has no Mechanic section yet.");
       howTo.append(rules);
@@ -104,27 +108,37 @@ export function renderMotivator(root: HTMLElement, atlas: Atlas, slug: string): 
         body.innerHTML = safeBlock(readme[name]); // student README: raw HTML is escaped
         about.append(h("h4", {}, name), body);
       }
-      minigameSlot.append(h("section", { class: "minigame" },
-        h("h3", {}, game.title),
-        game.author ? h("p", { class: "tag" }, `by ${game.author}`) : null,
-        howTo,
-        host,
-        about,
-      ));
+      if (featured) {
+        if (game.author) about.append(h("p", { class: "tag" }, `by ${game.author}`));
+        minigameSlot.append(h("section", { class: "minigame minigame-featured" }, host, howTo, about));
+      } else {
+        minigameSlot.append(h("section", { class: "minigame" },
+          h("h3", {}, game.title),
+          game.author ? h("p", { class: "tag" }, `by ${game.author}`) : null,
+          howTo, host, about,
+        ));
+      }
       cleanups.push(mountSafely(host, game));
     }
   }
 
-  const page = h("article", { class: "page motivator" },
+  const theory = playFirst
+    ? h("details", { class: "motivator-reference" }, h("summary", {}, "Course notes · Why discovery motivates play"), namedBy, line)
+    : null;
+  const examples = playFirst
+    ? h("details", { class: "motivator-reference" }, h("summary", {}, "Reference games & playthroughs"), gameList)
+    : null;
+  const page = h("article", { class: `page motivator${playFirst ? " motivator-play-first" : ""}` },
     h("p", { class: "tag" }, h("a", { href: "#/" }, "Map"), " / motivator"),
     h("h1", {}, m.name),
     m.gloss ? h("p", { class: "gloss" }, m.gloss) : null,
-    namedBy,
-    line,
-    h("h2", {}, "Play with it"),
+    playFirst ? null : namedBy,
+    playFirst ? null : line,
+    playFirst ? null : h("h2", {}, "Play with it"),
     minigameSlot,
-    h("h2", {}, "Example games"),
-    gameList,
+    playFirst ? theory : null,
+    playFirst ? examples : h("h2", {}, "Example games"),
+    playFirst ? null : gameList,
     readings.length ? h("h2", {}, "Student readings") : null,
     readings.length ? h("ul", { class: "readings" }, ...readings.map(({ game, link }) => h("li", {},
       h("strong", {}, game.title), h("span", { class: "tag" }, ` by ${link.github}`),

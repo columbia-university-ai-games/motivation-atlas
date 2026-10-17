@@ -64,3 +64,13 @@ a.cite-link:hover, a.cite-link:focus-visible { color: var(--accent); }
 .other-names p { margin: 0; font-size: 1.08rem; }
 .evidence { display: inline-block; font: 500 0.72rem var(--mono); letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 1px 8px; margin-left: 4px; cursor: help; white-space: nowrap; }
 .evidence.statistic { border-style: dashed; }
+.motivator-play-first { max-width: 1040px; }
+.motivator-play-first > .tag { display: inline; margin-right: 12px; }
+.motivator-play-first > h1 { display: inline; font-size: 1rem; color: var(--muted); margin: 0; font-weight: 500; }
+.motivator-play-first > .minigames { margin-top: 14px; }
+.minigame-featured { background: none; border: 0; padding: 0; }
+.minigame-instructions { margin-top: 18px; margin-bottom: 0; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); padding: 0 16px; }
+.minigame-instructions summary, .motivator-reference > summary { cursor: pointer; font-weight: 600; padding-block: 12px; min-height: 48px; }
+.minigame-instructions > div { padding-bottom: 12px; }
+.motivator-reference { border-top: 1px solid var(--line); margin-top: 16px; }
+.motivator-reference .bands { margin-top: 16px; }
