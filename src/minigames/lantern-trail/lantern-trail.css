@@ -1,0 +1,12 @@
+.lantern-trail { padding: 16px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+.lantern-trail button { min-height: 44px; padding: 10px 12px; font: inherit; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 6px; cursor: pointer; }
+.lantern-trail button[aria-disabled="true"] { color: var(--muted); cursor: default; }
+.lantern-toggle { display: flex; align-items: center; gap: 8px; min-height: 44px; }
+.lantern-toggle input { width: 22px; height: 22px; flex-shrink: 0; accent-color: var(--accent); }
+.lantern-board { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 4px; max-width: 340px; margin: 16px auto; }
+.lantern-board span { display: grid; place-items: center; aspect-ratio: 1; border: 1px solid var(--line); border-radius: 4px; background: var(--bg); color: var(--muted); font: 700 1.2rem var(--mono); }
+.lantern-board .lantern-seen { color: var(--ink); background: var(--dyn-soft); }
+.lantern-board .lantern-player { color: var(--ink); background: var(--accent-soft); border: 2px solid var(--accent); }
+.lantern-board .lantern-collected { font-size: 0.9rem; }
+.lantern-controls { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; max-width: 340px; margin: auto; }
+.lantern-reflect { border-top: 1px solid var(--line); padding-top: 16px; margin-top: 20px; }
