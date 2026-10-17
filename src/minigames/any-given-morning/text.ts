@@ -118,7 +118,6 @@ export const COPY = {
   mortalityOff: "Off: nobody dies.",
   start: "Start",
   controls: "Move with WASD or arrows. Press E, Space or Enter to interact. Esc opens the menu.",
-  placeholder: "M1 has a menu placeholder. Start has no effect yet.",
   deedsHeading: "What you did:",
   noDeeds: "You did not do anything. That counts.",
   respawn: "Respawn",

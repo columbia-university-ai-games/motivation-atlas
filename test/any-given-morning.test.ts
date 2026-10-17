@@ -427,7 +427,7 @@ describe("Any Given Morning screens and copy", () => {
     expect(() => startLife(session)).toThrow();
   });
 
-  it("mounts the inert menu, updates the toggle hint and cleans up without timers", () => {
+  it("mounts the menu, updates the toggle hint and starts play, then cleans up without timers", () => {
     vi.useFakeTimers();
     try {
       const el = document.createElement("div");
@@ -439,7 +439,7 @@ describe("Any Given Morning screens and copy", () => {
       checkbox.dispatchEvent(new Event("change"));
       expect(el.textContent).toContain(COPY.mortalityOff);
       el.querySelector<HTMLButtonElement>('[data-testid="start"]')!.click();
-      expect(el.querySelector("[data-state]")!.getAttribute("data-state")).toBe("menu");
+      expect(el.querySelector("[data-state]")!.getAttribute("data-state")).toBe("play");
       unmount();
       expect(el.childNodes).toHaveLength(0);
       expect(vi.getTimerCount()).toBe(0);
