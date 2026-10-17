@@ -3,6 +3,7 @@ import type { Archetype, DeedId } from "./text";
 export const GRID_WIDTH = 20;
 export const GRID_HEIGHT = 12;
 export const TILE_SIZE = 16;
+export const MIN_INTERACTABLE_SPACING = 2 * TILE_SIZE;
 export const BIOMES = ["farm", "riverside", "orchard", "village_edge"] as const;
 export type Biome = typeof BIOMES[number];
 export type Rng = () => number;
@@ -151,55 +152,67 @@ export function generateArea(seed: number, legacy: readonly LegacyTrace[] = [], 
     prop(biome === "farm" ? "hay_bale" : "bush", x, y, true);
   }
 
-  // Reserve unique reachable tiles. Keep people and loose items close to the player.
+  // Fixed scene targets reserve their space before random placements.
   const free = reachableTiles(collision, spawn).filter((p) => !(p.x === 2 && p.y === 6));
   const occupied = new Set(props.map((p) => `${p.x},${p.y}`));
-  const place = (close = false): Point => {
+  const spaced: Point[] = [];
+  const reserve = (at: Point): Point => {
+    occupied.add(`${at.x},${at.y}`);
+    spaced.push(at);
+    return at;
+  };
+  const place = (close = false, interactable = false): Point => {
     const choices = free.filter((p) => {
       const center = tileCenter(p.x, p.y);
-      return !occupied.has(`${center.x},${center.y}`) && (!close || Math.hypot(center.x - spawn.x, center.y - spawn.y) <= 112);
+      return !occupied.has(`${center.x},${center.y}`) && (!interactable || spaced.every((at) => Math.hypot(center.x - at.x, center.y - at.y) >= MIN_INTERACTABLE_SPACING));
     });
     if (choices.length === 0) throw new Error("Area has no reachable placement tile");
-    const tile = choices[integer(0, choices.length - 1)];
+    const nearby = close ? choices.filter((p) => Math.hypot(tileCenter(p.x, p.y).x - spawn.x, tileCenter(p.x, p.y).y - spawn.y) <= 112) : [];
+    const candidates = nearby.length ? nearby : choices;
+    const tile = candidates[integer(0, candidates.length - 1)];
     const at = tileCenter(tile.x, tile.y);
     occupied.add(`${at.x},${at.y}`);
+    if (interactable) spaced.push(at);
     return at;
   };
   const pool = ARCHETYPES.filter((npc) => !npc.biomes || npc.biomes.includes(biome));
-  const npcs: Npc[] = [];
+  const selected: typeof ARCHETYPES = [];
   let requiredItems = 0;
   const npcCount = integer(2, 4);
-  while (npcs.length < npcCount) {
+  while (selected.length < npcCount) {
     const index = integer(0, pool.length - 1);
     const [definition] = pool.splice(index, 1);
     const needsItem = ["hat", "stone", "letter"].includes(definition.need);
     if (needsItem && requiredItems >= 2) continue;
     if (needsItem) requiredItems++;
-    const home = place(true);
-    npcs.push({ ...definition, id: definition.archetype, ...home, home, phase: rng() * Math.PI * 2, talks: 0, done: false, awake: false });
+    selected.push(definition);
   }
+  const stations: Station[] = [];
+  const addStation = (kind: StationKind, position?: Point) => {
+    if (stations.some((station) => station.kind === kind)) return;
+    const at = position ? reserve(position) : place(true, true);
+    stations.push({ id: kind, kind, ...at });
+  };
+  if (biome === "riverside") addStation("water_bank", tileCenter(14, 6));
+  const bench = props.find((prop) => prop.kind === "bench");
+  const hasCouple = selected.some((npc) => npc.need === "company");
+  if (bench) {
+    if (hasCouple) reserve(bench);
+    else addStation("bench", bench);
+  }
+  // An occupied bench has one target, the couple. It has no sitting station.
+  const npcs: Npc[] = selected.map((definition) => {
+    const home = definition.need === "company" && bench ? { x: bench.x, y: bench.y } : place(true, true);
+    return { ...definition, id: definition.archetype, ...home, home, phase: rng() * Math.PI * 2, talks: 0, done: false, awake: false };
+  });
   const items: Item[] = [];
-  const addItem = (kind: ItemKind) => items.push({ id: `item-${items.length}`, kind, ...place(true), taken: false });
+  const addItem = (kind: ItemKind) => items.push({ id: `item-${items.length}`, kind, ...place(true, true), taken: false });
   for (const npc of npcs) {
     if (npc.need === "hat" || npc.need === "letter" || npc.need === "stone") addItem(npc.need);
   }
   const itemCount = Math.max(requiredItems, integer(1, 2));
   while (items.length < itemCount) addItem("apple");
-  const stations: Station[] = [];
-  const addStation = (kind: StationKind, position?: Point) => {
-    if (stations.some((station) => station.kind === kind)) return;
-    const at = position ?? place(true);
-    occupied.add(`${at.x},${at.y}`);
-    stations.push({ id: kind, kind, ...at });
-  };
   addStation("flowers");
-  if (biome === "riverside") addStation("water_bank", tileCenter(14, 6));
-  const bench = props.find((prop) => prop.kind === "bench");
-  if (bench) {
-    const couple = npcs.find((npc) => npc.need === "company");
-    if (couple) Object.assign(bench, couple.home);
-    addStation("bench", { x: bench.x, y: bench.y });
-  }
   if (npcs.some((npc) => npc.need === "grain")) { addStation("grain_sack"); addStation("trough"); }
   if (npcs.some((npc) => npc.need === "water")) { addStation("well"); addStation("crop_plot"); }
   const animals: Animal[] = biome === "farm"

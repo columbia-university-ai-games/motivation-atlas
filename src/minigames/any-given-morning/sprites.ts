@@ -10,6 +10,7 @@ function grid(...rows: string[]): string[] {
   return Array.from({ length: 16 }, (_, i) => (rows[i] ?? "").padEnd(16, ".").slice(0, 16));
 }
 export const GRIDS: Record<string, string[]> = {
+  water_can: grid("................", "................", ".....oooo.......", "....occcco......", "....occcco......", "...ooooooo......", "...ocBBBBco.....", "...ocBBBBco.oo..", "...ocBBBBcooBco.", "...ocBBBBcccBo..", "...ocBBBBBcoo...", "...ocBBBBco.....", "...occcccco.....", "....oooooo......", "................", "................"),
   water: grid("BBBBBBBBBBBBBBBB", "BBBBBBBBBBBBBBBB", "BBccBBBBBBBBBBBB", "BBBBcccBBBBBBBBB", "BBBBBBBBBBBBBBBB", "BBBBBBBBBBBBBBBB", "BBBBBBBBBBcccBBB", "BBBBBBBBBBBBBBBB", "BBBBBBBBBBBBBBBB", "BcccBBBBBBBBBBBB", "BBBBBBBBBBBBBBBB", "BBBBBBBBBBBBBBBB", "BBBBBBBccBBBBBBB", "BBBBBBBBBBBBBBBB", "BBBBBBBBBBBBBBBB", "BBBBBBBBBBBBBBBB"),
   water2: grid("BBBBBBBBBBBBBBBB", "BBBBBBBBBBBBBBBB", "BBBBBBBBBBccBBBB", "BBBBBBBBBBBBBBBB", "BBBBcccBBBBBBBBB", "BBBBBBBBBBBBBBBB", "BBBBBBBBBBBBBBBB", "BBBBBBBBcccBBBBB", "BBBBBBBBBBBBBBBB", "BBBBBBBBBBBBBBBB", "BBBcccBBBBBBBBBB", "BBBBBBBBBBBBBBBB", "BBBBBBBBBBBBBBBB", "BBBBccBBBBBBBBBB", "BBBBBBBBBBBBBBBB", "BBBBBBBBBBBBBBBB"),
   shore: grid("GGtBBBBBBBBBBBBB", "GGttBBBBBBBBBBBB", "GGGtBBBBBBBBBBBB", "GGttcBBBBBBBBBBB", "GGtBBBBBBBBBBBBB", "GGtBBBBBBBBBBBBB", "GGttBBBBBBBBBBBB", "GGGtcBBBBBBBBBBB", "GGGtBBBBBBBBBBBB", "GGttBBBBBBBBBBBB", "GGtBBBBBBBBBBBBB", "GGttBBBBBBBBBBBB", "GGGtBBBBBBBBBBBB", "GGGtBBBBBBBBBBBB", "GGttBBBBBBBBBBBB", "GGtBBBBBBBBBBBBB"),

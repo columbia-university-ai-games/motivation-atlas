@@ -19,6 +19,9 @@
 .agm[data-state="play"] .agm-pane { padding:4px 12px; }
 .agm[data-state="play"] .agm-pane button { margin:0; }
 .agm .agm-deed { margin:4px 0; }
+.agm .agm-first-hint { margin:8px 12px; font-size:.8rem; color:var(--muted); }
+.agm-first-hint[hidden] { display:none; }
+.agm-life-cards { display:none; }
 .agm-table { overflow-x:auto; max-width:100%; }
 .agm table { border-collapse:collapse; width:100%; font-size:.85rem; }
 .agm caption { text-align:left; padding-bottom:12px; font-weight:600; }
@@ -27,6 +30,13 @@
 .agm .agm-reflection { border:1px solid var(--line); border-left:4px solid var(--accent); margin:24px 0; padding:4px 16px; }
 .agm-sr { position:absolute; width:1px; height:1px; margin:-1px; padding:0; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
 .agm-touch { display:none; }
+@media (max-width:599px) {
+  .agm-table { display:none; }
+  .agm-life-cards { display:block; min-width:0; }
+  .agm-life-card { border:1px solid var(--line); border-radius:6px; margin:12px 0; padding:12px; overflow-wrap:normal; word-break:normal; hyphens:none; }
+  .agm-life-card h4 { margin:0 0 10px; }
+  .agm-life-card h5 { margin:14px 0 8px; font-size:.9rem; }
+}
 @media (pointer:coarse) {
   .agm-touch { display:grid; grid-template-columns:repeat(3,48px) 1fr 56px; grid-template-rows:48px 48px; padding:12px; gap:4px; touch-action:none; user-select:none; }
   .agm-touch button { margin:0; padding:0; font-size:18px; touch-action:none; }

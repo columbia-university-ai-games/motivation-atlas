@@ -18,11 +18,12 @@ export function mountMorning(el: HTMLElement, options: { seed?: number; onSessio
   const root = h("section", { class: "agm", "data-state": "menu", "data-testid": "any-given-morning", "aria-label": COPY.title, tabindex: -1 });
   const canvas = h("canvas", { "data-testid": "canvas", role: "img", "aria-label": "A small farm beside a dirt path.", width: 320, height: 192, tabindex: 0 });
   const stage = h("div", { class: "agm-stage" }, canvas);
+  const hint = h("p", { class: "agm-first-hint", "data-testid": "first-life-hint", hidden: true }, COPY.firstLifeHint);
   const dialogue = h("p", { class: "agm-sr", "data-testid": "dialogue" });
   const live = h("div", { class: "agm-sr", "aria-live": "polite", "aria-atomic": "true" }, dialogue);
   const pane = h("div", { class: "agm-pane" });
   const touch = h("div", { class: "agm-touch", "aria-label": "Touch controls" });
-  root.append(stage, touch, pane, live); el.append(style, root);
+  root.append(stage, hint, touch, pane, live); el.append(style, root);
   const renderer = createRenderer(canvas, reduced);
   const preview = startLife(createSession({ seed, mortal: false }));
   const removers: (() => void)[] = [], panelRemovers: (() => void)[] = [];
@@ -70,6 +71,8 @@ export function mountMorning(el: HTMLElement, options: { seed?: number; onSessio
   function sync(): void {
     const state = session.state.screen;
     root.dataset.state = state.toLowerCase();
+    hint.hidden = state !== "PLAY" || session.life?.number !== 1;
+    hint.style.opacity = "1";
     controls.clear(); panelRemovers.splice(0).forEach((remove) => remove()); pane.replaceChildren();
     touch.hidden = state !== "PLAY"; pane.hidden = state === "DYING";
     if (state === "MENU") {
@@ -93,15 +96,20 @@ export function mountMorning(el: HTMLElement, options: { seed?: number; onSessio
     } else if (state === "LEDGER") {
       const round = summarizeRound(session);
       const body = h("tbody");
+      const cards = h("div", { class: "agm-life-cards", "data-testid": "life-cards" }, h("p", {}, round.mode));
       for (const life of round.lives) {
         const deeds = h("td");
         if (life.deeds.length) life.deeds.forEach((deed) => deeds.append(h("p", {}, deed.text)));
         else deeds.append(COPY.noDeeds);
         body.append(h("tr", {}, h("th", { scope: "row" }, String(life.number)), h("td", {}, life.seconds.toFixed(1)), h("td", {}, life.cause), h("td", {}, String(life.deedCount)), deeds));
+        const card = h("article", { class: "agm-life-card" }, h("h4", {}, COPY.lifeNumber(life.number, round.lives.length)), h("p", {}, COPY.lived(life.seconds)), h("p", {}, life.cause), h("h5", {}, COPY.deedsHeading));
+        if (life.deeds.length) life.deeds.forEach((deed) => card.append(h("p", { class: "agm-deed" }, deed.text)));
+        else card.append(h("p", {}, COPY.noDeeds));
+        cards.append(card);
       }
       const table = h("table", {}, h("caption", {}, round.mode), h("thead", {}, h("tr", {}, ...["Life", COPY.secondsHeading, COPY.causeHeading, COPY.deedCountHeading, COPY.deedHeading].map((text) => h("th", { scope: "col" }, text)))), body);
       const reflection = h("aside", { class: "agm-reflection" }, h("h4", {}, COPY.reflectionTitle), h("p", {}, COPY.reflectionFeeling), h("p", {}, COPY.reflectionTime), h("p", {}, COPY.reflectionSwitch));
-      pane.append(h("h3", {}, COPY.ledgerTitle), h("div", { class: "agm-table", tabindex: 0, role: "region", "aria-label": "Life ledger" }, table), h("p", {}, COPY.deedsPerMinute(round.deedsPerMinute)), reflection, checkbox(), button("again", COPY.playAgain, () => { transition(session.state, "MENU"); start(); }), button("menu", COPY.backToMenu, menu));
+      pane.append(h("h3", {}, COPY.ledgerTitle), h("div", { class: "agm-table", tabindex: 0, role: "region", "aria-label": "Life ledger" }, table), cards, h("p", {}, COPY.deedsPerMinute(round.deedsPerMinute)), reflection, checkbox(), button("again", COPY.playAgain, () => { transition(session.state, "MENU"); start(); }), button("menu", COPY.backToMenu, menu));
       dialogue.textContent = `${COPY.dayEnded} ${round.mode}. ${COPY.reflectionFeeling}`;
       pane.querySelector<HTMLButtonElement>("button")?.focus({ preventScroll: true });
     }
@@ -127,6 +135,8 @@ export function mountMorning(el: HTMLElement, options: { seed?: number; onSessio
         if (session.state.screen !== before) { sync(); break; }
       }
       if (session.state.screen === "PLAY" || session.state.screen === "DYING" || session.state.screen === "LEDGER") renderer.draw(session.life, lastDialogue);
+      hint.hidden = session.state.screen !== "PLAY" || session.life.number !== 1 || session.life.elapsed >= 6;
+      hint.style.opacity = String(Math.min(1, Math.max(0, (6 - session.life.elapsed) / 0.8)));
       if (renderCount++ % 30 === 0 && session.state.screen === "PLAY") describe();
     } else { accumulator = 0; if (session.state.screen === "MENU") renderer.draw(preview, null); }
     frame = requestAnimationFrame(tick);

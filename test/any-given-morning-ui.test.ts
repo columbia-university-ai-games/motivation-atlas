@@ -8,6 +8,9 @@ import { DEATHS } from "../src/minigames/any-given-morning/game";
 import { drawEffects, playerPose, shake } from "../src/minigames/any-given-morning/effects";
 import { createSession, startLife } from "../src/minigames/any-given-morning/game";
 import { createSprites, GRIDS } from "../src/minigames/any-given-morning/sprites";
+import { drawCarriedItems } from "../src/minigames/any-given-morning/render";
+import { interact } from "../src/minigames/any-given-morning/game";
+import { generateArea } from "../src/minigames/any-given-morning/world";
 
 let el: HTMLDivElement, session: Session, unmount: (() => void) | undefined;
 const get = <T extends HTMLElement = HTMLElement>(id: string) => el.querySelector<T>(`[data-testid="${id}"]`)!;
@@ -32,6 +35,40 @@ afterEach(() => {
 });
 
 describe("Any Given Morning browser mount", () => {
+  it("fades the quiet first-life hint at six seconds and keeps it outside live announcements", () => {
+    mount(); expect(get("first-life-hint").hidden).toBe(true);
+    get("start").click();
+    expect(get("first-life-hint").textContent).toBe("Someone nearby might need something.");
+    expect(get("first-life-hint").hidden).toBe(false);
+    expect(get("first-life-hint").closest("[aria-live]")).toBeNull();
+    frames(5600); expect(Number(get("first-life-hint").style.opacity)).toBeLessThan(1);
+    frames(600); expect(get("first-life-hint").hidden).toBe(true);
+    die(); expect(get("dialogue").textContent).not.toContain(COPY.firstLifeHint);
+    get("respawn").click(); expect(get("first-life-hint").hidden).toBe(true);
+    key("Escape"); get("start").click(); expect(get("first-life-hint").hidden).toBe(false);
+  });
+
+  it("draws carried icons and removes them after giving or removing an item", () => {
+    const commands: string[] = [];
+    const ctx = new Proxy({}, { get: (_, name) => () => { commands.push(String(name)); }, set: () => true }) as CanvasRenderingContext2D;
+    const sprites = { draw: vi.fn(), tile: vi.fn(), person: vi.fn(), dispose: vi.fn(), ready: Promise.resolve() };
+    const life = startLife(createSession({ seed: 1, mortal: false }));
+    for (let seed = 0; !life.world.npcs.some((npc) => npc.need === "hat"); seed++) life.world = generateArea(seed);
+    const hat = life.world.items.find((item) => item.kind === "hat")!;
+    Object.assign(life.player, hat); interact(life);
+    drawCarriedItems(ctx, life, sprites, 100, 60);
+    expect(sprites.draw.mock.calls.at(-1)?.slice(1)).toEqual(["hat", 95, 60, 8]);
+    Object.assign(life.player, life.world.npcs.find((npc) => npc.need === "hat")!); interact(life);
+    sprites.draw.mockClear(); drawCarriedItems(ctx, life, sprites, 100, 60);
+    expect(sprites.draw).not.toHaveBeenCalled();
+    life.inventory.push("apple", "stone", "letter", "grain", "water");
+    drawCarriedItems(ctx, life, sprites, 100, 60);
+    expect(sprites.draw.mock.calls.map((call) => call[1])).toEqual(["apple", "stone", "letter", "water_can"]);
+    expect(sprites.tile.mock.calls[0].slice(1)).toEqual([74, 0, 0]);
+    life.inventory.length = 0; sprites.draw.mockClear(); sprites.tile.mockClear();
+    drawCarriedItems(ctx, life, sprites, 100, 60);
+    expect(sprites.draw).not.toHaveBeenCalled(); expect(sprites.tile).not.toHaveBeenCalled();
+  });
   it("works with null canvas, changes mortality and caption, and starts the selected mode", () => {
     mount();
     expect(state()).toBe("menu"); expect(get<HTMLInputElement>("mortality").checked).toBe(true);
@@ -63,6 +100,13 @@ describe("Any Given Morning browser mount", () => {
     mount(); get("start").click();
     for (let life = 0; life < 5; life++) { die(); expect(state()).toBe("dead"); get("respawn").click(); }
     expect(state()).toBe("ledger"); expect(el.querySelectorAll("tbody tr")).toHaveLength(5);
+    expect(el.querySelectorAll(".agm-life-card")).toHaveLength(5);
+    el.querySelectorAll(".agm-life-card").forEach((card, i) => {
+      expect(card.textContent).toContain(COPY.lifeNumber(i + 1, 5));
+      expect(card.textContent).toContain(COPY.lived(session.state.history[i].seconds));
+      expect(card.textContent).toContain(session.state.history[i].cause);
+      expect(card.textContent).toContain(COPY.deedsHeading);
+    });
     expect(el.textContent).toContain(COPY.reflectionTitle);
     expect(el.textContent).toContain(COPY.reflectionFeeling); expect(el.textContent).toContain(COPY.reflectionTime);
     expect(el.textContent).toContain(COPY.reflectionSwitch);

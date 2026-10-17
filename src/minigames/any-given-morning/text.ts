@@ -9,6 +9,7 @@ export const DEED_TEXT = {
   talked_to_child: "You gave the child a stone to skip.",
   picked_flowers: "You picked a flower beside the path.",
   sat_by_water: "You sat beside the water.",
+  sat_on_bench: "You sat on the bench.",
   looked_at_sky: "You stopped and looked at the sky.",
   let_sleeper_sleep: "You let the person in the hay sleep.",
   woke_sleeper: "You woke the person in the hay.",
@@ -73,9 +74,9 @@ export const NPC_TEXT = {
     thanks: "His handwriting's worse. Any news is good today.",
   },
   sleeper: {
-    ask: "Five more minutes. The hay's dry here.",
-    again: "Five. I fixed that gate before breakfast.",
-    thanks: "I'm up. Give me five seconds.",
+    ask: "I'm awake. There's hay in my collar.",
+    again: "I fixed that gate before breakfast. My hands still ache.",
+    thanks: "The cow took my place in the shade.",
   },
   gardener: {
     ask: "That plot needs water. Just the one by my boots.",
@@ -110,6 +111,17 @@ export const NPC_TEXT = {
 } as const;
 export type Archetype = keyof typeof NPC_TEXT;
 
+export const TARGET_LABELS = {
+  items: { hat: "Hat", stone: "Stone", letter: "Letter", apple: "Apple" },
+  npcs: {
+    hatless_farmer: "Farmer", chicken_keeper: "Neighbor", river_child: "Child", fisherman: "Fisherman",
+    couple: "Couple", dog: "Dog", letter_recipient: "Neighbor", sleeper: "Sleeper", gardener: "Gardener",
+    pie_seller: "Pie seller", neighbor: "Neighbor", cloud_watcher: "Neighbor", florist: "Florist", shepherd: "Shepherd",
+  },
+  stations: { grain_sack: "Grain", trough: "Trough", well: "Well", crop_plot: "Crops", flowers: "Flowers", water_bank: "River", bench: "Bench" },
+  trace: "Trace",
+} as const;
+
 export const COPY = {
   title: "Any Given Morning",
   subtitle: "A small farm. A small day.",
@@ -118,6 +130,7 @@ export const COPY = {
   mortalityOff: "Off: nobody dies.",
   start: "Start",
   controls: "Move with WASD or arrows. Press E, Space or Enter to interact. Esc opens the menu.",
+  firstLifeHint: "Someone nearby might need something.",
   deedsHeading: "What you did:",
   noDeeds: "You did not do anything. That counts.",
   respawn: "Respawn",
@@ -151,6 +164,7 @@ export const COPY = {
   watered: "Water soaked into the crop plot.",
   flowers: "You picked one flower.",
   water: "You sat on the bank. Water tapped against the dock.",
+  bench: "You sat on the bench. The wood felt warm.",
   lived: (seconds: number) => `You lived ${seconds.toFixed(1)} seconds.`,
   lifeNumber: (life: number, total: number) => `Life ${life} of ${total}`,
   deedsPerMinute: (rate: number) => `Deeds per minute: ${rate.toFixed(1)}`,

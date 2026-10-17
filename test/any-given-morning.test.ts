@@ -3,13 +3,13 @@ import { readFileSync } from "node:fs";
 import { describe, expect, it, vi } from "vitest";
 import {
   continueAfterDeath, createSession, DEATHS, deathFor, drawLifespan, DYING_SECONDS,
-  IMMORTAL_ROUND_SECONDS, interact, mulberry32, ROUND_LIVES,
+  IMMORTAL_ROUND_SECONDS, interact, mulberry32, nearestInteraction, ROUND_LIVES,
   startLife, step, summarizeLife, summarizeRound, TELEGRAPH, transition,
   type Input, type Life, type Screen,
 } from "../src/minigames/any-given-morning/game";
 import { anyGivenMorning } from "../src/minigames/any-given-morning";
 import { COPY, DEATH_TEXT, DEED_TEXT, NPC_TEXT, type Archetype } from "../src/minigames/any-given-morning/text";
-import { BIOMES, generateArea, TILE_SIZE, type Point } from "../src/minigames/any-given-morning/world";
+import { BIOMES, generateArea, MIN_INTERACTABLE_SPACING, TILE_SIZE, type Point } from "../src/minigames/any-given-morning/world";
 
 function newLife(seed = 1, mortal = false): Life { return startLife(createSession({ seed, mortal })); }
 function at(life: Life, point: Point): void {
@@ -156,17 +156,17 @@ describe("Any Given Morning central rule", () => {
 
 describe("Any Given Morning seeded rounds", () => {
   it("replays whole rounds deterministically and keeps the two modes' first areas identical", () => {
-    for (let seed = 0; seed < 80; seed++) {
+    for (let seed = 0; seed < 200; seed++) {
       const a = createSession({ seed, mortal: true }), b = createSession({ seed, mortal: true });
       let left = startLife(a), right = startLife(b);
-      let previous: string | null = null;
+      const used = new Set<string>();
       expect(left.world).toEqual(newLife(seed).world);
       for (let i = 0; i < ROUND_LIVES; i++) {
         expect(left.world).toEqual(right.world);
         expect(left.death).toEqual(right.death);
         expect(left.deathAt).toBe(right.deathAt);
-        expect(left.death!.kind).not.toBe(previous);
-        previous = left.death!.kind;
+        expect(used.has(left.death!.kind), `seed ${seed}, life ${i + 1}`).toBe(false);
+        used.add(left.death!.kind);
         step(left, 30); step(right, 30);
         if (i < ROUND_LIVES - 1) {
           left = continueAfterDeath(a)!;
@@ -200,23 +200,24 @@ describe("Any Given Morning seeded rounds", () => {
     }
   });
 
-  it("reaches every death kind, obeys biome restrictions and never immediately repeats", () => {
+  it("reaches every death kind, obeys biome restrictions and excludes all used kinds", () => {
     const seen = new Set<string>();
     const contexts = new Set<string>();
     expect(DEATHS.length).toBeGreaterThanOrEqual(12);
     expect(new Set(DEATHS.map((death) => death.animation)).size).toBe(DEATHS.length);
     for (const biome of BIOMES) {
       const rng = mulberry32(145);
-      let previous = null;
+      let used: (typeof DEATHS[number]["kind"])[] = [];
       for (let i = 0; i < 2000; i++) {
-        const death = deathFor(biome, rng, previous);
-        expect(death.kind).not.toBe(previous);
+        if (used.length === 5) used = [];
+        const death = deathFor(biome, rng, used);
+        expect(used).not.toContain(death.kind);
         expect(death.biomes).toContain(biome);
         if (death.kind === "gator_explodes" || death.kind === "flood") expect(biome).toBe("riverside");
         if (death.kind === "hay_avalanche") expect(biome).toBe("farm");
         seen.add(death.kind);
         contexts.add(`${biome}-${death.kind}`);
-        previous = death.kind;
+        used.push(death.kind);
       }
     }
     expect([...seen].sort()).toEqual(DEATHS.map((death) => death.kind).sort());
@@ -239,21 +240,42 @@ describe("Any Given Morning seeded rounds", () => {
     const summary = summarizeRound(session);
     expect(summary.lives).toHaveLength(5);
     expect(summary.seconds).toBe(session.state.history.reduce((sum, life) => sum + life.seconds, 0));
-    expect(summary.deedsPerMinute).toBe(summary.deedCount * 60 / summary.seconds);
+    const active = summary.lives.flatMap((life) => life.deeds).filter((deed) => deed.id !== "looked_at_sky" && deed.id !== "let_sleeper_sleep");
+    expect(summary.deedsPerMinute).toBe(active.length * 60 / summary.seconds);
     summary.lives[0].deeds[0].text = "changed";
     expect(session.state.history[0].deeds[0].text).toBe(DEED_TEXT.picked_flowers);
     expect(() => startLife(session)).toThrow();
     expect(summarizeRound(createSession({ seed: 0, mortal: true })).deedsPerMinute).toBe(0);
   });
+
+  it("lists passive deeds while excluding both from the rate", () => {
+    const life = lifeWith("sleeper");
+    const npc = life.world.npcs.find((npc) => npc.archetype === "sleeper")!;
+    at(life, npc); step(life, 4);
+    expect(life.deeds.map((deed) => deed.id)).toEqual(expect.arrayContaining(["looked_at_sky", "let_sleeper_sleep"]));
+    const session = { state: life.round, life };
+    session.state.history = [summarizeLife(life)];
+    expect(summarizeRound(session).deedsPerMinute).toBe(0);
+    interact(life);
+    session.state.history = [summarizeLife(life)];
+    const summary = summarizeRound(session);
+    expect(summary.deedsPerMinute).toBeCloseTo(15);
+    expect(summary.deedCount).toBe(3);
+    expect(summary.lives[0].deeds.map((deed) => deed.id)).toEqual(["let_sleeper_sleep", "looked_at_sky", "woke_sleeper"]);
+  });
 });
 
 describe("Any Given Morning worlds and movement", () => {
-  it("keeps every NPC, item, station and trace reachable across 200 seeds in every biome", () => {
+  it("keeps targets reachable and at least two tiles apart across 200 seeds in every biome", () => {
     const archetypes = new Set<string>();
     let eggs = 0;
     for (let seed = 0; seed < 200; seed++) for (const biome of BIOMES) {
       const legacy = Array.from({ length: 6 }, (_, i) => ({ id: String(i), kind: "cairn" as const, deed: "said_hello" as const, life: i + 1 }));
       const area = generateArea(seed, legacy, biome);
+      const targets = [...area.npcs, ...area.items, ...area.stations];
+      targets.forEach((a, i) => targets.slice(i + 1).forEach((b) => {
+        expect(Math.hypot(a.x - b.x, a.y - b.y), `${biome} seed ${seed}: ${a.id}, ${b.id}`).toBeGreaterThanOrEqual(MIN_INTERACTABLE_SPACING);
+      }));
       expect(area).toEqual(generateArea(seed, legacy, biome));
       expect([area.width, area.height, area.tileSize]).toEqual([20, 12, 16]);
       expect(area.npcs.length).toBeGreaterThanOrEqual(2);
@@ -317,6 +339,49 @@ describe("Any Given Morning worlds and movement", () => {
 });
 
 describe("Any Given Morning deeds and traces", () => {
+  it("sits on an empty bench once per life and leaves occupied benches to the couple", () => {
+    const life = newLife();
+    life.world = generateArea(1, [], "orchard");
+    // Find an unoccupied generated bench without changing its rule objects.
+    for (let seed = 2; !life.world.stations.some((s) => s.kind === "bench"); seed++) life.world = generateArea(seed, [], "orchard");
+    expect(use(life, "bench")).toBe(COPY.bench);
+    expect(life.sittingUntil).toBeCloseTo(life.elapsed + 1.6);
+    step(life, 1.7);
+    expect(life.sittingUntil).toBeLessThan(life.elapsed);
+    use(life, "bench"); use(life, "bench");
+    expect(life.deeds.filter((deed) => deed.id === "sat_on_bench")).toEqual([{ id: "sat_on_bench", text: DEED_TEXT.sat_on_bench }]);
+    step(life, 0.1, { x: 1 }); expect(life.sittingUntil).toBe(0);
+    const occupied = lifeWith("couple");
+    expect(occupied.world.stations.some((s) => s.kind === "bench")).toBe(false);
+    at(occupied, occupied.world.npcs.find((n) => n.need === "company")!);
+    expect(nearestInteraction(occupied)?.label).toBe("Couple");
+    interact(occupied); step(occupied, 2);
+    expect(occupied.deeds.map((deed) => deed.id)).toEqual(["listened_to_couple"]);
+  });
+
+  it("gives three distinct sleeper replies with no timing promise", () => {
+    const life = lifeWith("sleeper"), npc = life.world.npcs.find((npc) => npc.need === "quiet")!;
+    at(life, npc);
+    const replies = [interact(life), interact(life), interact(life)];
+    expect(new Set(replies).size).toBe(3);
+    expect(replies).toEqual([NPC_TEXT.sleeper.ask, NPC_TEXT.sleeper.again, NPC_TEXT.sleeper.thanks]);
+    expect(replies.join(" ")).not.toMatch(/second|minute|five/i);
+    expect(life.deeds.map((deed) => deed.id)).toEqual(["woke_sleeper"]);
+    expect(npc.awake).toBe(true);
+  });
+
+  it("labels the same nearest target that receives E", () => {
+    for (let seed = 0; seed < 200; seed++) {
+      const life = newLife(seed);
+      for (const target of [...life.world.npcs, ...life.world.items, ...life.world.stations]) {
+        at(life, target);
+        const nearest = nearestInteraction(life)!;
+        expect(nearest.at).toBe(target);
+        expect(nearest.label.length).toBeGreaterThanOrEqual(2);
+        expect(nearest.label.length).toBeLessThanOrEqual(12);
+      }
+    }
+  });
   it("delivers required loose items and records each NPC deed once", () => {
     const cases = [
       ["hatless_farmer", "returned_hat"], ["river_child", "talked_to_child"], ["letter_recipient", "delivered_letter"],
@@ -455,7 +520,7 @@ describe("Any Given Morning screens and copy", () => {
     for (const heading of ["Dynamic", "Aesthetic"]) expect(readme.split(`## ${heading}\n\n`)[1].split("\n\n")[0]).toBe("PLAYTEST PENDING: one real person's report goes here.");
     expect(readme.split("\n")[0]).toContain("Codex");
     for (const kind of DEATHS.map((death) => death.kind)) expect(DEATH_TEXT[kind].length).toBeGreaterThan(0);
-    expect(Object.keys(DEED_TEXT)).toHaveLength(14);
+    expect(Object.keys(DEED_TEXT)).toHaveLength(15);
     // Small copy guard. Rhythm and literal meaning still require human review.
     const strings = [...Object.values(DEATH_TEXT), ...Object.values(DEED_TEXT), ...Object.values(NPC_TEXT).flatMap(Object.values)];
     for (const line of strings) {

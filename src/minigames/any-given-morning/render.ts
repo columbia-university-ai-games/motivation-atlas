@@ -1,9 +1,37 @@
-import { INTERACTION_RADIUS, type Life } from "./game";
+import { nearestInteraction, type Life } from "./game";
 import { drawEffects, playerPose, shake } from "./effects";
-import { createSprites } from "./sprites";
+import { createSprites, type Sprites } from "./sprites";
 import type { Point } from "./world";
 
 export interface Renderer { ready: Promise<void>; draw(life: Life, dialogue: string | null): void; dispose(): void }
+
+// Each glyph occupies three by five native pixels, with a one-pixel gap.
+const GLYPHS: Record<string, string> = {
+  A: "010101111101101", B: "110101110101110", C: "011100100100011", D: "110101101101110",
+  E: "111100110100111", F: "111100110100100", G: "011100101101011", H: "101101111101101",
+  I: "111010010010111", J: "001001001101010", K: "101101110101101", L: "100100100100111",
+  M: "101111111101101", N: "101111111111101", O: "010101101101010", P: "110101110100100",
+  Q: "010101101111011", R: "110101110101101", S: "011100010001110", T: "111010010010010",
+  U: "101101101101111", V: "101101101101010", W: "101101111111101", X: "101101010101101",
+  Y: "101101010010010", Z: "111001010100111",
+};
+function pixelText(ctx: CanvasRenderingContext2D, text: string, x: number, y: number): void {
+  [...text.toUpperCase()].forEach((letter, i) => {
+    [...(GLYPHS[letter] ?? "")].forEach((pixel, j) => {
+      if (pixel === "1") ctx.fillRect(x + i * 4 + j % 3, y + Math.floor(j / 3), 1, 1);
+    });
+  });
+}
+
+/** Derive icons from inventory each frame so used or removed items disappear. */
+export function drawCarriedItems(ctx: CanvasRenderingContext2D, life: Life, sprites: Sprites, x: number, y: number): void {
+  life.inventory.forEach((item, i) => {
+    const left = Math.round(x - life.inventory.length * 5 + i * 10);
+    if (item === "grain") {
+      ctx.save(); ctx.translate(left, Math.round(y)); ctx.scale(0.5, 0.5); sprites.tile(ctx, 74, 0, 0); ctx.restore();
+    } else sprites.draw(ctx, item === "water" ? "water_can" : item, left, Math.round(y), 8);
+  });
+}
 export function createRenderer(canvas: HTMLCanvasElement, reduced: () => boolean): Renderer {
   const context = canvas.getContext("2d");
   // jsdom and browsers without canvas still get the complete DOM interface.
@@ -110,15 +138,23 @@ export function createRenderer(canvas: HTMLCanvasElement, reduced: () => boolean
         const walking = !reduced() && speed > 8;
         if (walking) ctx.scale(1 + Math.sin(motion * 18) * 0.025, 1 - Math.sin(motion * 18) * 0.025);
         const bob = walking ? Math.round(Math.sin(motion * 18)) : 0;
-        sprites.person(ctx, 0, -8, -12 + bob, facing); ctx.restore();
+        const sitting = life.round.screen === "PLAY" && life.sittingUntil > life.elapsed;
+        if (sitting) ctx.scale(1, 0.75);
+        sprites.person(ctx, 0, -8, -12 + bob, facing);
+        if (sitting) rect("#3c3537", facing ? -6 : 2, 2, 5, 2);
+        ctx.restore();
+        if (life.round.screen === "PLAY") drawCarriedItems(ctx, life, sprites, player.x, Math.max(1, player.y - 24));
       });
       entities.sort((a, b) => a.at.y - b.at.y).forEach((e) => e.draw());
-      const adjacent = [...world.items.filter((i) => !i.taken), ...world.npcs, ...world.stations, ...world.traces]
-        .filter((at) => Math.hypot(at.x - life.player.x, at.y - life.player.y) <= INTERACTION_RADIUS)
-        .sort((a, b) => Math.hypot(a.x - life.player.x, a.y - life.player.y) - Math.hypot(b.x - life.player.x, b.y - life.player.y))[0];
-      if (adjacent && life.round.screen === "PLAY" && !dialogue) {
+      const target = nearestInteraction(life), adjacent = target?.at;
+      if (adjacent && target && life.round.screen === "PLAY") {
         const bob = Math.round(Math.sin(motion * 4));
-        rect("#3c3537", adjacent.x - 3, adjacent.y - 22 + bob, 7, 7); rect("#fff1cc", adjacent.x - 2, adjacent.y - 21 + bob, 5, 4); rect("#fff1cc", adjacent.x, adjacent.y - 16 + bob, 1, 2);
+        const markerY = Math.max(2, Math.round(adjacent.y - 22 + bob));
+        rect("#3c3537", adjacent.x - 3, markerY, 7, 7); rect("#fff1cc", adjacent.x - 2, markerY + 1, 5, 4); rect("#fff1cc", adjacent.x, markerY + 6, 1, 2);
+        const width = target.label.length * 4 + 3;
+        const left = Math.max(1, Math.min(319 - width, Math.round(adjacent.x + 6)));
+        rect("#fff1cc", left, markerY, width, 9);
+        ctx.fillStyle = "#3c3537"; pixelText(ctx, target.label, left + 2, markerY + 2);
       }
       // Cloud shadows cross at a different speed from ground animation.
       ctx.globalAlpha = 0.07;

@@ -1,5 +1,5 @@
-import { COPY, DEATH_TEXT, DEED_TEXT, NPC_TEXT, type DeathKind, type DeedId } from "./text";
-import { BIOMES, generateArea, isWalkable, mulberry32, seedFor, TRACE_KINDS, type Area, type Biome, type ItemKind, type LegacyTrace, type Npc, type Point, type Rng, type Station } from "./world";
+import { COPY, DEATH_TEXT, DEED_TEXT, NPC_TEXT, TARGET_LABELS, type DeathKind, type DeedId } from "./text";
+import { BIOMES, generateArea, isWalkable, MIN_INTERACTABLE_SPACING, mulberry32, seedFor, TRACE_KINDS, type Area, type Biome, type ItemKind, type LegacyTrace, type Npc, type Point, type Rng, type Station } from "./world";
 export { mulberry32 } from "./world";
 
 export const LIFESPAN_BASE = 20;
@@ -56,8 +56,9 @@ export function drawLifespan(rng: Rng): number {
   return LIFESPAN_BASE + (rng() * 2 - 1) * LIFESPAN_JITTER;
 }
 
-export function deathFor(biome: Biome, rng: Rng, previousKind: DeathKind | null = null): DeathDefinition {
-  const choices = DEATHS.filter((death) => death.biomes.includes(biome) && death.kind !== previousKind);
+export function deathFor(biome: Biome, rng: Rng, usedKinds: readonly DeathKind[] = []): DeathDefinition {
+  const choices = DEATHS.filter((death) => death.biomes.includes(biome) && !usedKinds.includes(death.kind));
+  if (!choices.length) throw new Error("No unused death kind for this biome");
   let draw = rng() * choices.reduce((total, death) => total + death.weight, 0);
   for (const death of choices) {
     draw -= death.weight;
@@ -82,7 +83,6 @@ export interface RoundState extends ScreenMachine {
   lifeCount: number;
   history: LifeSummary[];
   legacy: LegacyTrace[];
-  previousKind: DeathKind | null;
 }
 export interface Session { state: RoundState; life: Life | null }
 export interface Life {
@@ -103,13 +103,14 @@ export interface Life {
   idleSeconds: number;
   nearbySeconds: Record<string, number>;
   dialogue: string | null;
+  sittingUntil: number;
 }
 export interface Input { x?: number; y?: number; interact?: boolean }
 
 /** Rules mutate the supplied session/life and return it for the host's next render. */
 export function createSession(options: { mortal: boolean; seed: number }): Session {
   if (!Number.isSafeInteger(options.seed)) throw new RangeError("Seed must be a safe integer");
-  return { state: { ...options, seed: options.seed >>> 0, screen: "MENU", lifeCount: 0, history: [], legacy: [], previousKind: null }, life: null };
+  return { state: { ...options, seed: options.seed >>> 0, screen: "MENU", lifeCount: 0, history: [], legacy: [] }, life: null };
 }
 
 export function startLife(session: Session): Life {
@@ -120,11 +121,12 @@ export function startLife(session: Session): Life {
   const index = round.lifeCount;
   const world = generateArea(seedFor(round.seed, index, 1), round.legacy);
   const deathAt = round.mortal ? drawLifespan(mulberry32(seedFor(round.seed, index, 2))) : null;
-  const death = round.mortal ? deathFor(world.biome, mulberry32(seedFor(round.seed, index, 3)), round.previousKind) : null;
+  const usedKinds = round.history.flatMap((life) => life.kind ? [life.kind] : []);
+  const death = round.mortal ? deathFor(world.biome, mulberry32(seedFor(round.seed, index, 3)), usedKinds) : null;
   const life: Life = {
     round, number: index + 1, world, player: { ...world.spawn, vx: 0, vy: 0 }, elapsed: 0,
     deathAt, death, telegraphAt: deathAt !== null && death && !death.peaceful ? deathAt - TELEGRAPH : null,
-    telegraph: false, dyingElapsed: 0, ended: false, deeds: [], inventory: [], idleSeconds: 0, nearbySeconds: {}, dialogue: null,
+    telegraph: false, dyingElapsed: 0, ended: false, deeds: [], inventory: [], idleSeconds: 0, nearbySeconds: {}, dialogue: null, sittingUntil: 0,
   };
   transition(round, "PLAY");
   round.lifeCount++;
@@ -151,7 +153,6 @@ function finishLife(life: Life): void {
   life.ended = true;
   life.round.history.push(summarizeLife(life));
   if (!life.round.mortal || !life.death) return;
-  life.round.previousKind = life.death.kind;
   // Each deed leaves one trace. The final deeds of a life are the newest traces.
   const traces = life.deeds.map((deed, index): LegacyTrace => ({
     id: `${life.number}-${deed.id}`, deed: deed.id, life: life.number,
@@ -173,6 +174,13 @@ function consume(life: Life, item: Life["inventory"][number]): boolean {
 
 function talk(life: Life, npc: Npc): string {
   const lines = NPC_TEXT[npc.archetype];
+  if (npc.need === "quiet") {
+    npc.talks++;
+    npc.awake = true;
+    npc.done = true;
+    recordDeed(life, "woke_sleeper");
+    return npc.talks === 1 ? lines.ask : npc.talks === 2 ? lines.again : lines.thanks;
+  }
   if (npc.done) return lines.thanks;
   npc.talks++;
   let deed: DeedId | null = null;
@@ -183,7 +191,6 @@ function talk(life: Life, npc: Npc): string {
     case "line": if (npc.talks >= 2) deed = "helped_fisherman"; break;
     case "pet": deed = "pet_dog"; break;
     case "hello": deed = "said_hello"; break;
-    case "quiet": npc.awake = true; deed = "woke_sleeper"; break;
   }
   if (deed) {
     recordDeed(life, deed);
@@ -209,8 +216,26 @@ function useStation(life: Life, station: Station): string | null {
       return COPY.watered;
     case "flowers": recordDeed(life, "picked_flowers"); return COPY.flowers;
     case "water_bank": recordDeed(life, "sat_by_water"); return COPY.water;
-    case "bench": return null;
+    case "bench":
+      Object.assign(life.player, { x: station.x, y: station.y, vx: 0, vy: 0 });
+      life.sittingUntil = life.elapsed + 1.6;
+      recordDeed(life, "sat_on_bench");
+      return COPY.bench;
   }
+}
+
+/** The marker and input share the same nearest target and tie order. */
+export function nearestInteraction(life: Life): { at: Point; label: string; act: () => string | null } | undefined {
+  const targets = [
+    ...life.world.items.filter((item) => !item.taken).map((item) => ({ at: item, label: TARGET_LABELS.items[item.kind], act: () => {
+      item.taken = true; take(life, item.kind); return COPY.pickedUp[item.kind];
+    } })),
+    ...life.world.npcs.map((npc) => ({ at: npc, label: TARGET_LABELS.npcs[npc.archetype], act: () => talk(life, npc) })),
+    ...life.world.stations.map((station) => ({ at: station, label: TARGET_LABELS.stations[station.kind], act: () => useStation(life, station) })),
+    ...life.world.traces.map((trace) => ({ at: trace, label: TARGET_LABELS.trace, act: () => COPY.trace })),
+  ].filter(({ at }) => near(life.player, at)).sort((a, b) =>
+    Math.hypot(a.at.x - life.player.x, a.at.y - life.player.y) - Math.hypot(b.at.x - life.player.x, b.at.y - life.player.y));
+  return targets[0];
 }
 
 /** Nearest reachable object wins. Input is ignored outside this life in PLAY. */
@@ -218,16 +243,8 @@ export function interact(life: Life): string | null {
   if (life.round.screen !== "PLAY" || life.ended) return null;
   life.idleSeconds = 0;
   life.nearbySeconds = {};
-  const targets = [
-    ...life.world.items.filter((item) => !item.taken).map((item) => ({ at: item, act: () => {
-      item.taken = true; take(life, item.kind); return COPY.pickedUp[item.kind];
-    } })),
-    ...life.world.npcs.map((npc) => ({ at: npc, act: () => talk(life, npc) })),
-    ...life.world.stations.map((station) => ({ at: station, act: () => useStation(life, station) })),
-    ...life.world.traces.map((trace) => ({ at: trace, act: () => COPY.trace })),
-  ].filter(({ at }) => near(life.player, at)).sort((a, b) =>
-    Math.hypot(a.at.x - life.player.x, a.at.y - life.player.y) - Math.hypot(b.at.x - life.player.x, b.at.y - life.player.y));
-  life.dialogue = targets[0]?.act() ?? null;
+  life.sittingUntil = 0;
+  life.dialogue = nearestInteraction(life)?.act() ?? null;
   return life.dialogue;
 }
 
@@ -241,6 +258,7 @@ function advance(life: Life, dt: number, input: Input): void {
   const x = input.x ?? 0, y = input.y ?? 0;
   const magnitude = Math.max(1, Math.hypot(x, y));
   const moving = x !== 0 || y !== 0;
+  if (moving) life.sittingUntil = 0;
   const acceleration = moving ? 450 : 600;
   const player = life.player;
   player.vx = approach(player.vx, x / magnitude * MOVE_SPEED, acceleration * dt);
@@ -254,8 +272,12 @@ function advance(life: Life, dt: number, input: Input): void {
   if (life.idleSeconds + EPSILON >= 4) recordDeed(life, "looked_at_sky");
   for (const npc of life.world.npcs) {
     // Slight wander stays inside the home tile and cannot affect collision.
-    npc.x = npc.home.x + Math.sin(life.elapsed * 0.7 + npc.phase) * 1.5;
-    npc.y = npc.home.y + Math.sin(life.elapsed * 0.5 + npc.phase) * 1.5;
+    const next = {
+      x: npc.home.x + Math.sin(life.elapsed * 0.7 + npc.phase) * 1.5,
+      y: npc.home.y + Math.sin(life.elapsed * 0.5 + npc.phase) * 1.5,
+    };
+    const neighbors = [...life.world.npcs.filter((other) => other !== npc), ...life.world.items, ...life.world.stations];
+    if (neighbors.every((other) => Math.hypot(next.x - other.x, next.y - other.y) >= MIN_INTERACTABLE_SPACING)) Object.assign(npc, next);
     const quiet = idle && near(player, npc) && !npc.awake;
     life.nearbySeconds[npc.id] = quiet ? (life.nearbySeconds[npc.id] ?? 0) + dt : 0;
     if (npc.need === "quiet" && life.nearbySeconds[npc.id] + EPSILON >= 3) recordDeed(life, "let_sleeper_sleep");
@@ -311,6 +333,7 @@ export function summarizeRound(session: Session): { mortal: boolean; mode: strin
   const lives = session.state.history.map((life) => ({ ...life, deeds: life.deeds.map((deed) => ({ ...deed })) }));
   const seconds = lives.reduce((sum, life) => sum + life.seconds, 0);
   const deedCount = lives.reduce((sum, life) => sum + life.deedCount, 0);
+  const activeDeeds = lives.reduce((sum, life) => sum + life.deeds.filter((deed) => deed.id !== "looked_at_sky" && deed.id !== "let_sleeper_sleep").length, 0);
   return { mortal: session.state.mortal, mode: session.state.mortal ? COPY.mortalMode : COPY.immortalMode,
-    lives, seconds, deedCount, deedsPerMinute: seconds > 0 ? deedCount * 60 / seconds : 0 };
+    lives, seconds, deedCount, deedsPerMinute: seconds > 0 ? activeDeeds * 60 / seconds : 0 };
 }
