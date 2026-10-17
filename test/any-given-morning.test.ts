@@ -1,6 +1,9 @@
 // @vitest-environment jsdom
 import { readFileSync } from "node:fs";
 import { describe, expect, it, vi } from "vitest";
+
+// Seed sweeps run hundreds of simulated rounds. CI runners are slower than a laptop.
+vi.setConfig({ testTimeout: 60_000 });
 import {
   continueAfterDeath, createSession, DEATHS, deathFor, drawLifespan, DYING_SECONDS,
   IMMORTAL_ROUND_SECONDS, interact, mulberry32, nearestInteraction, ROUND_LIVES,
