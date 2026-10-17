@@ -1,0 +1,178 @@
+[
+  {
+    "easy": {
+      "angle": -2.6260436461308143,
+      "power": 35,
+      "seconds": 1.0166666666666666,
+      "banks": 0,
+      "cushionContacts": 0,
+      "cutDegrees": 8.537736462515939e-7,
+      "angleTolerance": 0.003,
+      "powerTolerance": 1
+    },
+    "hard": {
+      "angle": 0.5155490074589792,
+      "power": 35,
+      "seconds": 1.0166666666666666,
+      "banks": 0,
+      "cushionContacts": 0,
+      "cutDegrees": 8.537736462515939e-7,
+      "angleTolerance": 0.003,
+      "powerTolerance": 1
+    }
+  },
+  {
+    "easy": {
+      "angle": -1.028521991722663,
+      "power": 35,
+      "seconds": 1.5791666666666666,
+      "banks": 0,
+      "cushionContacts": 0,
+      "cutDegrees": 20.535488185828864,
+      "angleTolerance": 0.003,
+      "powerTolerance": 1
+    },
+    "hard": {
+      "angle": 0.20940925730494966,
+      "power": 35,
+      "seconds": 1.3041666666666667,
+      "banks": 0,
+      "cushionContacts": 0,
+      "cutDegrees": 1.3440531226483599,
+      "angleTolerance": 0.003,
+      "powerTolerance": 1
+    }
+  },
+  {
+    "easy": {
+      "angle": -1.8433016573298275,
+      "power": 35,
+      "seconds": 2.1416666666666666,
+      "banks": 0,
+      "cushionContacts": 0,
+      "cutDegrees": 34.33729127015551,
+      "angleTolerance": 0.003,
+      "powerTolerance": 1
+    },
+    "hard": {
+      "angle": 0.020304963698234167,
+      "power": 95,
+      "seconds": 3.1791666666666667,
+      "banks": 0,
+      "cushionContacts": 0,
+      "cutDegrees": 26.511494159278698,
+      "angleTolerance": 0.003,
+      "powerTolerance": 1
+    }
+  },
+  {
+    "easy": {
+      "angle": 2.152258500209431,
+      "power": 35,
+      "seconds": 1.9541666666666666,
+      "banks": 0,
+      "cushionContacts": 0,
+      "cutDegrees": 27.474727508376944,
+      "angleTolerance": 0.003,
+      "powerTolerance": 1
+    },
+    "hard": {
+      "angle": 0.06801669784925697,
+      "power": 35,
+      "seconds": 2.6291666666666664,
+      "banks": 0,
+      "cushionContacts": 0,
+      "cutDegrees": 44.76625001188427,
+      "angleTolerance": 0.003,
+      "powerTolerance": 1
+    }
+  },
+  {
+    "easy": {
+      "angle": -1.953176801367853,
+      "power": 35,
+      "seconds": 2.0416666666666665,
+      "banks": 0,
+      "cushionContacts": 1,
+      "cutDegrees": 34.5129117590886,
+      "angleTolerance": 0.003,
+      "powerTolerance": 1
+    },
+    "hard": {
+      "angle": 0.37196304869406044,
+      "power": 35,
+      "seconds": 1.5791666666666666,
+      "banks": 0,
+      "cushionContacts": 0,
+      "cutDegrees": 2.8002183195999604,
+      "angleTolerance": 0.003,
+      "powerTolerance": 1
+    }
+  },
+  {
+    "easy": {
+      "angle": 2.8516823573006653,
+      "power": 65,
+      "seconds": 2.2083333333333335,
+      "banks": 2,
+      "cushionContacts": 2,
+      "cutDegrees": 21.767936542017065,
+      "angleTolerance": 0.003,
+      "powerTolerance": 1
+    },
+    "hard": {
+      "angle": -1.5707963267948966,
+      "power": 35,
+      "seconds": 0.6916666666666667,
+      "banks": 0,
+      "cushionContacts": 0,
+      "cutDegrees": 0,
+      "angleTolerance": 0.003,
+      "powerTolerance": 1
+    }
+  },
+  {
+    "easy": {
+      "angle": 2.816642771566134,
+      "power": 35,
+      "seconds": 0.9375,
+      "banks": 0,
+      "cushionContacts": 0,
+      "cutDegrees": 12.22959548459192,
+      "angleTolerance": 0.003,
+      "powerTolerance": 1
+    },
+    "hard": {
+      "angle": -0.247469944005969,
+      "power": 75,
+      "seconds": 2.3541666666666665,
+      "banks": 1,
+      "cushionContacts": 1,
+      "cutDegrees": 16.922204985838025,
+      "angleTolerance": 0.003,
+      "powerTolerance": 1
+    }
+  },
+  {
+    "easy": {
+      "angle": -2.5995499788409493,
+      "power": 35,
+      "seconds": 0.9625,
+      "banks": 0,
+      "cushionContacts": 0,
+      "cutDegrees": 3.7836577116578187,
+      "angleTolerance": 0.003,
+      "powerTolerance": 1
+    },
+    "hard": {
+      "angle": 0.09598347679230512,
+      "power": 75,
+      "seconds": 2.6041666666666665,
+      "banks": 1,
+      "cushionContacts": 1,
+      "cutDegrees": 23.911688429160698,
+      "angleTolerance": 0.003,
+      "powerTolerance": 1
+    }
+  }
+]
