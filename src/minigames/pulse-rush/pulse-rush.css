@@ -1,0 +1,36 @@
+.pulse-rush { display: grid; gap: 16px; }
+.pulse-mechanic { border: 1px solid var(--line); border-radius: 8px; display: grid; gap: 10px; padding: 12px 16px; }
+.pulse-mechanic legend { font: 500 0.75rem var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.pulse-mechanic label { display: flex; gap: 8px; align-items: flex-start; }
+.pulse-mechanic input { margin-top: 0.35em; }
+.pulse-start { justify-self: start; font: 600 1rem var(--body); padding: 9px 16px; border: 2px solid var(--ink); border-radius: 8px; background: var(--ink); color: var(--surface); cursor: pointer; }
+.pulse-board { display: grid; justify-items: center; gap: 12px; text-align: center; }
+.pulse-instructions { margin: 0; max-width: 48ch; color: var(--muted); }
+.pulse-target {
+  width: min(46vw, 180px); aspect-ratio: 1; border: 4px solid var(--accent); border-radius: 50%;
+  background: var(--surface); color: var(--ink); font: 700 1.25rem var(--display); cursor: pointer;
+  transition: transform 100ms ease, background 100ms ease, color 100ms ease;
+  touch-action: manipulation;
+}
+.pulse-target.is-open { transform: scale(1.08); background: var(--accent); color: var(--surface); }
+.pulse-target:disabled { cursor: default; opacity: 0.72; }
+.pulse-status { min-height: 1.6em; margin: 0; font-weight: 600; }
+.pulse-stats { width: 100%; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.pulse-stats p { display: grid; gap: 2px; margin: 0; padding: 8px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); }
+.pulse-stats span { color: var(--muted); font-size: 0.78rem; }
+.pulse-stats output { font: 700 1.25rem var(--display); font-variant-numeric: tabular-nums; }
+.pulse-clock { width: 100%; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 10px; align-items: center; }
+.pulse-clock output { min-width: 4.2em; font: 600 1rem var(--mono); font-variant-numeric: tabular-nums; }
+.pulse-clock progress { width: 100%; accent-color: var(--accent); }
+.pulse-reflect { border-left: 4px solid var(--aes, var(--accent)); padding: 8px 16px; background: var(--bg); border-radius: 0 6px 6px 0; }
+.pulse-reflect h4 { margin: 0 0 4px; }
+.pulse-reflect ul { margin: 0; padding-left: 18px; }
+
+@media (max-width: 520px) {
+  .pulse-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .pulse-target { width: min(52vw, 168px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pulse-target { transition: none; }
+}
