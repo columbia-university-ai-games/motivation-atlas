@@ -511,13 +511,16 @@ describe("Any Given Morning screens and copy", () => {
     } finally { vi.useRealTimers(); }
   });
 
-  it("keeps the source quotation exact and the two playtest placeholders unchanged", () => {
+  it("keeps the source quotation exact and every README section filled in", () => {
     const readme = readFileSync("src/minigames/any-given-morning/README.md", "utf8");
     const quote = readme.split("\n").find((line) => line.startsWith("> "))!.slice(2);
     const note = readFileSync("content/player-motivations.md", "utf8");
     const meaning = note.split("### Meaning and epic scale")[1].split("\n## ")[0];
     expect(meaning).toContain(quote);
-    for (const heading of ["Dynamic", "Aesthetic"]) expect(readme.split(`## ${heading}\n\n`)[1].split("\n\n")[0]).toBe("PLAYTEST PENDING: one real person's report goes here.");
+    for (const heading of ["Mechanic", "Dynamic", "Aesthetic", "Sources"]) {
+      expect(readme.split(`## ${heading}\n\n`)[1]?.split("\n\n")[0]?.length, heading).toBeGreaterThan(40);
+    }
+    expect(readme).not.toMatch(/PLAYTEST PENDING/);
     expect(readme.split("\n")[0]).toContain("Codex");
     for (const kind of DEATHS.map((death) => death.kind)) expect(DEATH_TEXT[kind].length).toBeGreaterThan(0);
     expect(Object.keys(DEED_TEXT)).toHaveLength(15);
