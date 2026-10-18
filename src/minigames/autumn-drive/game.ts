@@ -1,4 +1,4 @@
-export const DEADLINE = 90;
+export const DEADLINE = 30;
 export const CHECKPOINTS = [300, 600, 900] as const;
 export type Outcome = 'driving' | 'arrived' | 'time-up' | 'stopped';
 export interface Run {

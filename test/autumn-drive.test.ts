@@ -3,19 +3,23 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { advanceRun, CHECKPOINTS, DEADLINE, newRun, recover, recoveryProgress, stopRun, type Run } from '../src/minigames/autumn-drive/game';
 
 describe('Autumn Drive deadline experiment', () => {
-  it('the same drive fails at 90 seconds only when the deadline is enabled', () => {
+  it('the same drive remains active at 29 seconds and fails at 30 only with the deadline enabled', () => {
     let timed = newRun(true), free = newRun(false);
-    for (let i = 0; i < DEADLINE; i++) {
+    for (let i = 0; i < 29; i++) {
       timed = advanceRun(timed, 1, {progress: 0, onRoad: true});
       free = advanceRun(free, 1, {progress: 0, onRoad: true});
     }
+    expect(timed.outcome).toBe('driving'); expect(free.outcome).toBe('driving');
+    timed = advanceRun(timed, 1, {progress: 0, onRoad: true});
+    free = advanceRun(free, 1, {progress: 0, onRoad: true});
     expect(timed.outcome).toBe('time-up'); expect(free.outcome).toBe('driving');
+    expect(timed.elapsed).toBe(30);
     expect(timed.elapsed).toBe(free.elapsed); expect(timed.nextGate).toBe(free.nextGate);
   });
   it.each([true, false])('finishes the identical ordered route with deadline=%s', deadline => {
     let run = newRun(deadline);
-    for (let progress = 10; progress <= 900; progress += 10) run = advanceRun(run, .5, {progress, onRoad: true});
-    expect(run.outcome).toBe('arrived'); expect(run.nextGate).toBe(CHECKPOINTS.length); expect(run.elapsed).toBe(45);
+    for (let progress = 10; progress <= 900; progress += 10) run = advanceRun(run, .25, {progress, onRoad: true});
+    expect(run.outcome).toBe('arrived'); expect(run.nextGate).toBe(CHECKPOINTS.length); expect(run.elapsed).toBe(22.5);
   });
   it('does not award gates for off-road shortcuts, reverse crossings, or teleporting', () => {
     const near = {...newRun(false), lastProgress: 298};
@@ -24,13 +28,13 @@ describe('Autumn Drive deadline experiment', () => {
     expect(advanceRun(newRun(false), .1, {progress: 900, onRoad: true}).nextGate).toBe(0);
   });
   it('recovery preserves the timer and earned gates', () => {
-    const before: Run = {...newRun(true), elapsed: 72, nextGate: 1, lastProgress: 580, offRoad: 5};
+    const before: Run = {...newRun(true), elapsed: 24, nextGate: 1, lastProgress: 580, offRoad: 5};
     const recovered = recover(before);
-    expect(recovered).toMatchObject({elapsed: 72, nextGate: 1, resets: 1, lastProgress: 304, offRoad: 5});
+    expect(recovered).toMatchObject({elapsed: 24, nextGate: 1, resets: 1, lastProgress: 304, offRoad: 5});
     expect(recoveryProgress(before)).toBe(304); expect(before.resets).toBe(0);
   });
   it('an on-time final crossing wins; a late crossing cannot beat the deadline', () => {
-    const near: Run = {...newRun(true), nextGate: 2, lastProgress: 899, elapsed: 89.5};
+    const near: Run = {...newRun(true), nextGate: 2, lastProgress: 899, elapsed: DEADLINE - .5};
     expect(advanceRun(near, .5, {progress: 901, onRoad: true}).outcome).toBe('arrived');
     expect(advanceRun(near, .6, {progress: 901, onRoad: true}).outcome).toBe('time-up');
   });

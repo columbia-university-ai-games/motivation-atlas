@@ -15,7 +15,7 @@ function mount(el: HTMLElement): () => void {
   const records: Run[] = [];
   const deadline = h('input', { type: 'checkbox', checked: true, 'data-mechanic': 'deadline' });
   const mode = h('span', { class: 'ad-mode' }, 'DEADLINE ON');
-  const time = h('output', { 'aria-label': 'Time remaining' }, '1:30');
+  const time = h('output', { 'aria-label': 'Time remaining' }, '0:30');
   const progress = h('output', { 'aria-label': 'Route progress' }, '0 / 3');
   const speed = h('output', { 'aria-label': 'Speed' }, '0');
   const next = h('span', {}, 'Follow the road through three golden gates.');
@@ -40,7 +40,7 @@ function mount(el: HTMLElement): () => void {
   const root = h('div', { class: 'ad-game' },
     h('div', { class: 'ad-heading' }, h('p', {}, 'Take the long way.', h('small', {}, 'Same car. Same road. A different pace.')), mode),
     stage, h('div', { class: 'ad-route' }, next),
-    h('fieldset', { class: 'ad-setting' }, h('legend', {}, 'The mechanic'), h('label', {}, deadline, ' 90-second deadline'), pending),
+    h('fieldset', { class: 'ad-setting' }, h('legend', {}, 'The mechanic'), h('label', {}, deadline, ` ${DEADLINE}-second deadline`), pending),
     h('div', { class: 'ad-actions' }, start, pause, reset, stop), status,
     h('div', { class: 'ad-controls' }, pad, h('p', {}, h('strong', {}, 'Find your rhythm.'), h('br'), 'WASD / arrows: drive and brake.', h('br'), 'R: recover · Esc: pause', h('br'), 'Mouse or touch: hold the pad and slide.', h('br'), 'Release the pad to coast.')),
     reflect, history,

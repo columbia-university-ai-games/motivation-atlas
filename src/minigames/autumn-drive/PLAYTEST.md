@@ -14,7 +14,7 @@ both recorded runs. Call them Player A; do not collect identifying details.
 
 ## Two recorded runs
 
-1. Check **90-second deadline** and press **Restart drive**. Tell the player:
+1. Check **30-second deadline** and press **Restart drive**. Tell the player:
    "Follow the road through the three gold gates. You can press R or Recover
    to road if you get stuck." Observe without coaching their driving choices.
 2. After the run, ask: "What were you trying to do? How did that feel?"
@@ -24,7 +24,7 @@ both recorded runs. Call them Player A; do not collect identifying details.
    starting, not during the previous run. Repeat the same route and questions.
 4. Ask: "What changed between the two? What made you feel that way?"
    Do not suggest that one mode ought to be relaxing or stressful. The
-   untimed run can continue past 90 seconds; use **End this run** if the player
+   untimed run can continue past 30 seconds; use **End this run** if the player
    chooses to stop, and record it as stopped rather than completed.
 5. Copy or dictate the run notes before leaving this page; they are held only
    in memory. Keep practice runs separate from the two recorded conditions.

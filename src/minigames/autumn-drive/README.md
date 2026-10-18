@@ -7,14 +7,15 @@ Motivator: Submission, relaxation, and escape. Author: oscarodonnell1.
 Drive the existing Autumn Drive BMW through three golden gates along 900 metres
 of Amberwater road. Use WASD or arrows, or hold the driving pad: up accelerates,
 left/right steers, down brakes. Release to coast. R recovers to the last passed
-gate; Escape pauses. Recovery keeps elapsed time. With **90-second deadline**
+gate; Escape pauses. Recovery keeps elapsed time. With **30-second deadline**
 on, time running out ends the drive; off, take as long as you want. Set the
 checkbox, then start a new drive. The car, route and destination stay identical.
 
 ## Dynamic
 
-**Draft: awaiting a real playtest.** Have another person play deadline on,
-then off. Record their completion, repeated recoveries, driving choices and
+**Draft: awaiting the player's on/off observations.** A friend has tried the
+game. Compare the final 30-second deadline on, then off. Record completion,
+repeated recoveries, driving choices and
 any noticeable change of pace. The run notes provide gates, elapsed time,
 recoveries and time off road. These are measurements, not an explanation of
 why the person drove that way. Replace this paragraph with Oscar's dictated
@@ -35,8 +36,9 @@ The course note's Submission mechanics include:
 
 The deadline experiment is our application of that idea.
 
-Built with Codex by adapting Oscar's existing Autumn Drive. Oscar chose to
-retain the 3D game instead of the proposed abstract race. Final reflection
-on a kept, changed or rejected suggestion awaits his dictation. BMW model:
+I used Codex to adapt my existing Autumn Drive. I kept the 3D game.
+Codex proposed a 90-second deadline. I changed it to 30 seconds.
+I had finished the route in under 30 seconds.
+BMW model:
 Martin Trafas, CC BY 4.0; adapted geometry/materials/wheel rig. Three.js: MIT;
 Rapier: Apache-2.0. See THIRD_PARTY_NOTICES.md and SOURCE.md for full credits.
