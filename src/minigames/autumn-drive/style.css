@@ -1,0 +1,23 @@
+.ad-game { display:grid; gap:14px; min-width:0; }
+.ad-heading { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.ad-heading p { margin:0; font:600 1.55rem var(--display); }
+.ad-heading small { display:block; font:400 .8rem/1.6 var(--body); color:var(--muted); margin-top:5px; }
+.ad-mode { padding:6px 10px; background:var(--aes-soft); color:var(--aes); border:1px solid var(--aes); border-radius:999px; font:600 .65rem var(--mono); white-space:nowrap; }
+.ad-mode.ad-free { color:var(--dyn); background:var(--dyn-soft); border-color:var(--dyn); }
+.ad-stage { position:relative; height:clamp(280px,52vw,440px); overflow:hidden; border-radius:12px; background:#24372d; isolation:isolate; }
+.ad-view { position:absolute; inset:0; }.ad-view canvas { display:block; width:100%; height:100%; }
+.ad-scene-title { position:absolute; top:20px; left:20px; color:#fff8e8; font:600 .9rem var(--display); letter-spacing:.12em; text-shadow:0 1px 6px #15251c; pointer-events:none; }
+.ad-scene-title small { display:block; margin-top:5px; font:400 .55rem var(--mono); letter-spacing:.1em; }
+.ad-hud { position:absolute; bottom:0; inset-inline:0; display:flex; justify-content:space-between; align-items:end; gap:10px; padding:30px 20px 15px; background:linear-gradient(transparent,#17271de8); color:#fff8e8; pointer-events:none; }
+.ad-hud div { display:grid; gap:3px; }.ad-hud small { font:400 .6rem var(--mono); letter-spacing:.14em; }.ad-hud output { font:600 1.5rem var(--display); font-variant-numeric:tabular-nums; }.ad-hud div:last-child { text-align:right; }
+.ad-route { font:500 .8rem var(--mono); color:var(--dyn); }
+.ad-setting { border:1px solid var(--line); padding:10px 14px; border-radius:8px; display:flex; flex-wrap:wrap; gap:5px 16px; align-items:center; margin:0; }
+.ad-setting legend { color:var(--muted); font:500 .7rem var(--mono); padding-inline:5px; }
+.ad-setting label { display:flex; align-items:center; gap:6px; font-weight:600; min-height:32px; cursor:pointer; }.ad-setting input { width:20px; height:20px; accent-color:var(--aes); }.ad-setting-note { color:var(--muted); font-size:.8rem; }
+.ad-actions { display:flex; gap:8px; flex-wrap:wrap; }.ad-button { border:1px solid var(--line); color:var(--ink); background:var(--surface); font:500 .85rem var(--body); padding:11px 13px; min-height:44px; border-radius:7px; cursor:pointer; }.ad-button.ad-primary { color:var(--surface); background:var(--ink); border-color:var(--ink); }.ad-button:disabled { opacity:.4; cursor:default; }
+.ad-status { margin:0; font-size:.85rem; min-height:1.6em; }.ad-controls { display:flex; align-items:center; gap:18px; }.ad-controls p { font-size:.8rem; color:var(--muted); margin:0; }.ad-controls strong { color:var(--ink); }
+.ad-pad { position:relative; width:180px; min-width:135px; height:116px; padding:8px; display:grid; align-content:space-between; border:1px solid var(--line); border-radius:12px; color:var(--muted); background:var(--bg); font:500 .6rem var(--mono); touch-action:none; user-select:none; cursor:crosshair; }
+.ad-pad::before { content:''; position:absolute; inset:12px 50%; border-left:1px dashed var(--line); }.ad-pad-top { color:var(--dyn); }.ad-pad-bottom { color:var(--aes); }.ad-pad-middle { font-size:.55rem; z-index:1; }.ad-pad.active { border-color:var(--dyn); }.ad-pad-dot { display:none; position:absolute; width:12px; height:12px; border-radius:50%; background:var(--dyn); transform:translate(-50%,-50%); pointer-events:none; }.ad-pad.active .ad-pad-dot { display:block; }
+.ad-reflect { border-left:3px solid var(--aes); background:var(--aes-soft); padding:12px 16px; border-radius:0 6px 6px 0; }.ad-reflect[hidden] { display:none; }.ad-reflect h4,.ad-reflect p { margin:0; }.ad-reflect p { margin-top:5px; font-size:.9rem; }
+.ad-history { font-size:.85rem; }.ad-history summary { cursor:pointer; }.ad-results { padding-left:20px; font:.75rem/1.8 var(--mono); }.ad-credit { font-size:.7rem; color:var(--muted); margin:0; }
+@media (max-width:480px) { .ad-heading { align-items:start; }.ad-heading p { font-size:1.15rem; }.ad-heading small { font-size:.7rem; }.ad-mode { font-size:.55rem; padding:5px 7px; }.ad-stage { height:300px; }.ad-controls { gap:10px; }.ad-controls p { font-size:.7rem; }.ad-button { flex:1 1 auto; }.ad-scene-title { left:12px; top:12px; }.ad-hud { padding-inline:12px; } }
