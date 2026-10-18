@@ -1,35 +1,21 @@
 # Autumn Drive: a different pace
 
-Motivator: Submission, relaxation, and escape. Author: oscarodonnell1.
+Motivator: Relaxation and escape (Atlas: Submission). Author: oscarodonnell1.
 
 ## Mechanic
 
-This is a single-player driving game. Drive through three golden gates.
-The route is 900 metres long. Use the arrow keys or WASD.
-Mouse and touch players can use the driving pad.
-Press R to recover. Press Escape to pause.
+This is a single-player driving game. Drive through 3 gates over 900 metres. Use the arrow keys or WASD. Mouse and touch players can use the driving pad. Press R to recover and Escape to pause.
 
-The switch turns a 30-second deadline on or off.
-With it on, finish before time runs out.
-With it off, there is no time limit.
-Choose the setting, then start or restart.
-The car and route stay the same.
+The switch turns a 30-second deadline on or off. Choose the setting, then start or restart. With it on, rush through the gates before time runs out. With it off, drive at your own pace.
 
 ## Dynamic
 
-My friend started with no deadline. He just enjoyed driving around.
-Then he tried the 30-second deadline. He knew there was an expectation.
-He had to drive faster. He pushed the car to its limits.
-He went outside his comfort zone.
-
-The untimed run came first. Knowing the road may have helped later.
+My friend started with no deadline, and he just enjoyed driving around.
+When he tried the deadline, he knew there was an expectation so he had to drive faster and he pushed the car to its limits, sometimes losing a bit of control around the corners.
 
 ## Aesthetic
 
-Without the deadline, the game seemed relaxing and chill.
-With the deadline, there was a little stress.
-There was an expectation to go faster.
-The change was from enjoying the drive to pushing harder.
+Without the deadline, the game seemed relaxing and chill. With the deadline added there was a little stress/expectation of success. The player went from enjoying the drive to pushing harder to meet the deadline. This added a level of competitive stress and excitement.
 
 ## Sources
 
@@ -39,9 +25,7 @@ The course note's Submission mechanics include:
 
 Removing the deadline is our version of that idea.
 
-I used Codex to adapt my existing 3D game.
-Codex proposed 90 seconds. I changed it to 30.
-I had finished in under 30 seconds.
+**AI use:** I vibe-coded this modified game with Codex. It helped adapt my existing 3D game, write the toggle and tests, format this submission, and find relevant sources. I edited this README. Codex proposed 90 seconds. I changed it to 30 after finishing in under 30 seconds.
 
 BMW model: Martin Trafas, CC BY 4.0; modified geometry, materials and rig.
 Three.js: MIT. Rapier: Apache-2.0.

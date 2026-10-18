@@ -44,5 +44,12 @@ changed or rejected was [suggestion], because [my reason]."
 Use that evidence to finish the roughly 250-word README: **Mechanic** explains
 the rule and controls; **Dynamic** describes observed behaviour; **Aesthetic**
 reports the player's feelings; **Sources** contains the exact course-note
-quotation, citation and credits. Then update the draft PR, check CI, and
-submit its URL to CourseWorks. Human observations are intentionally pending.
+quotation, citation and credits. Then finalize the PR, check CI, and
+submit its URL to CourseWorks.
+
+## Recorded playtest
+
+The README contains Oscar's account of his friend's playtest. The friend
+played with no deadline first, then the 30-second deadline. A repeat in the
+assignment's requested on-then-off order has not been reported. The timed
+round is also shorter than the brief's stated one-to-two-minute length.
