@@ -34,4 +34,5 @@ minigame folder. The committed bundles need no regeneration to run CI.
 
 Run `npm run typecheck`, `npm test`, and `npm run build` at the Atlas root.
 The central-rule and UI lifecycle tests are `test/autumn-drive.test.ts`.
-Human playtest findings and the final student statement are still pending.
+The README records Oscar's dictated playtest: no deadline, then 30 seconds.
+Its account remains editable for student review.
