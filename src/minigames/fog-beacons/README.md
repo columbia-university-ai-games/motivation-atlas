@@ -1,37 +1,39 @@
-# Fog Beacons: discover the route
+# The Missing Compass
 
 Motivator: Discovery. Author: liffsss.
 
 ## Mechanic
 
-Collect three beacons (✦), then reach the exit (E). Use arrows, WASD, or the
-direction buttons. Walls block movement; there is no timer. Aim for a minute
-or two per round.
+Find a misplaced compass in three short cases. Six buildings show their
+location, roof color, and door state. Read the evidence, use **Rule out** to
+cross off a place, **Reconsider** to undo it, and **Search here** when ready.
+An empty search lets you keep investigating. There is no timer.
 
-With **Fog of war** on, moving reveals nearby tiles, which stay visible.
-Turn it off to see the whole map. Switching restarts the same map and goals.
-**Restart map** repeats it; **New map** changes it.
+**Reveal clues one at a time** starts each case with one clue. Investigate
+to reveal the next two. Off shows all three immediately. The same evidence
+and answers apply in both modes. Changing modes restarts the round;
+Replay repeats it, while New round changes the case sequence. Locations
+recur, so remembering answers can affect comparisons. Aim for a minute or two.
 
 ## Dynamic
 
-Another player tried fog ON, then OFF. They reported little difference at the
-beginning, where only one forward tile was available. Their comment was that
-later forks, with two possible directions, make fog more interesting because
-the route is less obvious. This is a qualitative account; movement counts
-were not supplied. Remembering the first run could affect the second.
+This revision has not yet had a human playtest. The earlier maze player
+found forks slightly more interesting than forced paths; that feedback
+does not test this game. Here I want to watch whether another player rules
+places out between clues or immediately reveals everything. They will try
+the toggle on, then off. I will record what actually happens.
 
 ## Aesthetic
 
-The player reported no noticeable initial difference and slightly more interest
-at later choices. I read this as a limited discovery effect: hiding information
-adds something when there is a decision to make. The feedback does not establish
-that fog is always more fun.
+I expect gradual clues might create anticipation, but the extra clicks
+could also feel unnecessary. I will ask which version felt more interesting
+and why. These are predictions, not observed feelings.
 
 ## Sources
 
-The course note's Discovery section says
-“the strategic unveiling of hidden information adds suspense and tension”
-(Salen and Zimmerman 2003, ch. 17, “Hiding and Revealing Systems”).
+The course note describes hidden information revealed bit by bit, which
+“seems to provoke curiosity” (Malone 1980, p. 67).
 
-Adapted from the course template. Codex helped with code and tests. I kept its
-suggestion to change visibility while keeping the map and goals fixed.
+Adapted from the Atlas template. Codex helped implement code and tests.
+I kept its suggestion to hold evidence and answers fixed across modes.
+No outside assets were used.
