@@ -24,7 +24,7 @@ describe("Make 24 formulas", () => {
 
   it("rejects non-integer intermediate division even if later multiplication would reach 24", () => {
     const hand = [8, 3, 9];
-    expect(evaluateFormula(hand, tokens(hand, ["(", 0, "÷", 1, ")", "×", 2])).toMatchObject({ valid: false, reason: "Every division must give a whole number." });
+    expect(evaluateFormula(hand, tokens(hand, ["(", 0, "÷", 1, ")", "×", 2]))).toMatchObject({ valid: false, reason: "Every division must give a whole number." });
   });
 
   it("rejects card reuse, malformed expressions, and expressions not equal to 24", () => {
