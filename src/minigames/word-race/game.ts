@@ -7,10 +7,10 @@ export const WORDS = [
   "book", "ball", "door", "home", "blue", "green", "happy", "smile", "laugh",
   "light", "sound", "space", "world", "orbit", "cactus", "lantern", "window", "puzzle",
   "rocket", "velvet", "thunder", "compass", "rainbow", "backpack",
-  "butterfly", "adventure", "watermelon", "night", "star", "keyboard",
+  "butterfly", "adventure", "watermelon", "night", "keyboard",
   "mountain", "firefly", "marshmallow", "celebration", "constellation",
   "transformation", "extraordinary", "friendship", "imagination", "discovery",
-  "ace", "dash", "glow", "jump", "quick", "silver", "planet", "harbor",
+  "ace", "dash", "glow", "quick", "silver", "planet", "harbor",
   "meadow", "crystal", "journey", "lighthouse", "pineapple", "strawberry",
   "thunderstorm", "playground", "handwriting", "counterpoint", "possibility",
   "misunderstanding", "responsibility", "unforgettable", "communication",
@@ -52,10 +52,6 @@ export function newGame(
     throw new RangeError(`words must contain ${options.target} entries, got ${words.length}`);
   }
   return { options, scores: [0, 0], words, wordIndex: 0, word: words[0], winner: null, lastResult: "start" };
-}
-
-export function nextWord(random: () => number = Math.random): string {
-  return WORDS[Math.floor(random() * WORDS.length)];
 }
 
 export function submitWord(

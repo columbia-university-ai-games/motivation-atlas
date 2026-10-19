@@ -1,6 +1,6 @@
 # Word Race
 
-Motivator: Competition. Author: epicm.
+Motivator: Competition. Author: liangl5.
 
 ## Mechanic
 

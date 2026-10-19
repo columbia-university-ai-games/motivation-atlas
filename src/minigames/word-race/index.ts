@@ -1,13 +1,13 @@
 import { h } from "../../lib/dom";
 import type { Minigame } from "../types";
-import { botDelayMs, botScores, newGame, raceWords, submitWord, type BotDifficulty, type WordRaceState } from "./game";
+import { botDelayMs, botScores, newGame, raceWords, submitWord, type BotDifficulty, type WordRaceOptions, type WordRaceState } from "./game";
 import "./word-race.css";
 
 const TARGETS = [5, 10, 20];
 const COUNTDOWN_MS = 2000;
 
 function mount(el: HTMLElement): () => void {
-  let state: WordRaceState = newGame({ difficulty: "hard", target: 20 });
+  let state: WordRaceState;
   let started = false;
   let countdown = false;
   let timer: number | null = null;
@@ -18,7 +18,7 @@ function mount(el: HTMLElement): () => void {
     h("option", { value: "hard", selected: true }, "Hard (80 WPM)"),
     h("option", { value: "expert" }, "Expert (100 WPM)"),
   );
-  const target = h("select", { class: "word-race-setting", "aria-label": "Points needed to win" },
+  const target = h("select", { class: "word-race-setting", "data-mechanic": "finish-line", "aria-label": "Points needed to win" },
     ...TARGETS.map((points) => h("option", { value: points, selected: points === 20 }, `${points} points`)),
   );
   const word = h("strong", { class: "word-race-word" });
@@ -92,7 +92,22 @@ function mount(el: HTMLElement): () => void {
     countdownTimer = null;
   }
 
+  function selectedOptions(): WordRaceOptions {
+    return { difficulty: difficulty.value as BotDifficulty, target: Number(target.value) };
+  }
+
+  function resetRace(): void {
+    stopBot();
+    started = false;
+    countdown = false;
+    const options = selectedOptions();
+    state = newGame(options, raceWords(options.target));
+    input.value = "";
+  }
+
   beginButton.addEventListener("click", () => {
+    const options = selectedOptions();
+    if (options.difficulty !== state.options.difficulty || options.target !== state.options.target) resetRace();
     started = true;
     countdown = true;
     render();
@@ -121,17 +136,17 @@ function mount(el: HTMLElement): () => void {
     render();
   });
   newButton.addEventListener("click", () => {
-    stopBot();
-    started = false;
-    countdown = false;
-    state = newGame({
-      difficulty: difficulty.value as BotDifficulty,
-      target: Number(target.value),
-    }, raceWords(Number(target.value)));
-    input.value = "";
+    resetRace();
     render();
   });
+  for (const setting of [difficulty, target]) {
+    setting.addEventListener("change", () => {
+      resetRace();
+      render();
+    });
+  }
 
+  resetRace();
   render();
   return () => {
     stopBot();
@@ -143,6 +158,6 @@ export const wordRace: Minigame = {
   slug: "word-race",
   title: "Word Race",
   motivators: ["competition"],
-  author: "epicm",
+  author: "liangl5",
   mount,
 };
