@@ -1,0 +1,12 @@
+{
+  "name": "motivation-atlas-typing-race",
+  "main": "worker.ts",
+  "compatibility_date": "2026-10-17",
+  "durable_objects": {
+    "bindings": [{ "name": "LEADERBOARD", "class_name": "RaceBoard" }]
+  },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["RaceBoard"] }],
+  "vars": {
+    "ALLOWED_ORIGINS": "http://localhost:5173,http://localhost:4173"
+  }
+}
