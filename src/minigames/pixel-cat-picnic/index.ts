@@ -2,8 +2,7 @@ import { h } from "../../lib/dom";
 import type { Minigame } from "../types";
 import { advanceCat, advanceLevel, badges, LEVEL_TARGETS, levelNames, targetFor, FIXED_FISH_CELLS, catSize, cellPosition, contacts, contactNames, moveCat, clickObject, emptyClick, HUNGER_MS, hungerRemaining, newCat, pauseCat, powerNames, powers, remainingMs, resumeCat, type CatState, type ObjectKind } from "./game";
 import { pixelSprite } from "./sprites";
-import "./treasure-hunt.css";
-import statement from "./README.md?raw";
+import "./pixel-cat-picnic.css";
 
 const descriptions: Record<string,string> = {
  milk:"Restore one heart, up to five.", bubble:"Block one penalty, contact trap or dog bite.", ice:"Fish stay fresh 3 seconds longer for 8 seconds.",
@@ -13,14 +12,8 @@ const descriptions: Record<string,string> = {
  mystery:"ON: 50% helpful, 50% trouble. OFF: always a labeled milk box.",
  web:"Touch: stuck for 2.2s. You can still bite nearby snacks.",
  bone:"Touch: summons one dog for 8s. Dodge it; one bite costs a heart.",
- banana:"Touch: 6s of bite offset. ON: random. OFF: always six units left.",
+ banana:"Touch: 6s of bite offset. ON: random, so bites may miss. OFF: fixed six-unit visual offset; fish still land.",
 };
-function statementSection(name: string): HTMLElement {
- const body=statement.split("## "+name+"\n")[1]?.split("\n## ")[0]?.trim()??"";
- return h("section",{class:"cat-statement","data-readme-section":name},
-  h("h4",{},name),
-  ...body.split(/\n\s*\n/).filter(Boolean).map(text=>h("p",{},text.replace(/\n/g," "))));
-}
 function mount(el: HTMLElement): () => void {
  let state:CatState|null=null,timer:ReturnType<typeof setInterval>|null=null,completed=false;
  let pointerStart:{x:number;y:number;moved:boolean}|null=null,suppressClick=false;
@@ -60,7 +53,7 @@ function mount(el: HTMLElement): () => void {
   h("p",{class:"cat-eyebrow"},"A TINY NIGHT-TIME ADVENTURE"),introCat,h("h3",{},"Pixel Cat Picnic"),
   h("p",{},"Your cursor is a hungry little cat. Click dried fish, collect helpful treats, and pack the picnic before time runs out."),
   h("div",{class:"cat-instruction-grid"},h("span",{},"MOVE THE CAT"),h("span",{},"CLICK TO EAT"),h("span",{},"BEAT THE 90s LIMIT")),
-  h("p",{class:"cat-menu-goal"},`Clear three picnics: 500 → 800 → 1200 points. Each level has its own score and 90-second limit.`),start,
+  h("p",{class:"cat-menu-goal"},`Clear three picnics: 500 → 800 → 1200 points. Each level has its own score and 90-second limit. Play one level in each mode for the comparison; the full journey is optional.`),start,
   h("p",{class:"cat-hint"},"Mouse: move + click. Touch: tap. Keyboard: Tab, then Enter/Space; arrows to move. No swiping."));
  const next=h("button",{type:"button",class:"cat-primary","data-next-level":"",hidden:true},"NEXT LEVEL");
  const resultTitle=h("h3",{},"SUNRISE!"),resultText=h("p",{}),resultStats=h("div",{class:"cat-result-stats"}),medals=h("p",{class:"cat-medals"});
@@ -99,11 +92,7 @@ function mount(el: HTMLElement): () => void {
   h("div",{class:"cat-bars"},h("div",{},h("label",{},"BELLY ",hungerText),hunger),h("div",{},h("label",{},"PICNIC BASKET"),basket)),
   h("div",{class:"cat-board-top"},phase,h("span",{},"BEST ",best)),arena,
   h("div",{class:"cat-small-stats"},h("span",{},"FISH ",eaten),h("span",{},"CHAIN ",combo),h("span",{},"BADGES: 12 fish · 3 treats · 1 block")),effects,status,
-  h("p",{class:"cat-controls"},"Webs, bones and peels activate by touch; pale traps arm after 0.7s. Arrow keys move kitty. Eating is click/tap only. A missed click does not cost a heart; an empty belly does. Tab to a snack and press Enter/Space for keyboard play. Leaving this tab pauses your night. Cake and potion replace each other’s size effect. Boxes show what you found."),pantry,reflection);
- const readme=h("footer",{class:"cat-readme","data-readme":"","aria-label":"Readme"},
-  h("h3",{},"Readme"),
-  ...["Mechanic","Dynamic","Aesthetic","Sources"].map(statementSection));
- root.append(readme);
+  h("p",{class:"cat-controls"},"Webs, bones and peels activate by touch; pale traps arm after 0.7s. Arrow keys move kitty; Tab only selects a snack. Click, tap or press Enter/Space to eat. A missed click does not cost a heart; an empty belly does. Leaving this tab pauses your night. Cake and potion replace each other’s size effect. Boxes show what you found."),pantry,reflection);
  el.append(root);
  function oddsText():void {
   odds.textContent="ON: hidden 0–30 points, revealed after eating (mean 15). OFF: every fish shows +15.";
@@ -156,9 +145,8 @@ function mount(el: HTMLElement): () => void {
    let button=nodes.get(object.id);
    if(!button){
     const name=object.kind==="mystery"&&!state.randomness?"Milk box":object.kind==="fish"?"Fish":object.kind==="spicy"?"Spicy!":object.kind==="can"?"Tin!":contacts.includes(object.kind as typeof contacts[number])?contactNames[object.kind as typeof contacts[number]]:powerNames[object.kind as typeof powers[number]];
-    button=h("button",{type:"button",class:`cat-object object-${object.kind}`,"data-object-id":object.id,"data-kind":object.kind,"aria-label":`${name}${object.kind==="fish"?" — click to eat":object.kind==="spicy"?" — avoid, loses a heart":object.kind==="can"?" — avoid, loses 20 points":contacts.includes(object.kind as typeof contacts[number])?" — contact hazard, touch activates":" — collect treat"}`},pixelSprite(object.kind==="mystery"&&!state.randomness?"milk":object.kind),h("span",{class:"cat-object-label"},object.kind==="fish"?(state.randomness?"Fish":"+15"):object.kind==="mystery"&&!state.randomness?"Milk box":name));
+    button=h("button",{type:"button",class:`cat-object object-${object.kind}`,"data-object-id":object.id,"data-kind":object.kind,"aria-label":`${name}${object.kind==="fish"?" : click to eat":object.kind==="spicy"?" : avoid, loses a heart":object.kind==="can"?" : avoid, loses 20 points":contacts.includes(object.kind as typeof contacts[number])?" : contact hazard, touch activates":" : collect treat"}`},pixelSprite(object.kind==="mystery"&&!state.randomness?"milk":object.kind),h("span",{class:"cat-object-label"},object.kind==="fish"?(state.randomness?"Fish":"+15"):object.kind==="mystery"&&!state.randomness?"Milk box":name));
     const id=object.id,cell=object.cell;
-    button.addEventListener("focus",()=>{const p=cellPosition(cell);moveCursor(arena.clientWidth*p.x/100,arena.clientHeight*p.y/100);});
     button.addEventListener("click",event=>{
      event.stopPropagation();if(event.detail>0&&suppressClick)return;if(!state||state.reason||state.pausedAt!==null)return;
      const before=state;state=clickObject(state,id,Date.now());
@@ -181,7 +169,7 @@ function mount(el: HTMLElement): () => void {
   if(!state?.reason||completed)return;completed=true;
   if(timer!==null)clearInterval(timer);timer=null;pause.disabled=true;
   arena.classList.remove("is-playing","has-mouse");end.hidden=false;pauseScreen.hidden=true;menu.hidden=true;reflection.hidden=false;
-  const win=state.reason==="win",canAdvance=win&&state.level<LEVEL_TARGETS.length-1,label=state.randomness?"ON — surprise":"OFF — routine";
+  const win=state.reason==="win",canAdvance=win&&state.level<LEVEL_TARGETS.length-1,label=state.randomness?"ON : surprise":"OFF : routine";
   next.hidden=!canAdvance;other.hidden=canAdvance;random.disabled=canAdvance;
   next.textContent="LEVEL "+(state.level+2)+" · "+(LEVEL_TARGETS[state.level+1]??"")+" POINTS";
   replay.textContent=win&&!canAdvance?"PLAY AGAIN":win?"REPLAY LEVEL":"RETRY LEVEL";
@@ -224,7 +212,7 @@ function mount(el: HTMLElement): () => void {
   if(state.webUntil>state.elapsed)buffs.push("WEB "+((state.webUntil-state.elapsed)/1000).toFixed(1)+"s");
   if(state.slipUntil>state.elapsed)buffs.push("SLIPPERY "+Math.ceil((state.slipUntil-state.elapsed)/1000)+"s");
   if(catSize(state)!=="normal")buffs.push(catSize(state).toUpperCase()+" "+Math.ceil((state.sizeUntil-state.elapsed)/1000)+"s");
-  if(state.dog)buffs.push("DOG "+Math.ceil((state.dog.until-state.elapsed)/1000)+"s — KEEP MOVING");
+  if(state.dog)buffs.push("DOG "+Math.ceil((state.dog.until-state.elapsed)/1000)+"s : KEEP MOVING");
 if(state.shield)buffs.push("BUBBLE READY");if(state.iceUntil>state.elapsed)buffs.push(`ICE ${Math.ceil((state.iceUntil-state.elapsed)/1000)}s`);if(state.bellUntil>state.elapsed)buffs.push(`BELL ${Math.ceil((state.bellUntil-state.elapsed)/1000)}s`);if(state.cozyUntil>state.elapsed)buffs.push(`COZY ${Math.ceil((state.cozyUntil-state.elapsed)/1000)}s`);
   effects.replaceChildren(...(buffs.length?buffs:["EAT FISH TO REFILL YOUR BELLY"]).map(text=>h("span",{},text)));
   arena.classList.toggle("has-bell",state.bellUntil>state.elapsed);arena.classList.toggle("has-bubble",state.shield);
@@ -279,4 +267,4 @@ if(state.shield)buffs.push("BUBBLE READY");if(state.iceUntil>state.elapsed)buffs
  document.addEventListener("visibilitychange",onVisibility);oddsText();
  return ()=>{if(timer!==null)clearInterval(timer);document.removeEventListener("visibilitychange",onVisibility);if(audio)void audio.close().catch(()=>{});root.remove();};
 }
-export const treasureHunt:Minigame={slug:"treasure-hunt",title:"Pixel Cat Picnic",motivators:["chance"],author:"Zixuan Yang (UNI: zy2786)",mount};
+export const pixelCatPicnic:Minigame={slug:"pixel-cat-picnic",title:"Pixel Cat Picnic",motivators:["chance"],author:"Alicey66",mount};

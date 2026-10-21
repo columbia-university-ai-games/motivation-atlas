@@ -1,8 +1,8 @@
 // @vitest-environment jsdom
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { advanceCat, advanceLevel, LEVEL_TARGETS, levelNames, targetFor, badges, boxResult, fishReward, fixedCell, FIXED_FISH_CELLS, catRadius, catSize, cellPosition, contacts, moveCat, clickObject, emptyClick, hungerRemaining, MAX_OBJECTS, newCat, pauseCat, powers, remainingMs, resumeCat, rewardFor, ROUND_MS, unit, type CatState, type ObjectKind } from "../src/minigames/treasure-hunt/game";
-import statement from "../src/minigames/treasure-hunt/README.md?raw";
-import { treasureHunt } from "../src/minigames/treasure-hunt";
+import { advanceCat, advanceLevel, LEVEL_TARGETS, levelNames, targetFor, badges, boxResult, fishReward, fixedCell, FIXED_FISH_CELLS, catRadius, catSize, cellPosition, contacts, moveCat, clickObject, emptyClick, hungerRemaining, MAX_OBJECTS, newCat, pauseCat, powers, remainingMs, resumeCat, rewardFor, ROUND_MS, unit, type CatState, type ObjectKind } from "../src/minigames/pixel-cat-picnic/game";
+import * as catRules from "../src/minigames/pixel-cat-picnic/game";
+import { pixelCatPicnic } from "../src/minigames/pixel-cat-picnic";
 afterEach(()=>{vi.restoreAllMocks();vi.useRealTimers();document.body.replaceChildren();localStorage.clear();});
 function fixture(kind:ObjectKind, extra:Partial<CatState>={}):CatState {
  return {...newCat(false,0,4),nextWave:999999,objects:[{id:1,kind,cell:0,born:0,expires:20000}],nextId:2,...extra};
@@ -112,7 +112,7 @@ describe("treats and hazards",()=>{
 describe("pixel cat input and lifecycle",()=>{
  it("does not eat by hovering, dragging or holding a pointer",()=>{
   vi.useFakeTimers();vi.setSystemTime(0);
-  const host=document.createElement("div"),unmount=treasureHunt.mount(host);host.querySelector<HTMLButtonElement>('[data-start]')!.click();
+  const host=document.createElement("div"),unmount=pixelCatPicnic.mount(host);host.querySelector<HTMLButtonElement>('[data-start]')!.click();
   const fish=host.querySelector<HTMLButtonElement>('[data-kind="fish"]')!,arena=host.querySelector<HTMLElement>('[data-arena]')!;
   arena.dispatchEvent(new MouseEvent("pointermove",{bubbles:true,clientX:20,clientY:20}));expect(host.querySelector('[data-eaten]')!.textContent).toBe("0");
   fish.dispatchEvent(new MouseEvent("pointerdown",{bubbles:true,clientX:20,clientY:20}));arena.dispatchEvent(new MouseEvent("pointermove",{bubbles:true,clientX:100,clientY:20}));arena.dispatchEvent(new MouseEvent("pointerup",{bubbles:true,clientX:100,clientY:20}));
@@ -121,7 +121,7 @@ describe("pixel cat input and lifecycle",()=>{
  });
  it("provides a failure screen, mode switch, pause and clean unmount",()=>{
   vi.useFakeTimers();vi.setSystemTime(0);
-  const host=document.createElement("div"),unmount=treasureHunt.mount(host);expect(host.querySelectorAll('input[type="checkbox"]')).toHaveLength(1);
+  const host=document.createElement("div"),unmount=pixelCatPicnic.mount(host);expect(host.querySelectorAll('input[type="checkbox"]')).toHaveLength(1);
   host.querySelector<HTMLButtonElement>('[data-start]')!.click();host.querySelector<HTMLButtonElement>('[data-pause]')!.click();
   vi.advanceTimersByTime(45000);expect(host.querySelector('[data-lives]')!.textContent).toBe("5");
   host.querySelector<HTMLButtonElement>('[data-resume]')!.click();vi.advanceTimersByTime(40000);
@@ -273,7 +273,7 @@ describe("global randomness switch and early completion",()=>{
  });
  it("changes the visible policy immediately and starts OFF without Math.random",()=>{
   vi.useFakeTimers();vi.setSystemTime(0);
-  const host=document.createElement("div"),unmount=treasureHunt.mount(host);
+  const host=document.createElement("div"),unmount=pixelCatPicnic.mount(host);
   const random=host.querySelector<HTMLInputElement>('[data-mechanic]')!;
   expect(host.querySelector('[data-mode-badge]')!.textContent).toContain("SURPRISE");
   random.checked=false;random.dispatchEvent(new Event("change"));
@@ -287,7 +287,7 @@ describe("global randomness switch and early completion",()=>{
  });
  it("shows the victory screen immediately and stops its interval before 90 seconds",()=>{
   vi.useFakeTimers();vi.setSystemTime(0);
-  const host=document.createElement("div"),unmount=treasureHunt.mount(host);
+  const host=document.createElement("div"),unmount=pixelCatPicnic.mount(host);
   const random=host.querySelector<HTMLInputElement>('[data-mechanic]')!;random.checked=false;
   host.querySelector<HTMLButtonElement>('[data-start]')!.click();
   for(let i=0;i<90&&host.querySelector<HTMLElement>('[data-result-screen]')!.hidden;i++){
@@ -304,7 +304,7 @@ describe("global randomness switch and early completion",()=>{
 describe("hidden surprise rewards",()=>{
  it("hides ON rewards in text and accessible labels until the fish is eaten",()=>{
   vi.useFakeTimers();vi.setSystemTime(0);vi.spyOn(Math,"random").mockReturnValue(1/0x100000000);
-  const host=document.createElement("div"),unmount=treasureHunt.mount(host);
+  const host=document.createElement("div"),unmount=pixelCatPicnic.mount(host);
   host.querySelector<HTMLButtonElement>('[data-start]')!.click();
   const fish=[...host.querySelectorAll<HTMLButtonElement>('[data-kind="fish"]')];
   expect(fish.length).toBeGreaterThan(0);
@@ -364,7 +364,7 @@ describe("three-level progression",()=>{
  });
  it("offers next-level screens, preserves mode, and shows final victory only after level three", { timeout: 20000 }, ()=>{
   vi.useFakeTimers();vi.setSystemTime(0);
-  const host=document.createElement("div"),unmount=treasureHunt.mount(host);
+  const host=document.createElement("div"),unmount=pixelCatPicnic.mount(host);
   const random=host.querySelector<HTMLInputElement>('[data-mechanic]')!;random.checked=false;
   host.querySelector<HTMLButtonElement>('[data-start]')!.click();
   for(let level=0;level<3;level++){
@@ -393,7 +393,7 @@ describe("three-level progression",()=>{
  });
  it("retries a failed second level without skipping it or returning to level one",()=>{
   vi.useFakeTimers();vi.setSystemTime(0);
-  const host=document.createElement("div"),unmount=treasureHunt.mount(host);
+  const host=document.createElement("div"),unmount=pixelCatPicnic.mount(host);
   host.querySelector<HTMLInputElement>('[data-mechanic]')!.checked=false;
   host.querySelector<HTMLButtonElement>('[data-start]')!.click();
   for(let i=0;i<90&&host.querySelector<HTMLElement>('[data-result-screen]')!.hidden;i++){
@@ -415,31 +415,28 @@ describe("three-level progression",()=>{
  });
 });
 
-describe("README on the game page",()=>{
- it("shows all four complete README sections before play in the portable page",()=>{
+describe("keyboard focus safety",()=>{
+ it("selects snacks without moving through an armed web or activating it",()=>{
+  vi.useFakeTimers();vi.setSystemTime(0);
+  vi.spyOn(catRules,"newCat").mockReturnValue({...fixture("fish"),objects:[
+   {id:1,kind:"fish",cell:0,born:0,expires:20000},
+   {id:2,kind:"web",cell:5,born:-1000,expires:20000}
+  ]});
   const host=document.createElement("div");document.body.append(host);
-  const unmount=treasureHunt.mount(host);
-  for(const name of ["Mechanic","Dynamic","Aesthetic","Sources"]){
-   const section=host.querySelector('[data-readme-section="'+name+'"]');
-   const expected=statement.split("## "+name+"\n")[1].split("\n## ")[0].trim();
-   expect(section).not.toBeNull();
-   expect(section?.querySelector("p")?.textContent).toBe(expected);
-   expect(section?.closest("details,[hidden]")).toBeNull();
-  }
-  unmount();expect(host.children).toHaveLength(0);
- });
- it("places the full Readme after the original game layout without altering Atlas panels",()=>{
-  const wrapper=document.createElement("section");wrapper.className="minigame";
-  const host=document.createElement("div"),about=document.createElement("details");
-  about.className="minigame-about";wrapper.append(host,about);document.body.append(wrapper);
-  const unmount=treasureHunt.mount(host);
-  const root=host.querySelector(".pixel-cat-game")!;
-  expect(root.firstElementChild?.className).toBe("cat-header");
-  expect(root.lastElementChild?.getAttribute("data-readme")).toBe("");
-  expect(root.lastElementChild?.querySelector("h3")?.textContent).toBe("Readme");
-  expect(root.lastElementChild?.querySelectorAll("[data-readme-section]")).toHaveLength(4);
-  expect(root.querySelector(".cat-header")?.nextElementSibling?.className).toBe("cat-rules");
-  expect(about.open).toBe(false);
-  unmount();expect(host.children).toHaveLength(0);
+  const unmount=pixelCatPicnic.mount(host);
+  Object.defineProperties(host.querySelector(".cat-arena")!,{clientWidth:{value:400},clientHeight:{value:400}});
+  host.querySelector<HTMLInputElement>('[data-mechanic]')!.checked=false;
+  host.querySelector<HTMLButtonElement>('[data-start]')!.click();
+  const cursor=host.querySelector<HTMLElement>(".cat-cursor")!;
+  const location=[cursor.style.left,cursor.style.top];
+  host.querySelector<HTMLButtonElement>('[data-kind="web"]')!.focus();
+  host.querySelector<HTMLButtonElement>('[data-kind="fish"]')!.focus();
+  expect(document.activeElement).toBe(host.querySelector('[data-kind="fish"]'));
+  expect([cursor.style.left,cursor.style.top]).toEqual(location);
+  expect(cursor.classList.contains("is-webbed")).toBe(false);
+  expect(host.querySelector('[data-lives]')!.textContent).toBe("5");
+  host.querySelector<HTMLButtonElement>('[data-kind="fish"]')!.click();
+  expect(host.querySelector('[data-score]')!.textContent).toBe("15");
+  unmount();
  });
 });
