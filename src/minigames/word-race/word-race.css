@@ -1,0 +1,104 @@
+.word-race {
+  max-width: 30rem;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.word-race-settings {
+  display: grid;
+  gap: 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 0.5rem;
+}
+
+.word-race-settings label {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.word-race-setting {
+  min-width: 9rem;
+  padding: 0.35rem;
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 0.35rem;
+}
+
+.word-race-scores {
+  display: grid;
+  gap: 1rem;
+  padding: 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 0.5rem;
+  font-weight: 700;
+}
+
+.word-race-lane {
+  display: grid;
+  grid-template-columns: 3.5rem 1fr 3.5rem;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.word-race-lane progress {
+  width: 100%;
+  height: 1.25rem;
+  accent-color: var(--accent);
+}
+
+.word-race-lane:last-child progress {
+  accent-color: var(--warn);
+}
+
+.word-race-prompt {
+  margin-block: 0.25rem 0;
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  flex-wrap: nowrap;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.word-race-word {
+  color: var(--accent);
+  font: 700 1.5rem/1.4 var(--mono);
+  order: 1;
+  flex: 0 0 auto;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.word-race-preview {
+  color: var(--ink);
+  font: 700 1.5rem/1.4 var(--mono);
+  order: 2;
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.word-race-input {
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.5rem;
+  border: 2px solid var(--line);
+  border-radius: 0.4rem;
+  background: var(--surface);
+  color: var(--ink);
+  font: 1.1rem var(--mono);
+}
+
+.word-race-status {
+  min-height: 1.6em;
+  margin: 0;
+}
+
+.word-race-begin {
+  justify-self: start;
+}
