@@ -1,1 +1,9 @@
-[]
+[
+  {
+    "game": "battle-forge",
+    "motivator": "challenge",
+    "mechanic": "A 120-second arena progresses from six drones to a continuously summoning boss and an armored boss with radial bullet barrages. Ground warnings telegraph attacks. Disabling combat-earned abilities removes area damage and armor piercing while enemy rules remain unchanged.",
+    "dynamic": "Players must dodge attacks and choose when to approach enemies under time pressure. In the playtest, the player approached enemies more aggressively with upgrades enabled. Without upgrades, they avoided enemies during the second stage, felt frustrated, and stopped trying at the first boss. This suggests a boundary between manageable challenge and overwhelming difficulty, connecting the game to the course note's discussion of time pressure and difficulty that increases through progression.",
+    "github": "yw4626"
+  }
+]
