@@ -28,11 +28,19 @@ the feedback change it?
 
 ## Sources
 
-The course note's Progress, completion, and power section quotes:
+The course note's Progress, completion, and power section lists the mechanic
+“Points, prizes, unlocks, and visible status markers” (Marczewski n.d., Player).
+The counter, progress bar, and milestone messages make progress visible.
+
+For dynamics, it lists “Goals within goals” (Salen and Zimmerman 2003, ch. 24,
+“Goals Within Goals”). The parcel tasks and milestones provide smaller goals
+within the ten-parcel completion goal.
+
+For the completion aesthetic, the same section quotes:
 “It feels good to finish something” (Schell 2019, p. 136).
 This frames the game's focus on approaching a visible completion goal;
 it is not a quotation from the participant.
 
-Author: avaferrentino. Codex assisted with this README revision. Codex's
+Author: avarose444. Codex assisted with this README revision. Codex's
 suggestion to distinguish reported motivation from measured persistence was
 kept. Built from the repository template; no outside code, art, or sound added.

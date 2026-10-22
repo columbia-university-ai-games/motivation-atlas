@@ -62,6 +62,6 @@ export const almostThere: Minigame = {
   slug: "almost-there",
   title: "Almost There",
   motivators: ["progress"],
-  author: "avaferrentino",
+  author: "avarose444",
   mount,
 };
