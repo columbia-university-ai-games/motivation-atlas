@@ -4,9 +4,9 @@ Motivator: Competition over other people. Author: ZevMM.
 
 ## Mechanic
 
-Turn Competition on and type in the box. Your car is labeled You; no name or student identifier is collected. Your first character starts the clock and the opponent cars. The Reset button clears the passage and stops the race, ready for your next first character. Type the passage exactly, including punctuation and spaces. Backspace to fix mistakes. Pasting and dropping text are disabled. Finish the passage to save a time; only your fastest time counts. Only your best time is stored on this device. If browser storage is unavailable, it lasts for this visit only.
+Turn Competition on and type in the box. Your first character starts the clock and the opponent cars. The Reset button clears the passage and stops the race, ready for your next first character. Type the passage exactly, including punctuation and spaces. Backspace to fix mistakes. Pasting and dropping text are disabled. Finish the passage to save a time; only your fastest time counts.
 
-The preloaded target cars use fixed paces supplied by the author: 50 WPM target, ZevMM at 80 WPM, Prof. Garakani at 110 WPM, and Ivan at 140 WPM. These are preset benchmarks, not recorded playthroughs or a measured population average. For scoring, one word is five characters, including spaces and punctuation. Your previous best also becomes a car to beat. Rows reorder as you overtake opponents.
+The leaderboard shows how you stack up against other players: 50 WPM average adult, ZevMM at 80 WPM, Prof. Garakani at 110 WPM, and Ivan at 140 WPM. Your personal best also becomes a time to beat.
 
 Turn Competition off to type the same passage without a clock, car, rank, score, or saved result. Switch modes at any time to reset the passage. Compare how the same typing task feels with and without other people to beat. The ten-minute race limit does not apply to practice.
 
