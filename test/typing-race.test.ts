@@ -1,118 +1,85 @@
 // @vitest-environment jsdom
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { bestTimes, correctPrefix, normalizeUni, parseBoard, PASSAGE, positions } from "../src/minigames/typing-race/game";
+import { bestTime, correctPrefix, entriesFor, PASSAGE, positions, TARGETS, timeAtWpm, wpmAtTime } from "../src/minigames/typing-race/game";
 import { typingRace } from "../src/minigames/typing-race";
-import worker, { RaceBoard } from "../src/minigames/typing-race/hosting/worker";
 import { leaderboard } from "../src/minigames/typing-race/leaderboard";
 
-afterEach(() => { vi.useRealTimers(); localStorage.clear(); vi.unstubAllEnvs(); vi.unstubAllGlobals(); });
+afterEach(() => { vi.useRealTimers(); vi.restoreAllMocks(); localStorage.clear(); vi.unstubAllGlobals(); });
 
 describe("Type Circuit", () => {
-  it("uses the shared class leaderboard without environment configuration", async () => {
-    vi.stubEnv("VITE_TYPING_RACE_URL", undefined);
-    const fetchBoard = vi.fn().mockResolvedValue(Response.json([]));
-    vi.stubGlobal("fetch", fetchBoard);
-    const board = leaderboard(new AbortController().signal);
-    expect(board.shared).toBe(true);
-    expect(await board.read()).toEqual([]);
-    expect(fetchBoard.mock.calls[0][0]).toBe("https://motivation-atlas-typing-race.motivation-atlas-typeracer.workers.dev/board");
+  it("preloads the four requested paces using five characters per word", () => {
+    expect(TARGETS.map(e => Math.round(wpmAtTime(e.ms)))).toEqual([50, 80, 110, 140]);
+    expect(TARGETS.map(e => e.name)).toEqual(["50 WPM target", "ZevMM", "Prof. Garakani", "Ivan"]);
+    expect(timeAtWpm(50)).toBe(Math.round(PASSAGE.length / 5 / 50 * 60000));
+    expect(entriesFor()[0].name).toBe("Ivan");
+    expect(bestTime(20000, 30000)).toBe(20000);
+    expect(bestTime(20000, 15000)).toBe(15000);
+    for (const invalid of [NaN, Infinity, -1, 1000, 600001]) expect(() => bestTime(undefined, invalid)).toThrow();
   });
-  it("normalizes UNIs and keeps one best time with deterministic ties and a 50-person cap", () => {
-    expect(normalizeUni(" AB123 ")).toBe("ab123");
-    expect(() => normalizeUni("<script>")).toThrow();
-    let board = bestTimes([], { uni: "ab123", ms: 10000 });
-    board = bestTimes(board, { uni: "AB123", ms: 12000 });
-    expect(board).toEqual([{ uni: "ab123", ms: 10000 }]);
-    board = bestTimes(board, { uni: "ab123", ms: 9000 });
-    for (let i = 0; i < 60; i++) board = bestTimes(board, { uni: `cd${i}`, ms: 10000 + i });
-    expect(board).toHaveLength(50); expect(board[0].ms).toBe(9000);
-    expect(() => bestTimes(board, { uni: "ab123", ms: NaN })).toThrow();
-    expect(() => parseBoard([{ uni: "ab123", ms: -1 }])).toThrow();
-  });
-  it("moves only with a correct prefix and ranks completed ghosts by their actual times", () => {
+  it("moves only with a correct prefix and ranks completed cars by finish time", () => {
     expect(correctPrefix(PASSAGE.slice(0, 10) + "!" + PASSAGE.slice(11))).toBe(10);
-    const board = [{ uni: "ab123", ms: 10000 }, { uni: "cd234", ms: 20000 }];
-    expect(positions(board, "ef345", 15000, PASSAGE)[0].uni).toBe("ab123");
-    expect(positions(board, "ef345", 15000, PASSAGE)[1].uni).toBe("ef345");
-    expect(positions(board, "ab123", 1000, "").filter(r => r.uni === "ab123")).toHaveLength(1);
+    const entries = [{ name: "Fast", ms: 10000 }, { name: "Slow", ms: 20000 }];
+    expect(positions(entries, 15000, PASSAGE).map(r => r.name)).toEqual(["Fast", "You", "Slow"]);
+    expect(positions(entries, 5000, "Wrong").find(r => r.you)!.progress).toBe(0);
   });
-  it("practice has no opponents, score, identity, or saved result", async () => {
-    vi.stubEnv("VITE_TYPING_RACE_URL", "");
+  it("stores only a numeric personal best and never loads old identifier-based records", () => {
+    localStorage.setItem("atlas-typing-race-v1", JSON.stringify([{ uni: "ab123", ms: 5000 }]));
+    const board = leaderboard();
+    expect(board.read()).toHaveLength(4);
+    board.finish(20000); board.finish(30000);
+    expect(localStorage.getItem("atlas-typing-race-personal-best-v2")).toBe("20000");
+    expect(leaderboard().read().find(e => e.name === "Your best")!.ms).toBe(20000);
+  });
+  it("keeps targets and personal-best play available when storage is blocked or corrupt", () => {
+    localStorage.setItem("atlas-typing-race-personal-best-v2", "not JSON");
+    expect(leaderboard().read()).toHaveLength(4);
+    vi.spyOn(Storage.prototype, "getItem").mockImplementation(() => { throw new Error("Blocked"); });
+    vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => { throw new Error("Blocked"); });
+    const board = leaderboard();
+    expect(board.finish(15000).saved).toBe(false);
+    expect(board.read()).toHaveLength(5);
+  });
+  it("mounts with targets and no identity input, makes no network calls, and cleans up", () => {
+    vi.useFakeTimers();
+    const fetch = vi.fn(); vi.stubGlobal("fetch", fetch);
     const el = document.createElement("div"); const unmount = typingRace.mount(el);
-    await Promise.resolve();
+    expect(el.querySelector('input[type="text"]')).toBeNull();
+    expect(el.querySelectorAll("tbody tr")).toHaveLength(4);
+    const input = el.querySelector("textarea")!;
+    input.value = "T"; input.dispatchEvent(new Event("input"));
+    vi.advanceTimersByTime(10000);
+    input.value = PASSAGE; input.dispatchEvent(new Event("input"));
+    expect(fetch).not.toHaveBeenCalled();
+    expect(el.querySelectorAll("tbody tr")).toHaveLength(5);
+    unmount(); expect(el.childNodes.length).toBe(0); expect(vi.getTimerCount()).toBe(0);
+  });
+  it("practice hides opponents and scores and never saves a result", () => {
+    const el = document.createElement("div"); const unmount = typingRace.mount(el);
     const toggle = el.querySelector<HTMLInputElement>("[data-mechanic]")!;
     toggle.checked = false; toggle.dispatchEvent(new Event("change"));
-    expect(el.querySelector<HTMLElement>(".tr-results")!.hidden).toBe(true);
-    expect(el.querySelector<HTMLElement>(".tr-metrics")!.hidden).toBe(true);
-    expect(el.querySelector<HTMLElement>(".tr-cars")!.hidden).toBe(true);
+    for (const selector of [".tr-results", ".tr-metrics", ".tr-cars"]) expect(el.querySelector<HTMLElement>(selector)!.hidden).toBe(true);
     const input = el.querySelector("textarea")!;
     input.value = PASSAGE; input.dispatchEvent(new Event("input"));
     expect(el.querySelector('[role="status"]')!.textContent).toContain("Passage complete");
     expect(localStorage.length).toBe(0);
-    unmount(); expect(el.childNodes.length).toBe(0);
+    unmount();
   });
-  it("starts on the first character, excludes idle time, and uses the button only to reset", async () => {
-    vi.stubEnv("VITE_TYPING_RACE_URL", ""); vi.useFakeTimers();
+  it("starts on the first character, excludes idle time, and resets without starting", () => {
+    vi.useFakeTimers();
     const el = document.createElement("div"); const unmount = typingRace.mount(el);
-    await Promise.resolve(); await Promise.resolve();
-    el.querySelector<HTMLInputElement>('input[type="text"]')!.value = "ab123";
     const input = el.querySelector("textarea")!;
-    expect(input.disabled).toBe(false);
-    await vi.advanceTimersByTimeAsync(30000);
-    expect(vi.getTimerCount()).toBe(0);
+    vi.advanceTimersByTime(30000); expect(vi.getTimerCount()).toBe(0);
     input.value = PASSAGE[0]; input.dispatchEvent(new Event("input"));
     expect(input.value).toBe(PASSAGE[0]);
     expect(el.querySelector(".tr-metrics")!.textContent).toContain("0.0 s");
-    await vi.advanceTimersByTimeAsync(20000);
+    vi.advanceTimersByTime(20000);
     input.value = PASSAGE; input.dispatchEvent(new Event("input"));
-    await vi.advanceTimersByTimeAsync(0);
-    expect(JSON.parse(localStorage.getItem("atlas-typing-race-v1")!)).toEqual([{ uni: "ab123", ms: 20000 }]);
+    expect(localStorage.getItem("atlas-typing-race-personal-best-v2")).toBe("20000");
     el.querySelector<HTMLButtonElement>("button")!.click();
-    expect(el.querySelector<HTMLButtonElement>("button")!.textContent).toBe("Reset");
     expect(input.value).toBe(""); expect(input.disabled).toBe(false);
-    await vi.advanceTimersByTimeAsync(5000);
-    expect(vi.getTimerCount()).toBe(0);
+    vi.advanceTimersByTime(5000); expect(vi.getTimerCount()).toBe(0);
     input.value = "T"; input.dispatchEvent(new Event("input"));
     expect(vi.getTimerCount()).toBe(1);
     unmount(); expect(vi.getTimerCount()).toBe(0);
-  });
-});
-
-describe("shared JSON leaderboard", () => {
-  it("allows loopback origins on any port, echoes them for CORS, and rejects lookalike hosts", async () => {
-    const env = {
-      ALLOWED_ORIGINS: "https://atlas.example",
-      LEADERBOARD: { idFromName: () => "class-race", get: () => ({ fetch: async () => Response.json([]) }) },
-    };
-    for (const origin of ["http://localhost:5174", "http://localhost:3000", "https://localhost:8080", "http://127.0.0.1:9000", "http://[::1]:5175", "https://atlas.example"]) {
-      for (const method of ["OPTIONS", "GET"]) {
-        const response = await worker.fetch(new Request("https://race.example/board", { method, headers: { Origin: origin } }), env);
-        expect(response.status).toBe(method === "OPTIONS" ? 204 : 200);
-        expect(response.headers.get("Access-Control-Allow-Origin")).toBe(origin);
-      }
-    }
-    for (const origin of ["http://localhost.evil.example:5173", "http://localhost@evil.example:5173", "https://elsewhere.example", "null"]) {
-      const response = await worker.fetch(new Request("https://race.example/board", { headers: { Origin: origin } }), env);
-      expect(response.status).toBe(403);
-      expect(response.headers.has("Access-Control-Allow-Origin")).toBe(false);
-    }
-  });
-  it("uses server elapsed time, rejects repeat tickets, and preserves faster results", async () => {
-    vi.useFakeTimers();
-    const data = new Map<string, unknown>();
-    const storage = { async get<T>(key: string) { return structuredClone(data.get(key)) as T | undefined; }, async put(key: string, value: unknown) { data.set(key, structuredClone(value)); } };
-    const service = new RaceBoard({ storage: { ...storage, transaction: async callback => callback(storage) } });
-    const send = (path: string, body: unknown) => service.fetch(new Request(`https://race.example${path}`, { method: "POST", body: JSON.stringify(body) }));
-    const ticket = await (await send("/start", { uni: "ab123", passage: "atlas-race-1" })).json();
-    await vi.advanceTimersByTimeAsync(12000);
-    const result = await (await send("/finish", { id: ticket.id, text: PASSAGE })).json();
-    expect(result.ms).toBe(12000); expect(result.entries).toEqual([{ uni: "ab123", ms: 12000 }]);
-    expect((await send("/finish", { id: ticket.id, text: PASSAGE })).status).toBe(400);
-    const next = await (await send("/start", { uni: "ab123", passage: "atlas-race-1" })).json();
-    await vi.advanceTimersByTimeAsync(15000);
-    const slower = await (await send("/finish", { id: next.id, text: PASSAGE })).json();
-    expect(slower.entries).toEqual(result.entries);
-    const incomplete = await (await send("/start", { uni: "cd234", passage: "atlas-race-1" })).json();
-    expect((await send("/finish", { id: incomplete.id, text: "wrong passage" })).status).toBe(400);
   });
 });
