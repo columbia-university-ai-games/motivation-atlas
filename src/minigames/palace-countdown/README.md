@@ -1,6 +1,6 @@
 # Palace Countdown
 
-Author: Yusuf Sheikh (Alsjoee)
+Author: AlsJoee
 
 Motivator: Challenge and mastery.
 
