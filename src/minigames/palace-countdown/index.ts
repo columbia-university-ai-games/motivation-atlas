@@ -89,4 +89,5 @@ function mount(el: HTMLElement): () => void {
 
 export const palaceCountdown: Minigame = {
   slug: "palace-countdown", title: "Palace Countdown", motivators: ["challenge"], mount,
+  author: "AlsJoee",
 };

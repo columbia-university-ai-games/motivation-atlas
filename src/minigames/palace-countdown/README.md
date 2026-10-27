@@ -1,5 +1,7 @@
 # Palace Countdown
 
+Author: AlsJoee
+
 Motivator: Challenge and mastery.
 
 ## Mechanic
