@@ -52,17 +52,24 @@ function mount(el: HTMLElement): () => void {
     ),
     scoreRules,
     startLine,
+    status,
     h("div", { class: "m24-play", hidden: true },
       h("div", { class: "m24-line" }, h("span", { class: "m24-line-label" }, "Cards"), handRow),
       h("div", { class: "m24-line" }, h("span", { class: "m24-line-label" }, "Operations"), symbolRow),
       h("div", { class: "m24-line m24-build-line" },
         h("span", { class: "m24-line-label" }, "Formula"),
         formulaRow,
-        h("button", { type: "button", class: "m24-evaluate", "data-evaluate": "" }, "= 24"),
+        h("button", { type: "button", class: "m24-evaluate", "data-evaluate": "", disabled: true }, "= 24"),
       ),
       evaluation,
-      status,
       h("section", { class: "m24-history" }, h("h4", {}, "This hand’s history"), emptyHistory, historyList),
+    ),
+    h("section", { class: "m24-reflect" },
+      h("h4", {}, "Then check it against your own play"),
+      h("ul", {},
+        h("li", {}, "What do you feel after seeing a new hand of numbers, and after submitting a correct / incorrect formula?"),
+        h("li", {}, "Toggle the scoring mechanic on / off, play again, and notice what changed: in what you did, and in how it felt."),
+      ),
     ),
   );
   const playArea = root.querySelector<HTMLElement>(".m24-play")!;
@@ -73,7 +80,7 @@ function mount(el: HTMLElement): () => void {
     handRow.replaceChildren(...hand.map((value, cardId) => {
       const card = h("button", {
         type: "button", class: "m24-card", "data-card-id": cardId,
-        "data-mechanic": "number-card", draggable: "true", "aria-label": `Add number ${value}`,
+        draggable: "true", "aria-label": `Add number ${value}`,
       }, String(value));
       card.addEventListener("click", () => addNumber(cardId));
       card.addEventListener("dragstart", (event) => {
@@ -85,7 +92,7 @@ function mount(el: HTMLElement): () => void {
     symbolRow.replaceChildren(...SYMBOLS.map(({ value, label }) => {
       const button = h("button", {
         type: "button", class: "m24-symbol", "data-symbol": value,
-        "data-mechanic": "math-operation", draggable: "true", "aria-label": `Add ${label}`,
+        draggable: "true", "aria-label": `Add ${label}`,
       }, value);
       button.addEventListener("click", () => addSymbol(value));
       button.addEventListener("dragstart", (event) => {
@@ -116,6 +123,7 @@ function mount(el: HTMLElement): () => void {
       card.disabled = used;
       card.classList.toggle("is-used", used);
     }
+    evaluateButton.disabled = formula.length === 0;
   }
 
   function clearFeedback(): void {
@@ -152,14 +160,16 @@ function mount(el: HTMLElement): () => void {
   }
 
   function submit(): void {
+    if (formula.length === 0) return;
     const text = formulaText(formula);
     const result = evaluateFormula(hand, formula);
     if (result.key && submissions.has(result.key)) {
-      status.textContent = "That formula is equivalent to one already submitted this hand. Try a different arrangement.";
+      evaluation.textContent = "That formula is equivalent to one already submitted this hand. Try a different arrangement.";
+      evaluation.className = "m24-evaluation";
       return;
     }
     if (result.key) submissions.add(result.key);
-    const record = { text: text || "(empty formula)", valid: result.valid, detail: result.reason, score: "" };
+    const record = { text, valid: result.valid, detail: result.reason, score: "" };
     if (scoring) {
       const scored = scoreSubmission(formula, result, score, streak);
       score = scored.score;
@@ -229,4 +239,4 @@ function mount(el: HTMLElement): () => void {
   return () => root.remove();
 }
 
-export const make24: Minigame = { slug: "make-24", title: "Make 24", motivators: ["challenge"], mount };
+export const make24: Minigame = { slug: "make-24", title: "Make 24", motivators: ["challenge"], author: "tony-wang-zh", mount };
