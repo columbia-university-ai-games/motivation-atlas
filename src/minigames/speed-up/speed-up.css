@@ -1,0 +1,16 @@
+.speedup { display: grid; gap: 14px; justify-items: center; text-align: center; }
+.speedup-stats { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
+.speedup-stats > div { display: grid; }
+.speedup-name { font-size: 0.85rem; color: var(--muted); }
+.speedup-stat { font: 700 1.8rem var(--display); font-variant-numeric: tabular-nums; }
+.speedup-window { margin: 0; font-size: 0.9rem; color: var(--muted); }
+.speedup-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; width: min(100%, 300px); }
+.speedup-cell { aspect-ratio: 1; border: 2px solid var(--line); border-radius: 10px; background: var(--surface); color: var(--muted); font: 600 1rem var(--mono); cursor: pointer; touch-action: manipulation; }
+.speedup-cell.lit { background: var(--accent); border-color: var(--accent); color: var(--surface); }
+.speedup-status { margin: 0; min-height: 1.6em; }
+.speedup-btn { font: 600 1rem var(--body); padding: 10px 22px; border-radius: 8px; border: 2px solid var(--ink); background: var(--ink); color: var(--surface); cursor: pointer; min-width: 110px; justify-self: start; }
+.speedup-mechanics { border: 1px solid var(--line); border-radius: 8px; display: grid; gap: 8px; padding: 12px 16px; text-align: left; width: 100%; box-sizing: border-box; }
+.speedup-mechanics legend { font: 500 0.75rem var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.speedup-reflect { border-left: 4px solid var(--aes, var(--accent)); padding: 8px 16px; background: var(--bg); border-radius: 0 6px 6px 0; text-align: left; width: 100%; box-sizing: border-box; }
+.speedup-reflect h4 { margin: 0 0 4px; }
+.speedup-reflect ul { margin: 0; padding-left: 18px; }
