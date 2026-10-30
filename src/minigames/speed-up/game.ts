@@ -48,7 +48,8 @@ function loseLife(s: SpeedUpState, now: number, random: () => number): SpeedUpSt
 /** The player taps `cell`. The lit cell scores and moves; any other cell costs a life. */
 export function tap(s: SpeedUpState, cell: number, now: number, random: () => number = Math.random): SpeedUpState {
   const t = tick(s, now, random);
-  if (t.over) return t;
+  // A late tap on a target that just went dark costs only the life the tick took.
+  if (t !== s) return t;
   if (cell !== t.target) return loseLife(t, now, random);
   const hits = t.hits + 1;
   return { ...t, hits, target: nextTarget(t.target, random), deadline: now + windowFor(hits, t.options) };

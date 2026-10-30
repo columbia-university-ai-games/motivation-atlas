@@ -36,6 +36,13 @@ describe("Speed Up", () => {
     expect(s.over).toBe("lives");
   });
 
+  it("charges one life, not two, for a late tap on a target that just went dark", () => {
+    const s = start(off, 0, random);
+    const late = tap(s, s.target, START_WINDOW_MS + 10, random);
+    expect(late.lives).toBe(LIVES - 1);
+    expect(late.hits).toBe(0);
+  });
+
   it("ends the round when time runs out", () => {
     let s = start(off, 0, random);
     for (let t = 0; t < 60_000; t += 500) s = tap(s, s.target, t, random);
