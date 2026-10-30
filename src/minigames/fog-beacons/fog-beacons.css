@@ -1,26 +1,29 @@
-.fog-beacons { display: grid; gap: 12px; color: var(--ink); }
-.fog-beacons p { margin: 0; }
-.fog-beacons-intro { font-weight: 600; }
-.fog-beacons-toggle { display: flex; gap: 10px; align-items: center; padding: 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); }
-.fog-beacons-toggle input { width: 22px; height: 22px; flex: 0 0 auto; accent-color: var(--accent); }
-.fog-beacons-note, .fog-beacons-stats, .fog-beacons-legend { color: var(--muted); font-size: .88rem; }
-.fog-beacons-grid { width: min(100%, 350px); display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 3px; padding: 6px; background: var(--line); border-radius: 10px; margin-inline: auto; touch-action: manipulation; }
-.fog-beacons-cell { aspect-ratio: 1; min-width: 0; display: grid; place-items: center; font: 700 clamp(.9rem, 4vw, 1.4rem) var(--mono); border-radius: 4px; background: var(--surface); }
-.fog-beacons-wall { background: var(--ink); color: var(--surface); }
-.fog-beacons-unknown { background: var(--bg); color: var(--muted); }
-.fog-beacons-player { background: var(--accent); color: var(--surface); }
-.fog-beacons-beacon { background: var(--aes-soft); color: var(--aes); }
-.fog-beacons-exit { background: var(--dyn-soft); color: var(--dyn); }
-.fog-beacons-status { min-height: 3.2em; padding: 10px 12px; background: var(--bg); border-radius: 8px; }
-.fog-beacons-pad { display: grid; grid-template-columns: repeat(3, 52px); grid-template-rows: repeat(2, 48px); gap: 6px; justify-content: center; }
-.fog-beacons-button { min-height: 44px; padding: 8px 12px; border: 1px solid var(--ink); border-radius: 8px; background: var(--surface); color: var(--ink); font: 600 1rem var(--body); cursor: pointer; touch-action: manipulation; }
-.fog-beacons-button:hover { background: var(--accent-soft); }
-.fog-beacons-button[aria-disabled="true"] { opacity: .5; cursor: default; }
-.fog-beacons-up { grid-column: 2; grid-row: 1; }
-.fog-beacons-left { grid-column: 1; grid-row: 2; }
-.fog-beacons-down { grid-column: 2; grid-row: 2; }
-.fog-beacons-right { grid-column: 3; grid-row: 2; }
-.fog-beacons-actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; }
-.fog-beacons-reflect { padding: 12px 16px; border-left: 4px solid var(--aes); background: var(--bg); }
-.fog-beacons-reflect h4 { margin: 0 0 8px; }
-.fog-beacons-reflect p + p { margin-top: 8px; }
+.missing-compass { color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: clamp(12px, 3vw, 24px); }
+.missing-compass p { margin: 0.5rem 0; }
+.compass-heading { display: flex; align-items: center; gap: 16px; }
+.compass-heading h3 { margin: 0; font-size: 1.55rem; }
+.compass-symbol { color: var(--accent); font-size: 3rem; line-height: 1; }
+.compass-toggle { display: flex; align-items: center; gap: 10px; padding: 12px; margin-top: 18px; background: var(--accent-soft); border-radius: 8px; font-weight: 600; }
+.compass-toggle input { width: 20px; height: 20px; flex-shrink: 0; accent-color: var(--accent); }
+.compass-note, .compass-features, .compass-card-note { font-size: 0.9rem; color: var(--muted); }
+.compass-case { font-weight: 700; padding-top: 10px; }
+.compass-clues { padding: 12px 12px 12px 34px; border-left: 3px solid var(--accent); background: var(--bg); }
+.compass-clues li + li { margin-top: 6px; }
+.compass-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 18px 0; }
+.compass-place { min-width: 0; padding: 14px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); }
+.compass-place h4 { margin: 0 0 8px; font-size: 1.05rem; }
+.compass-place.is-excluded h4 { text-decoration: line-through; }
+.compass-place.is-excluded { border-style: dashed; }
+.compass-place.is-found { border: 2px solid var(--dyn); background: var(--dyn-soft); }
+.compass-place.is-found .compass-card-note { color: var(--ink); font-weight: 700; }
+.compass-card-actions, .compass-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.missing-compass button { font: inherit; min-height: 44px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 7px; color: var(--ink); background: var(--surface); cursor: pointer; white-space: normal; }
+.missing-compass button:hover:enabled { border-color: var(--accent); background: var(--accent-soft); }
+.missing-compass button:disabled { opacity: 0.55; cursor: default; }
+.missing-compass button:focus-visible, .missing-compass input:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+.missing-compass [data-action="reveal"] { color: var(--ink); border-color: var(--accent); background: var(--accent-soft); }
+.missing-compass [hidden] { display: none !important; }
+.compass-status { padding: 12px; border-radius: 8px; background: var(--accent-soft); }
+.compass-reflect { border-top: 1px solid var(--line); margin-top: 18px; padding-top: 8px; }
+.compass-reflect h4 { margin-bottom: 8px; }
+@media (max-width: 480px) { .compass-grid { grid-template-columns: 1fr; } .compass-card-actions button { flex: 1; } .compass-heading { gap: 10px; } }
