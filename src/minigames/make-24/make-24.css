@@ -1,0 +1,94 @@
+.make-24 {
+  --m24-ink: var(--ink, #253044);
+  --m24-muted: var(--muted, #667085);
+  --m24-line: var(--line, #d9e1ec);
+  --m24-surface: var(--surface, #ffffff);
+  --m24-number: #e4f3ff;
+  --m24-number-border: #8fc8f2;
+  --m24-operation: #eee9ff;
+  --m24-operation-border: #b5a2f3;
+  --m24-build: #f4f8fc;
+  --m24-score: #fff0d9;
+  --m24-score-border: #efad59;
+  --m24-good: var(--dyn, #176b45);
+  --m24-good-bg: var(--dyn-soft, #e5f7ec);
+  --m24-bad: var(--aes, #a33c32);
+  --m24-bad-bg: var(--aes-soft, #fff0ed);
+  --m24-number-ink: #15537b;
+  --m24-operation-ink: #563e9f;
+  --m24-score-ink: #8b4b0e;
+  --m24-score-rules-bg: var(--accent-soft, #fff9ef);
+  --m24-start: #3d78bd;
+  --m24-submit: #25865b;
+  --m24-submit-scoring: #bd6c1d;
+  --m24-primary-ink: #ffffff;
+  --m24-focus: #236eb2;
+  --m24-warm-accent: #d78127;
+  color: var(--m24-ink);
+  background: var(--m24-surface);
+  border: 1px solid var(--m24-line);
+  border-radius: 16px;
+  padding: clamp(14px, 3vw, 22px);
+  max-width: 940px;
+  margin: 0 auto;
+}
+
+.make-24 [hidden] { display: none !important; }
+.m24-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.m24-header h3 { margin: 0 0 4px; }
+.m24-header p, .m24-status, .m24-evaluation { margin: 4px 0 12px; }
+.m24-score-setting { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
+.m24-score-setting label { display: flex; align-items: center; gap: 7px; font-weight: 650; }
+.m24-score-setting input { accent-color: var(--m24-warm-accent); width: 18px; height: 18px; }
+.m24-info { border: 1px solid var(--m24-line); border-radius: 50%; background: var(--m24-surface); color: var(--m24-ink); font-weight: 700; width: 25px; height: 25px; cursor: pointer; }
+.m24-score-label { color: var(--m24-score-ink); background: var(--m24-score); border: 1px solid var(--m24-score-border); border-radius: 9px; padding: 5px 10px; font-weight: 700; }
+.m24-score { font-variant-numeric: tabular-nums; }
+.m24-scoring-rules { color: var(--m24-ink); background: var(--m24-score-rules-bg); border: 1px solid var(--m24-score-border); border-radius: 10px; padding: 10px 14px; margin: 10px 0; }
+.m24-scoring-rules ul { margin: 6px 0 0; padding-left: 20px; }
+.m24-controls { margin: 10px 0 16px; }
+.m24-primary, .m24-evaluate { border: 0; border-radius: 10px; padding: 10px 16px; cursor: pointer; font: inherit; font-weight: 750; }
+.m24-primary { color: var(--m24-primary-ink); background: var(--m24-start); }
+.m24-evaluate { color: var(--m24-primary-ink); background: var(--m24-submit); white-space: nowrap; min-width: 74px; }
+.m24-evaluate:disabled { opacity: .45; cursor: not-allowed; }
+.m24-line { display: flex; align-items: center; gap: 10px; margin: 12px 0; }
+.m24-line-label { color: var(--m24-muted); font-size: .85rem; font-weight: 700; min-width: 72px; }
+.m24-card-row, .m24-symbol-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.m24-card, .m24-symbol, .m24-formula-number, .m24-formula-symbol {
+  min-width: 42px; min-height: 42px; border: 1px solid; border-radius: 10px;
+  font: inherit; font-size: 1.12rem; font-weight: 750; cursor: pointer;
+}
+.m24-card, .m24-formula-number { background: var(--m24-number); border-color: var(--m24-number-border); color: var(--m24-number-ink); }
+.m24-symbol, .m24-formula-symbol { background: var(--m24-operation); border-color: var(--m24-operation-border); color: var(--m24-operation-ink); }
+.m24-card.is-used { opacity: .38; cursor: not-allowed; }
+.m24-card:disabled { pointer-events: none; }
+.m24-build-line { align-items: stretch; }
+.m24-formula-row { display: flex; align-items: center; align-content: flex-start; flex-wrap: wrap; gap: 6px; flex: 1; min-height: 54px; padding: 6px; border: 2px dashed var(--m24-line); border-radius: 11px; background: var(--m24-build); }
+.m24-formula-number, .m24-formula-symbol { min-width: 36px; min-height: 36px; }
+.m24-evaluation { min-height: 1.4em; color: var(--m24-muted); }
+.m24-evaluation.is-correct { color: var(--m24-good); font-weight: 700; }
+.m24-evaluation.is-incorrect { color: var(--m24-bad); }
+.m24-status { color: var(--m24-muted); }
+.m24-history { border-top: 1px solid var(--m24-line); margin-top: 16px; padding-top: 10px; }
+.m24-history h4 { margin: 0 0 8px; }
+.m24-muted { color: var(--m24-muted); }
+.m24-history-list { display: grid; gap: 7px; margin: 0; padding-left: 24px; }
+.m24-history-list li { color: var(--m24-ink); padding: 7px 9px; border-radius: 8px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 5px 12px; }
+.m24-history-list li.is-correct { background: var(--m24-good-bg); }
+.m24-history-list li.is-incorrect { background: var(--m24-bad-bg); }
+.m24-history-formula { font-weight: 700; }
+.m24-history-score { color: var(--m24-bad); font-weight: 700; }
+.make-24 button:focus-visible, .make-24 input:focus-visible { outline: 3px solid var(--m24-focus); outline-offset: 2px; }
+.make-24.scoring-on .m24-evaluate { background: var(--m24-submit-scoring); }
+
+.m24-reflect { margin-top: 18px; border-left: 4px solid var(--aes, var(--accent)); padding: 8px 16px; background: var(--bg); border-radius: 0 6px 6px 0; }
+.m24-reflect h4 { margin: 0 0 4px; }
+.m24-reflect ul { margin: 0; padding-left: 18px; }
+
+
+@media (max-width: 580px) {
+  .m24-line { align-items: flex-start; flex-direction: column; gap: 6px; }
+  .m24-build-line { display: grid; grid-template-columns: 1fr auto; }
+  .m24-build-line .m24-line-label { grid-column: 1 / -1; }
+  .m24-formula-row { min-width: 0; }
+  .m24-history-list li { align-items: flex-start; flex-direction: column; }
+}
