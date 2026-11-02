@@ -1,0 +1,66 @@
+{
+  "sourceProject": "Autumn Drive",
+  "snapshotDate": "2026-10-18",
+  "files": [
+    {
+      "source": "racing/src/physics/vehicle.ts",
+      "sha256": "8275ba661757f1d8b42c86a34db10c1eb1704ddfd92b19f7be962c62c950c7b7",
+      "atlas": "drive/physics/vehicle.js"
+    },
+    {
+      "source": "racing/src/physics/config.ts",
+      "sha256": "226b16df4ce89d9e0ddbc0690da1f340a34fe324c3f2c9ff828d339b14438d3d",
+      "atlas": "drive/physics/config.js"
+    },
+    {
+      "source": "racing/src/physics/steering.ts",
+      "sha256": "c7d2273ebf413bca117cff6816605e3b31a624764750c04c6052604f319393ed",
+      "atlas": "drive/physics/steering.js"
+    },
+    {
+      "source": "racing/src/shared/math.ts",
+      "sha256": "64cf2b6698f26cc9b380880bca1a8ed886c4264f9f57f5e561cf1494335c2c6b",
+      "atlas": "drive/shared/math.js"
+    },
+    {
+      "source": "racing/src/world/generator.ts",
+      "sha256": "c895fa7c30580d430b94f12e88f19ec28a3caf1900ae3ee4fc8a810440ce736b",
+      "atlas": "drive/world/generator.js"
+    },
+    {
+      "source": "racing/src/world/network.ts",
+      "sha256": "bf9068bbb90e9705b2a72b4c0ef8f72add165e41235e1253645bc5d341ef988a",
+      "atlas": "drive/world/network.js"
+    },
+    {
+      "source": "racing/src/world/props.ts",
+      "sha256": "e59e31cd6a28d6b2d0e92c3d07c3b992a84877d0f6f7ba4b2797ff40173b30c6",
+      "atlas": "drive/world/props.js"
+    },
+    {
+      "source": "racing/src/render/view.ts",
+      "sha256": "3340e02953086568e974cf4bc034e822e193603c4e8fe04d9a55582e6ced2301",
+      "atlas": "drive/render/view.js"
+    },
+    {
+      "source": "racing/src/render/scenery.ts",
+      "sha256": "bd4bb9b4c9bb2fa563264651548bd1577803fd88434d8b1ecc6d635765634451",
+      "atlas": "drive/render/scenery.js"
+    },
+    {
+      "source": "racing/src/render/adaptive-quality.ts",
+      "sha256": "04bec9df2ea82023d7493b0fb6f520ddadaf0ddb853f57749244fe54bf93c12a",
+      "atlas": "drive/render/adaptive-quality.js"
+    },
+    {
+      "source": "racing/src/audio.ts",
+      "sha256": "c6f768635130d97c8f03f006dfb70ed8ac7437edf520f2b543d7a87a731fed93",
+      "atlas": "drive/audio.js"
+    },
+    {
+      "source": "racing/public/models/bmw-e30-medium.glb",
+      "sha256": "d82623ead539debe1a61c363f891f5e63cbbc2ae8afa7f58935039caec0bbd59",
+      "atlas": "drive/model.js"
+    }
+  ]
+}
